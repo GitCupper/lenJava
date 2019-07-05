@@ -958,7 +958,7 @@ Java虚拟机规范规定，如果加载的class文件不符合要求的格式�
 | J2SE 1.3 | 47.0 | Java SE 8 | 52.0 |
 | J2SE 1.4 | 48.0 | | |
 
-特定的Java虚拟机实现只能支持版本号在某个范围内的class文件。Oracle的实现是完全向后兼容的，比如Java SE 8支持版本号为45.0~52.0的class文件。如果版本号不在支持的范围内，Java虚拟机实现就抛出java.lang.UnsupportedClassVersionError异常。我们参考Java 8，支持版本号为45.0~52.0的class文件。如果遇到其他版本号，暂时先调用panic()方法终止程序执行。下面是readAndCheckVersion()方法的代码。
+特定的Java虚拟机实现只能支持版本号在某个范围内的class文件。Oracle的实现是完全向后兼容的，比如Java SE 8支持版本号为45.0～52.0的class文件。如果版本号不在支持的范围内，Java虚拟机实现就抛出java.lang.UnsupportedClassVersionError异常。我们参考Java 8，支持版本号为45.0～52.0的class文件。如果遇到其他版本号，暂时先调用panic()方法终止程序执行。下面是readAndCheckVersion()方法的代码。
 ``` go 
 func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	self.minorVersion = reader.readUint16()
