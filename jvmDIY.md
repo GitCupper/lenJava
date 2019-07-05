@@ -127,7 +127,7 @@ go命令行工具希望所有的Go源代码被都放在一个工作空间中。�
 - pkg目录中是编译好的包对象文件。
 - bin目录中是链接好的可执行文件。
 
-实际上只有src目录是必须要有的，go会自动创建pkg和bin目录。工作空间可以位于任何地方，本书使用D:\go\workspace作为工作空间。那么go如何知道工作空间在哪里呢?答案是通过GOPATH环境变量。在桌面上右键单击“我的电脑”图标，在弹出的菜单中单击“属性”，然后单击“高级系统设置”;在“系统属性”对话框中单击“环境变量”按钮，然后添加GOPATH变量即可，如图1-3所示。
+实际上只有src目录是必须要有的，go会自动创建pkg和bin目录。工作空间可以位于任何地方，本书使用D:\go\workspace作为工作空间。那么go如何知道工作空间在哪里呢?答案是通过GOPATH环境变量。在桌面上右键单击“我的电脑”图标，在弹出的菜单中单击“属性”，然后单击“高级系统设置”；在“系统属性”对话框中单击“环境变量”按钮，然后添加GOPATH变量即可，如图1-3所示。
 
 图1-3 设置GOPATH环境变量
 
@@ -155,16 +155,16 @@ public class HelloWorld {
   }
 }
 ```
-那么Java虚拟机如何知道我们要从哪个类启动应用程序呢?对此，Java虚拟机规范没有明确规定。也就是说，是由虚拟机实现自行决定的。比如Oracle的Java虚拟机实现是通过java命令来启动的，主类名由命令行参数指定。java命令有如下4种形式:
+那么Java虚拟机如何知道我们要从哪个类启动应用程序呢?对此，Java虚拟机规范没有明确规定。也就是说，是由虚拟机实现自行决定的。比如Oracle的Java虚拟机实现是通过java命令来启动的，主类名由命令行参数指定。java命令有如下4种形式：
 ```
 java [-options] class [args]
 java [-options] -jar jarfile [args]
 javaw [-options] class [args]
 javaw [-options] -jar jarfile [args]
 ```
-可以向java命令传递三组参数:选项、主类名(或者JAR文件名)和main()方法参数。选项由减号(–)开头。通常，第一个非选项参数给出主类的完全限定名(fully qualified class name)。但是如果用户提供了–jar选项，则第一个非选项参数表示JAR文件名，java命令必须从这个JAR文件中寻找主类。javaw命令和java命令几乎一样，唯一的差别在于，javaw命令不显示命令行窗口，因此特别适合用于启动GUI(图形用户界面)应用程序。
+可以向java命令传递三组参数：选项、主类名(或者JAR文件名)和main()方法参数。选项由减号(–)开头。通常，第一个非选项参数给出主类的完全限定名(fully qualified class name)。但是如果用户提供了–jar选项，则第一个非选项参数表示JAR文件名，java命令必须从这个JAR文件中寻找主类。javaw命令和java命令几乎一样，唯一的差别在于，javaw命令不显示命令行窗口，因此特别适合用于启动GUI(图形用户界面)应用程序。
 
-选项可以分为两类:标准选项和非标准选项。标准选项比较稳定，不会轻易变动。非标准选项以-X开头，很有可能会在未来的版本中变化。非标准选项中有一部分是高级选项，以-XX开头。表1-1列出了java命令常用的选项及其用途。 [1]
+选项可以分为两类：标准选项和非标准选项。标准选项比较稳定，不会轻易变动。非标准选项以-X开头，很有可能会在未来的版本中变化。非标准选项中有一部分是高级选项，以-XX开头。表1-1列出了java命令常用的选项及其用途。 [1]
 表1-1 java命令常用选项及其用途
 |选 项      |  用 途 |
 | :--------: | :--------:|
@@ -216,7 +216,7 @@ func parseCmd() *Cmd {
 	return cmd
 }
 ```
-首先设置flag.Usage变量，把printUsage()函数赋值给它;然后调用flag包提供的各种Var()函数设置需要解析的选项;接着调用Parse()函数解析选项。如果Parse()函数解析失败，它就调用printUsage()函数把命令的用法打印到控制台。printUsage()函数的代码如下：
+首先设置flag.Usage变量，把printUsage()函数赋值给它；然后调用flag包提供的各种Var()函数设置需要解析的选项；接着调用Parse()函数解析选项。如果Parse()函数解析失败，它就调用printUsage()函数把命令的用法打印到控制台。printUsage()函数的代码如下：
 ``` go
 func printUsage() {
 	fmt.Printf("Usage: %s [-options] class [args...]\n", os.Args[0])
@@ -276,7 +276,7 @@ public class HelloWorld {
 加载HelloWorld类之前，首先要加载它的超类，也就是java.lang.Object。在调用main()方法之前，因为虚拟机需要准备好参数数组，所以需要加载java.lang.String和java.lang.String[]类。把字符串打印到控制台还需要加载java.lang.System类，等等。那么，Java虚拟机从哪里寻找这些类呢?本章将详细讨论这个问题。
 
 ### 2.1 类路径
-Java虚拟机规范并没有规定虚拟机应该从哪里寻找类，因此不同的虚拟机实现可以采用不同的方法。Oracle的Java虚拟机实现根据类路径(class path)来搜索类。按照搜索的先后顺序，类路径可以分为以下3个部分:
+Java虚拟机规范并没有规定虚拟机应该从哪里寻找类，因此不同的虚拟机实现可以采用不同的方法。Oracle的Java虚拟机实现根据类路径(class path)来搜索类。按照搜索的先后顺序，类路径可以分为以下3个部分：
 - 启动类路径(bootstrap classpath)
 - 扩展类路径(extension classpath)
 - 用户类路径(user classpath)
@@ -301,7 +301,7 @@ java -cp classes;lib\* ...
 ```
 
 ### 2.2 准备工作
-从第2章开始，每章的代码都是建立在前一章的基础之上。把ch01目录复制一份，然后改名为ch02。因为本章要创建的源文件都在classpath包中，所以在ch02目录中创建一个classpath子目录。现在目录结构看起来应该是这样:
+从第2章开始，每章的代码都是建立在前一章的基础之上。把ch01目录复制一份，然后改名为ch02。因为本章要创建的源文件都在classpath包中，所以在ch02目录中创建一个classpath子目录。现在目录结构看起来应该是这样：
 ```
 D:\go\workspace\src
   |-jvmgo
@@ -355,7 +355,7 @@ type Entry interface {
 
 func newEntry(path string) Entry { ... }
 ```
-常量pathListSeparator是string类型，存放路径分隔符，后面会用到。Entry接口中有两个方法。readClass()方法负责寻找和加载class文件;String()方法的作用相当于Java中的toString()，用于返回变量的字符串表示。
+常量pathListSeparator是string类型，存放路径分隔符，后面会用到。Entry接口中有两个方法。readClass()方法负责寻找和加载class文件；String()方法的作用相当于Java中的toString()，用于返回变量的字符串表示。
 
 readClass()方法的参数是class文件的相对路径，路径之间用斜线(/)分隔，文件名有.class后缀。比如要读取java.lang.Object类，传入的参数应该是java/lang/Object.class。返回值是读取到的字节数据、最终定位到class文件的Entry，以及错误信息。Go的函数或方法允许返回多个值，按照惯例，可以使用最后一个返回值作为错误信息。
 
@@ -402,7 +402,7 @@ func newDirEntry(path string) *DirEntry {
 ```
 newDirEntry()先把参数转换成绝对路径，如果转换过程出现错误，则调用panic()函数终止程序执行，否则创建DirEntry实例并返回。
 
-下面介绍readClass()方法:
+下面介绍readClass()方法：
 ``` go
 func (self *DirEntry) readClass(className string) ([]byte, Entry, error) {
 	fileName := filepath.Join(self.absDir, className)
@@ -493,7 +493,7 @@ func newCompositeEntry(pathList string) CompositeEntry {
 	return compositeEntry
 }
 ```
-相信读者已经想到readClass()方法的代码了:依次调用每一个子路径的readClass()方法，如果成功读取到class数据，返回数据即可;如果收到错误信息，则继续;如果遍历完所有的子路径还没有找到class文件，则返回错误。readClass()方法的代码如下：
+相信读者已经想到readClass()方法的代码了：依次调用每一个子路径的readClass()方法，如果成功读取到class数据，返回数据即可；如果收到错误信息，则继续；如果遍历完所有的子路径还没有找到class文件，则返回错误。readClass()方法的代码如下：
 ``` go
 func (self CompositeEntry) readClass(className string) ([]byte, Entry, error)
 	for _, entry := range self {
@@ -685,7 +685,7 @@ go install jvmgo\ch02
 ## 第3章 解析class文件
 第2章介绍了Java虚拟机从哪里搜索class文件，并且实现了类路径功能，已经可以把class文件读取到内存中。本章将详细讨论class文件格式，编写代码解析class文件，为下一步真正实现Java虚拟机做好准备。
 
-在开始阅读本章之前，先把目录结构准备好。复制ch02目录，并改名为ch03，然后编辑ch03\main.go等文件，把import语句中的ch02都改成ch03 [1] ，最后在ch03目录中创建classfile子目录。现在的目录结构看起来应该如下所示:
+在开始阅读本章之前，先把目录结构准备好。复制ch02目录，并改名为ch03，然后编辑ch03\main.go等文件，把import语句中的ch02都改成ch03 [1] ，最后在ch03目录中创建classfile子目录。现在的目录结构看起来应该如下所示：
 ```
 D:\go\workspace\src
   |-jvmgo
@@ -863,7 +863,7 @@ func (self *ClassFile) ClassName() string                       { ... }
 func (self *ClassFile) SuperClassName() string                  { ... }
 func (self *ClassFile) InterfaceNames() []string                { ... }
 ```
-相比Java语言，Go的访问控制非常简单:只有公开和私有两种。所有首字母大写的类型、结构体、字段、变量、函数、方法等都是公开的，可供其他包使用。首字母小写则是私有的，只能在包内部使用。在本书的代码中，尽量只公开必要的变量、字段、函数和方法等。但是为了提高代码可读性，所有的结构体都是公开的，也就是首字母是大写的。
+相比Java语言，Go的访问控制非常简单：只有公开和私有两种。所有首字母大写的类型、结构体、字段、变量、函数、方法等都是公开的，可供其他包使用。首字母小写则是私有的，只能在包内部使用。在本书的代码中，尽量只公开必要的变量、字段、函数和方法等。但是为了提高代码可读性，所有的结构体都是公开的，也就是首字母是大写的。
 
 Parse()函数把[]byte解析成ClassFile结构体，代码如下：
 ``` go
@@ -1063,7 +1063,7 @@ func (self *MemberInfo) Descriptor() string {
 常量池占据了class文件很大一部分数据，里面存放着各式各样的常量信息，包括数字和字符串常量、类和接口名、字段和方法名，等等。本节将详细介绍常量池和各种常量。
 
 #### 3.3.1 ConstantPool结构体
-在ch03\classfile目录下创建constant_pool.go文件，在里面定义ConstantPool类型，代码如下所示:
+在ch03\classfile目录下创建constant_pool.go文件，在里面定义ConstantPool类型，代码如下所示：
 ``` go
 package classfile
 
@@ -1318,7 +1318,7 @@ CONSTANT_Utf8_info {
 	u1 bytes[length];
 }
 ```
-注意，字符串在class文件中是以MUTF-8(Modified UTF-8)方式编码的。但为什么没有用标准的UTF-8编码方式，笔者没有找到明确的原因 [1] 。MUTF-8编码方式和UTF-8大致相同，但并不兼容。差别有两点:一是null字符(代码点U+0000)会被编码成2字节:0xC0、0x80;二是补充字符(Supplementary Characters，代码点大于U+FFFF的Unicode字符)是按UTF-16拆分为代理对(Surrogate Pair)分别编码的。具体细节超出了本章的讨论范围，有兴趣的读者可以阅读Java虚拟机规范和Unicode规范的相关章节 [2] 。
+注意，字符串在class文件中是以MUTF-8(Modified UTF-8)方式编码的。但为什么没有用标准的UTF-8编码方式，笔者没有找到明确的原因 [1] 。MUTF-8编码方式和UTF-8大致相同，但并不兼容。差别有两点：一是null字符(代码点U+0000)会被编码成2字节：0xC0、0x80；二是补充字符(Supplementary Characters，代码点大于U+FFFF的Unicode字符)是按UTF-16拆分为代理对(Surrogate Pair)分别编码的。具体细节超出了本章的讨论范围，有兴趣的读者可以阅读Java虚拟机规范和Unicode规范的相关章节 [2] 。
 
 在ch03\classfile目录下创建cp_utf8.go文件，在其中定义ConstantUtf8Info结构体，代码如下：
 ``` go
@@ -1515,9 +1515,9 @@ ClassFileTest类的main()方法使用了java.lang.System类的out字段，该字
 图3-19 用classpy观察CONSTANT_Fieldref_info常量(2)
 
 #### 3.3.12 常量池小结
-还有三个常量没有介绍:CONSTANT_MethodType_info、CONSTANT_MethodHandle_info和CONSTANT_InvokeDynamic_info。它们是Java SE 7才添加到class文件中的，目的是支持新增的invokedynamic指令。本书不讨论invokedynamic指令，所以解析这三个常量的代码就不在这里介绍了。代码也非常简单，有兴趣的读者可以阅读随书源代码中的ch03\cp_invoke_dynamic.go文件。
+还有三个常量没有介绍：CONSTANT_MethodType_info、CONSTANT_MethodHandle_info和CONSTANT_InvokeDynamic_info。它们是Java SE 7才添加到class文件中的，目的是支持新增的invokedynamic指令。本书不讨论invokedynamic指令，所以解析这三个常量的代码就不在这里介绍了。代码也非常简单，有兴趣的读者可以阅读随书源代码中的ch03\cp_invoke_dynamic.go文件。
 
-可以把常量池中的常量分为两类:字面量(literal)和符号引用(symbolic reference)。字面量包括数字常量和字符串常量，符号引用包括类和接口名、字段和方法信息等。除了字面量，其他常量都是通过索引直接或间接指向CONSTANT_Utf8_info常量，以CONSTANT_Fieldref_info为例，如图3-20所示。
+可以把常量池中的常量分为两类：字面量(literal)和符号引用(symbolic reference)。字面量包括数字常量和字符串常量，符号引用包括类和接口名、字段和方法信息等。除了字面量，其他常量都是通过索引直接或间接指向CONSTANT_Utf8_info常量，以CONSTANT_Fieldref_info为例，如图3-20所示。
 
 图3-20 常量引用关系
 
@@ -1564,72 +1564,101 @@ func readAttribute(reader *ClassReader, cp ConstantPool) AttributeInfo {
 }
 ```
 readAttribute()先读取属性名索引，根据它从常量池中找到属性名，然后读取属性长度，接着调用newAttributeInfo()函数创建具体的属性实例。Java虚拟机规范预定义了23种属性，先解析其中的8种。newAttributeInfo()函数的代码如下：
-------116页--20190704-----
-func newAttributeInfo(attrName string, attrLen uint32, 
-cp ConstantPool) AttributeInfo {
-switch attrName {
-case "Code": return &CodeAttribute{cp: cp}
-case "ConstantValue": return &ConstantValueAttribute{}
-case "Deprecated": return &DeprecatedAttribute{}
-case "Exceptions": return &ExceptionsAttribute{}
-case "LineNumberTable": return &LineNumberTableAttribute{}
-case "LocalVariableTable": return &LocalVariableTableAttribute{}
-case "SourceFile": return &SourceFileAttribute{cp: cp}
-case "Synthetic": return &SyntheticAttribute{}
-default: return &UnparsedAttribute{attrName, attrLen, nil}
+``` go
+func newAttributeInfo(attrName string, attrLen uint32,
+	cp ConstantPool) AttributeInfo {
+	switch attrName {
+	case "Code":
+		return &CodeAttribute{cp: cp}
+	case "ConstantValue":
+		return &ConstantValueAttribute{}
+	case "Deprecated":
+		return &DeprecatedAttribute{}
+	case "Exceptions":
+		return &ExceptionsAttribute{}
+	case "LineNumberTable":
+		return &LineNumberTableAttribute{}
+	case "LocalVariableTable":
+		return &LocalVariableTableAttribute{}
+	case "SourceFile":
+		return &SourceFileAttribute{cp: cp}
+	case "Synthetic":
+		return &SyntheticAttribute{}
+	default:
+		return &UnparsedAttribute{attrName, attrLen, nil}
+	}
 }
-}
-UnparsedAttribute结构体在ch03\classfile\attr_unparsed.go文件
-中，代码如下：
+```
+UnparsedAttribute结构体在ch03\classfile\attr_unparsed.go文件中，代码如下：
+``` go
 package classfile
 type UnparsedAttribute struct {
-name
-string
-length uint32
-info
-[]byte
+	name
+	string
+	length uint32
+	info
+	[]byte
 }
 func (self *UnparsedAttribute) readInfo(reader *ClassReader) {
-self.info = reader.readBytes(self.length)
+	self.info = reader.readBytes(self.length)
 }
-按照用途，23种预定义属性可以分为三组。第一组属性是实现
-Java虚拟机所必需的，共有5种;第二组属性是Java类库所必需的，
-共有12种;第三组属性主要提供给工具使用，共有6种。第三组属性
-是可选的，也就是说可以不出现在class文件中。如果class文件中存在第三组属性，Java虚拟机实现或者Java类库也是可以利用它们
-的，比如使用LineNumberTable属性在异常堆栈中显示行号。
-从class文件演进的角度来讲，JDK1.0时只有6种预定义属性，
-JDK1.1增加了3种。J2SE 5.0增加了9种属性，主要用于支持泛型和
-注解。Java SE 6增加了StackMapTable属性，用于优化字节码验证。
-Java SE 7增加了BootstrapMethods属性，用于支持新增的
-invokedynamic指令。Java SE 8又增加了三种属性。表3-5给出了这23
-种属性出现的Java版本、分组以及它们在class文件中的位置。
-表3-4 预定义属性由于篇幅的限制，下面只介绍其中的8种属性。3.4.2 Deprecated和Synthetic属性
-Deprecated和Synthetic是最简单的两种属性，仅起标记作用，不
-包含任何数据。这两种属性都是JDK1.1引入的，可以出现在
-ClassFile、field_info和method_info结构中，它们的结构定义如下：
+```
+按照用途，23种预定义属性可以分为三组。第一组属性是实现Java虚拟机所必需的，共有5种；第二组属性是Java类库所必需的，共有12种；第三组属性主要提供给工具使用，共有6种。第三组属性是可选的，也就是说可以不出现在class文件中。如果class文件中存在第三组属性，Java虚拟机实现或者Java类库也是可以利用它们的，比如使用LineNumberTable属性在异常堆栈中显示行号。
+
+从class文件演进的角度来讲，JDK1.0时只有6种预定义属性，JDK1.1增加了3种。J2SE 5.0增加了9种属性，主要用于支持泛型和注解。Java SE 6增加了StackMapTable属性，用于优化字节码验证。Java SE 7增加了BootstrapMethods属性，用于支持新增的invokedynamic指令。Java SE 8又增加了三种属性。表3-5给出了这23种属性出现的Java版本、分组以及它们在class文件中的位置。
+
+表3-4 预定义属性
+| 属性名 | Java SE | 分组 | 位置 |
+|:--:|:--:|:--:|:--:|
+| ConstantValue | 1.0.2 | 1 | field_info |
+| Code | 1.0.2 | 1 | method_info |
+| Exceptions | 1.0.2 | 1 | method_info |
+| SourceFile | 1.0.2 | 3 | ClassFile |
+| LineNumberTable | 1.0.2 | 3 | Code |
+| LocalVariableTable | 1.0.2 | 3 | Code |
+| InnerClasses | 1.1 | 2 | ClassFile |
+| Synthetic | 1.1 | 2 | ClassFile, field_info, method_info |
+| Deprecated | 1.1 | 3 | ClassFile, field_info, method_info |
+| EnclosingMethod | 5.0 | 2 | ClassFile |
+| Signature | 5.0 | 2 | ClassFile, field_info, method_info |
+| SourceDebugExtension | 5.0 | 3 | ClassFile |
+| LocalVariableTypeTable | 5.0 | 3 | Code |
+| RuntimeVisibleAnnotations | 5.0 | 2 | ClassFile, field_info, method_info |
+| RuntimeInvisibleAnnotations | 5.0 | 2 | ClassFile, field_info, method_info |
+| RuntimeVisibleParameterAnnotations | 5.0 | 2 | method_info |
+| RuntimeInvisibleParameterAnnotations | 5.0 | 2 | mehtod_info |
+| AnnotationDefault | 5.0 | 2 | method_info |
+| StackMapTable | 6 | 1 | Code |
+| BootstrapMethods | 7 | 1 | ClassFile |
+| RuntimeVisibleTypeAnnotations | 8 | 2 | ClassFile, field_info, method_info, Code |
+| RuntimeInvisibleTypeAnnotations | 8 | 2 | ClassFile, field_info, method_info, Code |
+| MethodParameters | 8 | 2 | method_info |
+由于篇幅的限制，下面只介绍其中的8种属性。
+
+#### 3.4.2 Deprecated和Synthetic属性
+Deprecated和Synthetic是最简单的两种属性，仅起标记作用，不包含任何数据。这两种属性都是JDK1.1引入的，可以出现在ClassFile、field_info和method_info结构中，它们的结构定义如下：
+``` java
 Deprecated_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
+	u2 attribute_name_index;
+	u4 attribute_length;
 }
 Synthetic_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
+	u2 attribute_name_index;
+	u4 attribute_length;
 }
-由于不包含任何数据，所以attribute_length的值必须是0。
-Deprecated属性用于指出类、接口、字段或方法已经不建议使用，编
-译器等工具可以根据Deprecated属性输出警告信息。J2SE 5.0之前
-可以使用Javadoc提供的@deprecated标签指示编译器给类、接口、字
-段或方法添加Deprecated属性，语法格式如下：
+```
+由于不包含任何数据，所以attribute_length的值必须是0。Deprecated属性用于指出类、接口、字段或方法已经不建议使用，编译器等工具可以根据Deprecated属性输出警告信息。J2SE 5.0之前可以使用Javadoc提供的@deprecated标签指示编译器给类、接口、字段或方法添加Deprecated属性，语法格式如下：
+``` java
 /** @deprecated */
 public void oldMethod() {...}
-从J2SE 5.0开始，也可以使用@Deprecated注解，语法格式如
-下：@Deprecated
+```
+从J2SE 5.0开始，也可以使用@Deprecated注解，语法格式如下：
+``` java
+@Deprecated
 public void oldMethod() {}
-Synthetic属性用来标记源文件中不存在、由编译器生成的类成
-员，引入Synthetic属性主要是为了支持嵌套类和嵌套接口。具体细
-节就不介绍了，感兴趣的读者可以参考Java虚拟机规范相关章节。
-在ch03\classfile目录下创建attr_markers.go文件，在其中定义
-DeprecatedAttribute和SyntheticAttribute结构体，代码如下：
+```
+Synthetic属性用来标记源文件中不存在、由编译器生成的类成员，引入Synthetic属性主要是为了支持嵌套类和嵌套接口。具体细节就不介绍了，感兴趣的读者可以参考Java虚拟机规范相关章节。在ch03\classfile目录下创建attr_markers.go文件，在其中定义DeprecatedAttribute和SyntheticAttribute结构体，代码如下：
+``` go
 package classfile
 type DeprecatedAttribute struct { MarkerAttribute }
 type SyntheticAttribute struct { MarkerAttribute }
@@ -1637,211 +1666,228 @@ type MarkerAttribute struct{}
 func (self *MarkerAttribute) readInfo(reader *ClassReader) {
 // read nothing
 }
-由于这两个属性都没有数据，所以readInfo()方法是空的。3.4.3 SourceFile属性
-SourceFile是可选定长属性，只会出现在ClassFile结构中，用于
-指出源文件名。其结构定义如下：
+```
+由于这两个属性都没有数据，所以readInfo()方法是空的。
+
+#### 3.4.3 SourceFile属性
+SourceFile是可选定长属性，只会出现在ClassFile结构中，用于指出源文件名。其结构定义如下：
+``` go 
 SourceFile_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 sourcefile_index;
+	u2 attribute_name_index;
+	u4 attribute_length;
+	u2 sourcefile_index;
 }
-attribute_length的值必须是2。sourcefile_index是常量池索引，
-指向CONSTANT_Utf8_info常量。在ch03\classfile目录下创建
-attr_source_file.go文件，在其中定义SourceFileAttribute结构体，代码
-如下：
+```
+attribute_length的值必须是2。sourcefile_index是常量池索引，指向CONSTANT_Utf8_info常量。在ch03\classfile目录下创建attr_source_file.go文件，在其中定义SourceFileAttribute结构体，代码如下：
+``` go
 package classfile
 type SourceFileAttribute struct {
-cp
-ConstantPool
-sourceFileIndex uint16
+	cp              ConstantPool
+	sourceFileIndex uint16
 }
 func (self *SourceFileAttribute) readInfo(reader *ClassReader) {
-self.sourceFileIndex = reader.readUint16()
+	self.sourceFileIndex = reader.readUint16()
 }
 func (self *SourceFileAttribute) FileName() string {
-return self.cp.getUtf8(self.sourceFileIndex)
+	return self.cp.getUtf8(self.sourceFileIndex)
 }
+```
 笔者的编译器给ClassFileTest生成了SourceFile属性，如图3-21所示。
+
 图3-21 用classpy观察SourceFile属性
-第47和第48个常量，确实都是CONSTANT_Utf8_info常量，如
-图3-22所示。
-图3-22 用classpy观察SourceFile属性(2)3.4.4 ConstantValue属性
-ConstantValue是定长属性，只会出现在field_info结构中，用于
-表示常量表达式的值(详见Java语言规范的15.28节)。其结构定义如
-下：
+
+第47和第48个常量，确实都是CONSTANT_Utf8_info常量，如图3-22所示。
+
+图3-22 用classpy观察SourceFile属性(2)
+
+#### 3.4.4 ConstantValue属性
+ConstantValue是定长属性，只会出现在field_info结构中，用于表示常量表达式的值(详见Java语言规范的15.28节)。其结构定义如下：
+``` java
 ConstantValue_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 constantvalue_index;
+	u2 attribute_name_index;
+	u4 attribute_length;
+	u2 constantvalue_index;
 }
-attribute_length的值必须是2。constantvalue_index是常量池索
-引，但具体指向哪种常量因字段类型而异。表3-6给出了字段类型和
-常量类型的对应关系。
+```
+attribute_length的值必须是2。constantvalue_index是常量池索引，但具体指向哪种常量因字段类型而异。表3-6给出了字段类型和常量类型的对应关系。
+
 表3-5 字段类型和常量类型对应关系
-在ch03\classfile目录下创建attr_constant_value.go文件，在其中
-定义ConstantValueAttribute结构体，代码如下：package classfile
+| 字段类型 | 常量类型 |
+|:--:|:--:|
+| long | CONSTANT_Long_info |
+| float | CONSTANT_Float_info |
+| double | CONSTANT_Double_info |
+| int, short, char, byte, boolean | CONSTANT_Integer_info |
+| String | CONSTANT_String_info |
+
+在ch03\classfile目录下创建attr_constant_value.go文件，在其中定义ConstantValueAttribute结构体，代码如下：
+``` go
+package classfile
 type ConstantValueAttribute struct {
-constantValueIndex uint16
+	constantValueIndex uint16
 }
 func (self *ConstantValueAttribute) readInfo(reader *ClassReader) {
-self.constantValueIndex = reader.readUint16()
+	self.constantValueIndex = reader.readUint16()
 }
 func (self *ConstantValueAttribute) ConstantValueIndex() uint16 {
-return self.constantValueIndex
+	return self.constantValueIndex
 }
-在第6章讨论类和对象时，会介绍如何使用ConstantValue属性。
-下面用classpy观察ClassFileTest类的FLAG字段，如图3-23所示。
+```
+在第6章讨论类和对象时，会介绍如何使用ConstantValue属性。下面用classpy观察ClassFileTest类的FLAG字段，如图3-23所示。
+
 图3-23 用classpy观察ConstantValue属性
-可以看到，属性表里确实有一个ConstantValue属性，
-constantvalue_index是10(0x0A)，指向CONSTANT_Integer_info，如
-图3-24所示。图3-24 用classpy观察ConstantValue属性(2)3.4.5 Code属性
-Code是变长属性，只存在于method_info结构中。Code属性中存
-放字节码等方法相关信息。相比前面介绍的几种属性，Code属性比
-较复杂，其结构定义如下：
+
+可以看到，属性表里确实有一个ConstantValue属性，constantvalue_index是10(0x0A)，指向CONSTANT_Integer_info，如图3-24所示。
+
+图3-24 用classpy观察ConstantValue属性(2)
+
+#### 3.4.5 Code属性
+Code是变长属性，只存在于method_info结构中。Code属性中存放字节码等方法相关信息。相比前面介绍的几种属性，Code属性比较复杂，其结构定义如下：
+``` java
 Code_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 max_stack;
-u2 max_locals;
-u4 code_length;
-u1 code[code_length];
-u2 exception_table_length;
-{ u2 start_pc;
-u2 end_pc;
-u2 handler_pc;
-u2 catch_type;
-} exception_table[exception_table_length];
-u2 attributes_count;
-attribute_info attributes[attributes_count];
+	u2 attribute_name_index;
+	u4 attribute_length;
+	u2 max_stack;
+	u2 max_locals;
+	u4 code_length;
+	u1 code[code_length];
+	u2 exception_table_length;
+	{ 
+		u2 start_pc;
+		u2 end_pc;
+		u2 handler_pc;
+		u2 catch_type;
+	} exception_table[exception_table_length];
+	u2 attributes_count;
+	attribute_info attributes[attributes_count];
 }
-max_stack给出操作数栈的最大深度，max_locals给出局部变量
-表大小。接着是字节码，存在u1表中。最后是异常处理表和属性
-表。在第4章讨论运行时数据区，并且实现操作数栈和局部变量表
-时，max_stack和max_locals就会派上用场。在第5章讨论指令集和解
-释器时，会用到字节码。在第10章讨论异常处理时，会使用异常处
-理表。把Code属性结构翻译成Go结构体，定义在
-ch03\classfile\attr_code.go文件中，代码如下：
+```
+max_stack给出操作数栈的最大深度，max_locals给出局部变量表大小。接着是字节码，存在u1表中。最后是异常处理表和属性表。在第4章讨论运行时数据区，并且实现操作数栈和局部变量表时，max_stack和max_locals就会派上用场。在第5章讨论指令集和解释器时，会用到字节码。在第10章讨论异常处理时，会使用异常处理表。
+
+把Code属性结构翻译成Go结构体，定义在ch03\classfile\attr_code.go文件中，代码如下：
+``` go
 package classfile
 type CodeAttribute struct {
-cp
-ConstantPool
-maxStack
-uint16
-maxLocals
-uint16
-code
-[]byte
-exceptionTable
-[]*ExceptionTableEntry
-attributes
-[]AttributeInfo
+	cp             ConstantPool
+	maxStack       uint16
+	maxLocals      uint16
+	code           []byte
+	exceptionTable []*ExceptionTableEntry
+	attributes     []AttributeInfo
 }
 type ExceptionTableEntry struct {
-startPc
-uint16
-endPc
-uint16
-handlerPc
-uint16
-catchType
-uint16
+	startPc   uint16
+	endPc     uint16
+	handlerPc uint16
+	catchType uint16
 }
-func (self *CodeAttribute) readInfo(reader *ClassReader) {...}
+func (self *CodeAttribute) readInfo(reader *ClassReader) { ... }
+```
 readInfo()方法的代码如下：
+``` go
 func (self *CodeAttribute) readInfo(reader *ClassReader) {
-self.maxStack = reader.readUint16()
-self.maxLocals = reader.readUint16()
-codeLength := reader.readUint32()
-self.code = reader.readBytes(codeLength)
-self.exceptionTable = readExceptionTable(reader)
-self.attributes = readAttributes(reader, self.cp)
+	self.maxStack = reader.readUint16()
+	self.maxLocals = reader.readUint16()
+	codeLength := reader.readUint32()
+	self.code = reader.readBytes(codeLength)
+	self.exceptionTable = readExceptionTable(reader)
+	self.attributes = readAttributes(reader, self.cp)
 }
+```
 readExceptionTable()函数的代码如下：
+``` go
 func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
-exceptionTableLength := reader.readUint16()
-exceptionTable := make([]*ExceptionTableEntry, exceptionTableLength)
-for i := range exceptionTable {
-exceptionTable[i] = &ExceptionTableEntry{
-startPc:
-reader.readUint16(), endPc:
-reader.readUint16(),
-handlerPc: reader.readUint16(),
-catchType: reader.readUint16(),
+	exceptionTableLength := reader.readUint16()
+	exceptionTable := make([]*ExceptionTableEntry, exceptionTableLength)
+	for i := range exceptionTable {
+		exceptionTable[i] = &ExceptionTableEntry{
+			startPc:   reader.readUint16(),
+			endPc:     reader.readUint16(),
+			handlerPc: reader.readUint16(),
+			catchType: reader.readUint16(),
+		}
+	}
+	return exceptionTable
 }
-}
-return exceptionTable
-}
+```
 ClassFileTest.main()方法的Code属性如图3-25所示。
-图3-25 用classpy观察Code属性3.4.6 Exceptions属性
-Exceptions是变长属性，记录方法抛出的异常表，其结构定义
-如下：
+
+图3-25 用classpy观察Code属性
+
+#### 3.4.6 Exceptions属性
+Exceptions是变长属性，记录方法抛出的异常表，其结构定义如下：
+``` go
 Exceptions_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 number_of_exceptions;
-u2 exception_index_table[number_of_exceptions];
+	u2 attribute_name_index;
+	u4 attribute_length;
+	u2 number_of_exceptions;
+	u2 exception_index_table[number_of_exceptions];
 }
-在ch03\classfile目录下创建attr_exceptions.go文件，在其中定义
-ExceptionsAttribute结构体，代码如下：
+```
+在ch03\classfile目录下创建attr_exceptions.go文件，在其中定义ExceptionsAttribute结构体，代码如下：
+``` go
 package classfile
 type ExceptionsAttribute struct {
-exceptionIndexTable []uint16
+	exceptionIndexTable []uint16
 }
 func (self *ExceptionsAttribute) readInfo(reader *ClassReader) {
-self.exceptionIndexTable = reader.readUint16s()
+	self.exceptionIndexTable = reader.readUint16s()
 }
 func (self *ExceptionsAttribute) ExceptionIndexTable() []uint16 {
-return self.exceptionIndexTable
+	return self.exceptionIndexTable
 }
-代码比较简单，就不多解释了。ClassFileTest.main()方法的
-Exceptions属性如图3-26所示。图3-26 用classpy观察Code属性3.4.7 LineNumberTable和LocalVariableTable属性
-LineNumberTable属性表存放方法的行号信息，
-LocalVariableTable属性表中存放方法的局部变量信息。这两种属性
-和前面介绍的SourceFile属性都属于调试信息，都不是运行时必需
-的。在使用javac编译器编译Java程序时，默认会在class文件中生成
-这些信息。可以使用javac提供的-g:none选项来关闭这些信息的生
-成，这里就不多介绍了，具体请参考javac用法。
-LineNumberTable和LocalVariableTable属性表在结构上很像，下
-面以LineNumberTable为例进行讨论，它的结构定义如下：
+```
+代码比较简单，就不多解释了。ClassFileTest.main()方法的Exceptions属性如图3-26所示。
+
+图3-26 用classpy观察Code属性
+
+#### 3.4.7 LineNumberTable和LocalVariableTable属性
+LineNumberTable属性表存放方法的行号信息，LocalVariableTable属性表中存放方法的局部变量信息。这两种属性和前面介绍的SourceFile属性都属于调试信息，都不是运行时必需的。在使用javac编译器编译Java程序时，默认会在class文件中生成这些信息。可以使用javac提供的-g:none选项来关闭这些信息的生成，这里就不多介绍了，具体请参考javac用法。
+
+LineNumberTable和LocalVariableTable属性表在结构上很像，下面以LineNumberTable为例进行讨论，它的结构定义如下：
+``` go
 LineNumberTable_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 line_number_table_length;
-{
-u2 start_pc;
-u2 line_number;
-} line_number_table[line_number_table_length];
+	u2 attribute_name_index;
+	u4 attribute_length;
+	u2 line_number_table_length;
+	{
+		u2 start_pc;
+		u2 line_number;
+	} line_number_table[line_number_table_length];
 }
-把上面的结构定义翻译成Go结构体，定义在
-ch03\classfile\attr_line_number_table.go文件中，代码如下：
+```
+把上面的结构定义翻译成Go结构体，定义在ch03\classfile\attr_line_number_table.go文件中，代码如下：
+``` go
 package classfile
 type LineNumberTableAttribute struct {
-lineNumberTable []*LineNumberTableEntry}
+	lineNumberTable []*LineNumberTableEntry
+}
 type LineNumberTableEntry struct {
-startPc
-uint16
-lineNumber uint16
+	startPc    uint16
+	lineNumber uint16
 }
-func (self *LineNumberTableAttribute) readInfo(reader *ClassReader) {...}
+func (self *LineNumberTableAttribute) readInfo(reader *ClassReader) { ... }
+```
 readInfo()方法读取属性表数据，代码如下：
+``` go
 func (self *LineNumberTableAttribute) readInfo(reader *ClassReader) {
-lineNumberTableLength := reader.readUint16()
-self.lineNumberTable = make([]*LineNumberTableEntry, lineNumberTableLength)
-for i := range self.lineNumberTable {
-self.lineNumberTable[i] = &LineNumberTableEntry{
-startPc:
-reader.readUint16(),
-lineNumber: reader.readUint16(),
+	lineNumberTableLength := reader.readUint16()
+	self.lineNumberTable = make([]*LineNumberTableEntry, lineNumberTableLength)
+	for i := range self.lineNumberTable {
+		self.lineNumberTable[i] = &LineNumberTableEntry{
+			startPc:    reader.readUint16(),
+			lineNumber: reader.readUint16(),
+		}
+	}
 }
-}
-}
-在第10章讨论异常处理时会详细讨论LineNumberTable属性。3.5 测试本章代码
-在第2章的测试中，把class文件加载到了内存中，并且把一堆
-看似杂乱无章的数字打印到了控制台。相信读者一定不会满足于
-此。本节就来修改测试代码，把命令行工具临时打造成一个简化版
-的javap。
-打开ch03\main.go文件，修改import语句和startJVM()函数，代
-码如下：
+```
+在第10章讨论异常处理时会详细讨论LineNumberTable属性。
+
+### 3.5 测试本章代码
+在第2章的测试中，把class文件加载到了内存中，并且把一堆看似杂乱无章的数字打印到了控制台。相信读者一定不会满足于此。本节就来修改测试代码，把命令行工具临时打造成一个简化版的javap。
+
+打开ch03\main.go文件，修改import语句和startJVM()函数，代码如下：
+``` go
 package main
 import "fmt"
 import "strings"
@@ -1849,780 +1895,796 @@ import "jvmgo/ch03/classfile"
 import "jvmgo/ch03/classpath"
 func main() {...}
 func startJVM(options *cmdline.Options, class string, args []string) {...}
+```
 main()函数不用变，修改startJVM()函数，代码如下：
+``` go
 func startJVM(cmd *Cmd) {
-cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
-className := strings.Replace(cmd.class, ".", "/", -1)
-cf := loadClass(className, cp)
-fmt.Println(cmd.class)
-printClassInfo(cf)
+	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
+	className := strings.Replace(cmd.class, ".", "/", -1)
+	cf := loadClass(className, cp)
+	fmt.Println(cmd.class)
+	printClassInfo(cf)
 }
-loadClass()函数读取并解析class文件，代码如下：func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile
-classData, _, err := cp.ReadClass(className)
-if err != nil {
-panic(err)
+```
+loadClass()函数读取并解析class文件，代码如下：
+``` go
+func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
+	classData, _, err := cp.ReadClass(className)
+	if err != nil {
+		panic(err)
+	}
+	cf, err := classfile.Parse(classData)
+	if err != nil {
+		panic(err)
+	}
+	return cf
 }
-cf, err := classfile.Parse(classData)
-if err != nil {
-panic(err)
-}
-return cf
-}
-printClassInfo()函数把class文件的一些重要信息打印出来，代
-码如下：
+```
+printClassInfo()函数把class文件的一些重要信息打印出来，代码如下：
+``` go
 func printClassInfo(cf *classfile.ClassFile) {
-fmt.Printf("version: %v.%v\n", cf.MajorVersion(), cf.MinorVersion())
-fmt.Printf("constants count: %v\n", len(cf.ConstantPool()))
-fmt.Printf("access flags: 0x%x\n", cf.AccessFlags())
-fmt.Printf("this class: %v\n", cf.ClassName())
-fmt.Printf("super class: %v\n", cf.SuperClassName())
-fmt.Printf("interfaces: %v\n", cf.InterfaceNames())
-fmt.Printf("fields count: %v\n", len(cf.Fields()))
-for _, f := range cf.Fields() {
-fmt.Printf(" %s\n", f.Name())
+	fmt.Printf("version: %v.%v\n", cf.MajorVersion(), cf.MinorVersion())
+	fmt.Printf("constants count: %v\n", len(cf.ConstantPool()))
+	fmt.Printf("access flags: 0x%x\n", cf.AccessFlags())
+	fmt.Printf("this class: %v\n", cf.ClassName())
+	fmt.Printf("super class: %v\n", cf.SuperClassName())
+	fmt.Printf("interfaces: %v\n", cf.InterfaceNames())
+	fmt.Printf("fields count: %v\n", len(cf.Fields()))
+	for _, f := range cf.Fields() {
+		fmt.Printf(" %s\n", f.Name())
+	}
+	fmt.Printf("methods count: %v\n", len(cf.Methods()))
+	for _, m := range cf.Methods() {
+		fmt.Printf(" %s\n", m.Name())
+	}
 }
-fmt.Printf("methods count: %v\n", len(cf.Methods()))
-for _, m := range cf.Methods() {
-fmt.Printf(" %s\n", m.Name())
-}
-}
+```
 打开命令行窗口，执行下面的命令编译本章代码。
+```
 go install jvmgo\ch03
-编译成功后，在D:\go\workspace\bin目录下会出现ch03.exe文件。执行ch03.exe，指定-Xjre选项和类名，就可以打印出class文件的
-信息。笔者把java.lang.String.class文件(位于rt.jar中)的信息打印了
-出来，如图3-27所示。如果读者想测试自己编写的类，记得要指定-
-classpath选项。与第2章相比，我们显然取得了很大的进步。
-图3-27 ch03.exe的测试结果3.6 本章小结
-计算机科学家David Wheeler有一句名言:“计算机科学中的任
-何难题都可以通过增加一个中间层来解决” [1] 。ClassFile结构体就
-是为了实现类加载功能而增加的中间层。在第6章，我们会进一步
-处理ClassFile结构体，把它转变Class结构体，并放入方法区。不过
-在此之前，要先在第4章实现运行时数据区，在第5章实现字节码解
-释器。
-[1] 原文为All problems in computer science can be solved by another
-level of indirection。第4章 运行时数据区
-第1章编写了命令行工具，第2章和第3章讨论了如何搜索和解
-析class文件。读者也许有些着急了，为什么读到第4章后连Java虚拟
-机的影子都还没有看到?别着急，本章就来讨论并初步实现运行时
-数据区(run-time data area)，为下一章编写字节码解释器做准备。
-在开始阅读本章之前，还是先准备好目录结构。复制ch03目
-录，改名为ch04。修改main.go等源文件，把import语句中的ch03全都
-改成ch04，然后在ch04目录下创建rtda [1] 子目录。现在我们的目录
-结构应该如下所示:
+```
+编译成功后，在D:\go\workspace\bin目录下会出现ch03.exe文件。执行ch03.exe，指定-Xjre选项和类名，就可以打印出class文件的信息。笔者把java.lang.String.class文件(位于rt.jar中)的信息打印了出来，如图3-27所示。如果读者想测试自己编写的类，记得要指定-classpath选项。与第2章相比，我们显然取得了很大的进步。
+
+图3-27 ch03.exe的测试结果
+
+### 3.6 本章小结
+计算机科学家David Wheeler有一句名言：“计算机科学中的任何难题都可以通过增加一个中间层来解决” [1] 。ClassFile结构体就是为了实现类加载功能而增加的中间层。在第6章，我们会进一步处理ClassFile结构体，把它转变Class结构体，并放入方法区。不过在此之前，要先在第4章实现运行时数据区，在第5章实现字节码解释器。
+
+- [1] 原文为All problems in computer science can be solved by anotherlevel of indirection。
+
+## 第4章 运行时数据区
+第1章编写了命令行工具，第2章和第3章讨论了如何搜索和解析class文件。读者也许有些着急了，为什么读到第4章后连Java虚拟机的影子都还没有看到?别着急，本章就来讨论并初步实现运行时数据区(run-time data area)，为下一章编写字节码解释器做准备。
+
+在开始阅读本章之前，还是先准备好目录结构。复制ch03目录，改名为ch04。修改main.go等源文件，把import语句中的ch03全都改成ch04，然后在ch04目录下创建rtda [1] 子目录。现在我们的目录结构应该如下所示：
+```
 D:\go\workspace\src
-|-jvmgo
-|-ch01 ~ ch03
-|-ch04
-|-classfile
-|-classpath
-|-rtda
-|-cmd.go
-|-main.go
-[1] rtda是run-time data area的首字母缩写。4.1 运行时数据区概述
-在运行Java程序时，Java虚拟机需要使用内存来存放各式各样
-的数据。Java虚拟机规范把这些内存区域叫作运行时数据区。运行
-时数据区可以分为两类:一类是多线程共享的，另一类则是线程私
-有的。多线程共享的运行时数据区需要在Java虚拟机启动时创建
-好，在Java虚拟机退出时销毁。线程私有的运行时数据区则在创建
-线程时才创建，线程退出时销毁。
-多线程共享的内存区域主要存放两类数据:类数据和类实例
-(也就是对象)。对象数据存放在堆(Heap)中，类数据存放在方法区
-(Method Area)中。堆由垃圾收集器定期清理，所以程序员不需要关
-心对象空间的释放。类数据包括字段和方法信息、方法的字节码、
-运行时常量池，等等。从逻辑上来讲，方法区其实也是堆的一部
-分。
-线程私有的运行时数据区用于辅助执行Java字节码。每个线程
-都有自己的pc寄存器(Program Counter)和Java虚拟机栈(JVM
-Stack)。Java虚拟机栈又由栈帧(Stack Frame，后面简称帧)构成，帧中保存方法执行的状态，包括局部变量表(Local Variable)和操作数
-栈(Operand Stack)等。在任一时刻，某一线程肯定是在执行某个方
-法。这个方法叫作该线程的当前方法;执行该方法的帧叫作线程的
-当前帧;声明该方法的类叫作当前类。如果当前方法是Java方法，则
-pc寄存器中存放当前正在执行的Java虚拟机指令的地址，否则，当
-前方法是本地方法，pc寄存器中的值没有明确定义。
-根据以上描述，可以大致勾勒出运行时数据区的逻辑结构，如
-图4-1所示。
-图4-1 运行时数据区示意图Java虚拟机规范对于运行时数据区的规定是相当宽松的。以堆
-为例:堆可以是连续空间，也可以不连续。堆的大小可以固定，也可
-以在运行时按需扩展 [1] 。虚拟机实现者可以使用任何垃圾回收算
-法管理堆，甚至完全不进行垃圾收集也是可以的。由于Go本身也有
-垃圾回收功能，所以可以直接使用Go的堆和垃圾收集器，这大大简
-化了我们的工作。
-本章将初步实现线程私有的运行时数据区，为第5章介绍指令
-集打下基础。方法区和运行时常量池将在第6章详细介绍。
-[1] java命令提供了-Xms和-Xmx两个非标准选项，用来调整堆的初
-始大小和最大大小。java命令的详细介绍请参考第1章内容。4.2 数据类型
-Java虚拟机可以操作两类数据:基本类型(primitive type)和引用
-类型(reference type)。基本类型的变量存放的就是数据本身，引用
-类型的变量存放的是对象引用，真正的对象数据是在堆里分配的。
-这里所说的变量包括类变量(静态字段)、实例变量(非静态字段)、
-数组元素、方法的参数和局部变量，等等。
-基本类型可以进一步分为布尔类型(boolean type)和数字类型
-(numeric type) [1] ，数字类型又可以分为整数类型(integral type)和
-浮点数类型(floating-point type)。引用类型可以进一步分为3种:类
-类型、接口类型和数组类型。类类型引用指向类实例，数组类型引
-用指向数组实例，接口类型引用指向实现了该接口的类或数组实
-例。引用类型有一个特殊的值——null，表示该引用不指向任何对
-象。
-Go语言提供了非常丰富的数据类型，包括各种整数和两种精
-度的浮点数。Java和Go的浮点数都采用IEEE 754规范 [2] 。对于基本
-类型，可以直接在Go和Java之间建立映射关系。对于引用类型，自然的选择是使用指针。Go提供了nil，表示空指针，正好可以用来表
-示null。由于要到第6章才开始实现类和对象，所以本章先定义一个
-临时的结构体，用它来表示对象。在ch04\rtda目录下创建object.go，
-在其中定义Object结构体，代码如下：
+  |-jvmgo
+    |-ch01 ~ ch03
+	|-ch04
+	  |-classfile
+	  |-classpath
+	  |-rtda
+	  |-cmd.go
+	  |-main.go
+```
+- [1] rtda是run-time data area的首字母缩写。
+
+### 4.1 运行时数据区概述
+在运行Java程序时，Java虚拟机需要使用内存来存放各式各样的数据。Java虚拟机规范把这些内存区域叫作运行时数据区。运行时数据区可以分为两类：一类是多线程共享的，另一类则是线程私有的。多线程共享的运行时数据区需要在Java虚拟机启动时创建好，在Java虚拟机退出时销毁。线程私有的运行时数据区则在创建线程时才创建，线程退出时销毁。
+
+多线程共享的内存区域主要存放两类数据：类数据和类实例(也就是对象)。对象数据存放在堆(Heap)中，类数据存放在方法区(Method Area)中。堆由垃圾收集器定期清理，所以程序员不需要关心对象空间的释放。类数据包括字段和方法信息、方法的字节码、运行时常量池，等等。从逻辑上来讲，方法区其实也是堆的一部分。
+
+线程私有的运行时数据区用于辅助执行Java字节码。每个线程都有自己的pc寄存器(Program Counter)和Java虚拟机栈(JVM Stack)。Java虚拟机栈又由栈帧(Stack Frame，后面简称帧)构成，帧中保存方法执行的状态，包括局部变量表(Local Variable)和操作数栈(Operand Stack)等。在任一时刻，某一线程肯定是在执行某个方法。这个方法叫作该线程的当前方法；执行该方法的帧叫作线程的当前帧；声明该方法的类叫作当前类。如果当前方法是Java方法，则pc寄存器中存放当前正在执行的Java虚拟机指令的地址，否则，当前方法是本地方法，pc寄存器中的值没有明确定义。
+
+根据以上描述，可以大致勾勒出运行时数据区的逻辑结构，如图4-1所示。
+
+图4-1 运行时数据区示意图
+
+Java虚拟机规范对于运行时数据区的规定是相当宽松的。以堆为例：堆可以是连续空间，也可以不连续。堆的大小可以固定，也可以在运行时按需扩展 [1] 。虚拟机实现者可以使用任何垃圾回收算法管理堆，甚至完全不进行垃圾收集也是可以的。由于Go本身也有垃圾回收功能，所以可以直接使用Go的堆和垃圾收集器，这大大简化了我们的工作。
+
+本章将初步实现线程私有的运行时数据区，为第5章介绍指令集打下基础。方法区和运行时常量池将在第6章详细介绍。
+
+- [1] java命令提供了-Xms和-Xmx两个非标准选项，用来调整堆的初始大小和最大大小。java命令的详细介绍请参考第1章内容。
+
+### 4.2 数据类型
+Java虚拟机可以操作两类数据：基本类型(primitive type)和引用类型(reference type)。基本类型的变量存放的就是数据本身，引用类型的变量存放的是对象引用，真正的对象数据是在堆里分配的。这里所说的变量包括类变量(静态字段)、实例变量(非静态字段)、数组元素、方法的参数和局部变量，等等。
+
+基本类型可以进一步分为布尔类型(boolean type)和数字类型(numeric type) [1] ，数字类型又可以分为整数类型(integral type)和浮点数类型(floating-point type)。引用类型可以进一步分为3种：类类型、接口类型和数组类型。类类型引用指向类实例，数组类型引用指向数组实例，接口类型引用指向实现了该接口的类或数组实例。引用类型有一个特殊的值——null，表示该引用不指向任何对象。
+
+Go语言提供了非常丰富的数据类型，包括各种整数和两种精度的浮点数。Java和Go的浮点数都采用IEEE 754规范 [2] 。对于基本类型，可以直接在Go和Java之间建立映射关系。对于引用类型，自然的选择是使用指针。Go提供了nil，表示空指针，正好可以用来表示null。由于要到第6章才开始实现类和对象，所以本章先定义一个临时的结构体，用它来表示对象。在ch04\rtda目录下创建object.go，在其中定义Object结构体，代码如下：
+``` go
 package rtda
 type Object struct {
-// todo
+	// todo
 }
+```
 表4-1对Java虚拟机支持的类型进行了总结。
+
 表4-1 Java虚拟机数据类型
-[1]
-还有一种基本类型是returnAddress，它和jsr、ret、ret_w指令一起，用来实现finally子句。不过从Java 6开始，Oracle的Java编译器已
-经不再使用这三条指令了。详细情况请参考第10章内容。
-[2]
-本书不讨论浮点数细节，如在内存中的编码形式等。如果读者
-需要了解这方面的知识，可以阅读Java虚拟机规范或IEEE 754规范
-的相关章节。4.3 实现运行时数据区
-前面两节介绍了一些必要的理论，并且定义了Object结构体。
-本节将实现线程私有的运行时数据区。下面先从线程开始。4.3.1 线程
-在ch04\jvm\rtda目录下创建thread.go文件，在其中定义Thread结
-构体，代码如下：
+
+[1]还有一种基本类型是returnAddress，它和jsr、ret、ret_w指令一起，用来实现finally子句。不过从Java 6开始，Oracle的Java编译器已经不再使用这三条指令了。详细情况请参考第10章内容。
+[2]本书不讨论浮点数细节，如在内存中的编码形式等。如果读者需要了解这方面的知识，可以阅读Java虚拟机规范或IEEE 754规范的相关章节。
+
+### 4.3 实现运行时数据区
+前面两节介绍了一些必要的理论，并且定义了Object结构体。本节将实现线程私有的运行时数据区。下面先从线程开始。
+
+#### 4.3.1 线程
+在ch04\jvm\rtda目录下创建thread.go文件，在其中定义Thread结构体，代码如下：
+``` go
 package rtda
 type Thread struct {
-pc
-int
-stack *Stack
+	pc    int
+	stack *Stack
 }
-func NewThread() *Thread {...}
-func (self *Thread) PC() int { return self.pc } // getter
-func (self *Thread) SetPC(pc int) { self.pc = pc } // setter
-func (self *Thread) PushFrame(frame *Frame) {...}
-func (self *Thread) PopFrame() *Frame {...}
-func (self *Thread) CurrentFrame() *Frame {...}
-目前只定义了pc和stack两个字段。pc字段无需解释，stack字段
-是Stack结构体(Java虚拟机栈)指针。Stack结构体在4.3.2节介绍。
-和堆一样，Java虚拟机规范对Java虚拟机栈的约束也相当宽
-松。Java虚拟机栈可以是连续的空间，也可以不连续;可以是固定大
-小，也可以在运行时动态扩展 [1] 。如果Java虚拟机栈有大小限制，
-且执行线程所需的栈空间超出了这个限制，会导致
-StackOverflowError异常抛出。如果Java虚拟机栈可以动态扩展，但
-是内存已经耗尽，会导致OutOfMemoryError异常抛出。NewThread()函数创建Thread实例的代码如下：
+
+func NewThread() *Thread                    { ... }
+func (self *Thread) PC() int                { return self.pc } // getter
+func (self *Thread) SetPC(pc int)           { self.pc = pc }   // setter
+func (self *Thread) PushFrame(frame *Frame) { ... }
+func (self *Thread) PopFrame() *Frame       { ... }
+func (self *Thread) CurrentFrame() *Frame   { ... }
+```
+目前只定义了pc和stack两个字段。pc字段无需解释，stack字段是Stack结构体(Java虚拟机栈)指针。Stack结构体在4.3.2节介绍。
+
+和堆一样，Java虚拟机规范对Java虚拟机栈的约束也相当宽松。Java虚拟机栈可以是连续的空间，也可以不连续；可以是固定大小，也可以在运行时动态扩展 [1] 。如果Java虚拟机栈有大小限制，且执行线程所需的栈空间超出了这个限制，会导致StackOverflowError异常抛出。如果Java虚拟机栈可以动态扩展，但是内存已经耗尽，会导致OutOfMemoryError异常抛出。
+
+NewThread()函数创建Thread实例的代码如下：
+``` go
 func NewThread() *Thread {
-return &Thread{
-stack: newStack(1024),
+	return &Thread{
+		stack: newStack(1024),
+	}
 }
-}
-newStack()函数创建Stack结构体实例，它的参数表示要创建
-的Stack最多可以容纳多少帧，4.3.2节将给出这个函数的代码。这里
-暂时将它赋值为1024，感兴趣的读者可以修改我们的命令行工具，
-添加选项来指定这个参数。
-PushFrame()和PopFrame()方法只是调用Stack结构体的相应
-方法而已，代码如下：
+```
+newStack()函数创建Stack结构体实例，它的参数表示要创建的Stack最多可以容纳多少帧，4.3.2节将给出这个函数的代码。这里暂时将它赋值为1024，感兴趣的读者可以修改我们的命令行工具，添加选项来指定这个参数。
+
+PushFrame()和PopFrame()方法只是调用Stack结构体的相应方法而已，代码如下：
+``` go
 func (self *Thread) PushFrame(frame *Frame) {
-self.stack.push(frame)
+	self.stack.push(frame)
 }
 func (self *Thread) PopFrame() *Frame {
-return self.stack.pop()
+	return self.stack.pop()
 }
+```
 CurrentFrame()方法返回当前帧，代码如下：
+``` go
 func (self *Thread) CurrentFrame() *Frame {
-return self.stack.top()
-}[1] java命令提供了-Xss选项来设置Java虚拟机栈大小。4.3.2 Java虚拟机栈
-如前所述，Java虚拟机规范对Java虚拟机栈的约束非常宽松。
-我们用经典的链表(linked list)数据结构来实现Java虚拟机栈，这样
-栈就可以按需使用内存空间，而且弹出的帧也可以及时被Go的垃
-圾收集器回收。在ch04\jvm\rtda目录下创建jvm_stack.go文件，在其
-中定义Stack结构体，代码如下：
+	return self.stack.top()
+}
+```
+[1] java命令提供了-Xss选项来设置Java虚拟机栈大小。
+
+#### 4.3.2 Java虚拟机栈
+如前所述，Java虚拟机规范对Java虚拟机栈的约束非常宽松。我们用经典的链表(linked list)数据结构来实现Java虚拟机栈，这样栈就可以按需使用内存空间，而且弹出的帧也可以及时被Go的垃圾收集器回收。在ch04\jvm\rtda目录下创建jvm_stack.go文件，在其中定义Stack结构体，代码如下：
+``` go
 package rtda
 type Stack struct {
-maxSize
-uint
-size
-uint
-_top
-*Frame
+	maxSize uint
+	size    uint
+	_top    *Frame
 }
-func newStack(maxSize uint) *Stack {...}
-func (self *Stack) push(frame *Frame) {...}
-func (self *Stack) pop() *Frame {...}
-func (self *Stack) top() *Frame {...}
-maxSize字段保存栈的容量(最多可以容纳多少帧)，size字段保
-存栈的当前大小，_top字段保存栈顶指针。newStack()函数的代码
-如下：
+func newStack(maxSize uint) *Stack    { ... }
+func (self *Stack) push(frame *Frame) { ... }
+func (self *Stack) pop() *Frame       { ... }
+func (self *Stack) top() *Frame       { ... }
+
+```
+maxSize字段保存栈的容量(最多可以容纳多少帧)，size字段保存栈的当前大小，_top字段保存栈顶指针。newStack()函数的代码如下：
+``` go
 func newStack(maxSize uint) *Stack {
-return &Stack{
-maxSize: maxSize,
+	return &Stack{
+		maxSize: maxSize,
+	}
 }
-}push()方法把帧推入栈顶，代码如下：
+```
+push()方法把帧推入栈顶，代码如下：
+``` go
 func (self *Stack) push(frame *Frame) {
-if self.size >= self.maxSize {
-panic("java.lang.StackOverflowError")
+	if self.size >= self.maxSize {
+		panic("java.lang.StackOverflowError")
+	}
+	if self._top != nil {
+		frame.lower = self._top
+	}
+	self._top = frame
+	self.size++
 }
-if self._top != nil {
-frame.lower = self._top
-}
-self._top = frame
-self.size++
-}
-如果栈已经满了，按照Java虚拟机规范，应该抛出
-StackOverflowError异常。在第10章才会讨论异常，这里先调用
-panic()函数终止程序执行。pop()方法把栈顶帧弹出，代码如下：
+```
+如果栈已经满了，按照Java虚拟机规范，应该抛出StackOverflowError异常。在第10章才会讨论异常，这里先调用panic()函数终止程序执行。pop()方法把栈顶帧弹出，代码如下：
+``` go
 func (self *Stack) pop() *Frame {
-if self._top == nil {
-panic("jvm stack is empty!")
+	if self._top == nil {
+		panic("jvm stack is empty!")
+	}
+	top := self._top
+	self._top = top.lower
+	top.lower = nil
+	self.size--
+	return top
 }
-top := self._top
-self._top = top.lower
-top.lower = nil
-self.size--
-return top
-}
-如果此时栈是空的，肯定是我们的虚拟机有bug，调用panic()
-函数终止程序执行即可。top()方法只是返回栈顶帧，但并不弹出，
-代码如下：
+```
+如果此时栈是空的，肯定是我们的虚拟机有bug，调用panic()函数终止程序执行即可。top()方法只是返回栈顶帧，但并不弹出，代码如下：
+``` go
 func (self *Stack) top() *Frame {if self._top == nil {
-panic("jvm stack is empty!")
+	panic("jvm stack is empty!")
 }
-return self._top
-}4.3.3 帧
-在ch04\jvm\rtda目录下创建frame.go文件，在其中定义Frame结
-构体，代码如下：
+	return self._top
+}
+```
+
+#### 4.3.3 帧
+
+在ch04\jvm\rtda目录下创建frame.go文件，在其中定义Frame结构体，代码如下：
+``` go
 package rtda
 type Frame struct {
-lower
-*Frame
-localVars
-LocalVars
-operandStack
-*OperandStack
+	lower
+	*Frame
+	localVars
+	LocalVars
+	operandStack
+	*OperandStack
 }
 func newFrame(maxLocals, maxStack uint) *Frame {...}
-Frame结构体暂时也比较简单，只有三个字段，后续章节还会
-继续完善它。lower字段用来实现链表数据结构，localVars字段保存
-局部变量表指针，operandStack字段保存操作数栈指针。
-NewFrame()函数创建Frame实例，代码如下：
+
+```
+Frame结构体暂时也比较简单，只有三个字段，后续章节还会继续完善它。lower字段用来实现链表数据结构，localVars字段保存局部变量表指针，operandStack字段保存操作数栈指针。NewFrame()函数创建Frame实例，代码如下：
+``` go
 func NewFrame(maxLocals, maxStack uint) *Frame {
-return &Frame{
-localVars:
-newLocalVars(maxLocals),
-operandStack: newOperandStack(maxStack),
+	return &Frame{
+		localVars:    newLocalVars(maxLocals),
+		operandStack: newOperandStack(maxStack),
+	}
 }
-}
-执行方法所需的局部变量表大小和操作数栈深度是由编译器
-预先计算好的，存储在class文件method_info结构的Code属性中，具
-体可以参考3.4.5节。Thread、Stack和Frame结构体的代码都已经给出了，根据代码，
-可以画出Java虚拟机栈的链表结构，如图4-2所示。
-图4-2 使用链表实现Java虚拟机栈4.3.4 局部变量表
-局部变量表是按索引访问的，所以很自然，可以把它想象成一
-个数组。根据Java虚拟机规范，这个数组的每个元素至少可以容纳
-一个int或引用值，两个连续的元素可以容纳一个long或double值。
-那么使用哪种Go语言数据类型来表示这个数组呢?最容易想
-到的是[]int。Go的int类型因平台而异，在64位系统上是int64，在32
-位系统上是int32，总之足够容纳Java的int类型。另外它和内置的
-uintptr类型宽度一样，所以也足够放下一个内存地址。通过unsafe包
-可以拿到结构体实例的地址，如下所示:
+
+```
+执行方法所需的局部变量表大小和操作数栈深度是由编译器预先计算好的，存储在class文件method_info结构的Code属性中，具体可以参考3.4.5节。
+
+Thread、Stack和Frame结构体的代码都已经给出了，根据代码，可以画出Java虚拟机栈的链表结构，如图4-2所示。
+
+图4-2 使用链表实现Java虚拟机栈
+
+#### 4.3.4 局部变量表
+局部变量表是按索引访问的，所以很自然，可以把它想象成一个数组。根据Java虚拟机规范，这个数组的每个元素至少可以容纳一个int或引用值，两个连续的元素可以容纳一个long或double值。
+
+那么使用哪种Go语言数据类型来表示这个数组呢?最容易想到的是[]int。Go的int类型因平台而异，在64位系统上是int64，在32位系统上是int32，总之足够容纳Java的int类型。另外它和内置的uintptr类型宽度一样，所以也足够放下一个内存地址。通过unsafe包可以拿到结构体实例的地址，如下所示：
+``` go
 obj := &Object{}
 ptr := uintptr(unsafe.Pointer(obj))
 ref := int(ptr)
-但遗憾的是，Go的垃圾回收机制并不能有效处理uintptr指针。
-也就是说，如果一个结构体实例，除了uintptr类型指针保存它的地
-址之外，其他地方都没有引用这个实例，它就会被当作垃圾回收。
-另外一个方案是用[]interface{}类型，这个方案在实现上没有
-问题，只是写出来的代码可读性太差。第三种方案是定义一个结构体，让它可以同时容纳一个int值和一个引用值。这里将使用第三种
-方案。在ch04\rtda目录下创建slot.go文件，在其中定义Slot结构体，
-代码如下：
+```
+但遗憾的是，Go的垃圾回收机制并不能有效处理uintptr指针。也就是说，如果一个结构体实例，除了uintptr类型指针保存它的地址之外，其他地方都没有引用这个实例，它就会被当作垃圾回收。
+
+另外一个方案是用[]interface{}类型，这个方案在实现上没有问题，只是写出来的代码可读性太差。第三种方案是定义一个结构体，让它可以同时容纳一个int值和一个引用值。这里将使用第三种方案。在ch04\rtda目录下创建slot.go文件，在其中定义Slot结构体，代码如下：
+``` go
 package rtda
 type Slot struct {
-num int32
-ref *Object
+	num int32
+	ref *Object
 }
-num字段存放整数，ref字段存放引用，刚好满足我们的需求。
-下面用它来实现局部变量表。在ch04\rtda目录下创建local_vars.go文
-件，在其中定义LocalVars类型，代码如下：
+```
+num字段存放整数，ref字段存放引用，刚好满足我们的需求。下面用它来实现局部变量表。在ch04\rtda目录下创建local_vars.go文件，在其中定义LocalVars类型，代码如下：
+``` go
 package rtda
 import "math"
 type LocalVars []Slot
-继续编辑local_vars.go文件，在其中定义newLocalVars()函数，
-代码如下：
+```
+继续编辑local_vars.go文件，在其中定义newLocalVars()函数，代码如下：
+``` go
 func newLocalVars(maxLocals uint) LocalVars {
-if maxLocals > 0 {
-return make([]Slot, maxLocals)
+	if maxLocals > 0 {
+		return make([]Slot, maxLocals)
+	}
+	return nil
 }
-return nil
-}newLocalVars()函数创建LocalVars实例，代码比较简单，这里
-就不多解释了。
-在第5章大家会看到，操作局部变量表和操作数栈的指令都是
-隐含类型信息的。下面给LocalVars类型定义一些方法，用来存取不
-同类型的变量。int变量最简单，直接存取即可。
+```
+newLocalVars()函数创建LocalVars实例，代码比较简单，这里就不多解释了。
+
+在第5章大家会看到，操作局部变量表和操作数栈的指令都是隐含类型信息的。下面给LocalVars类型定义一些方法，用来存取不同类型的变量。int变量最简单，直接存取即可。
+``` go
 func (self LocalVars) SetInt(index uint, val int32) {
-self[index].num = val
+	self[index].num = val
 }
 func (self LocalVars) GetInt(index uint) int32 {
-return self[index].num
+	return self[index].num
 }
+```
 float变量可以先转成int类型，然后按int变量来处理。
+``` go
 func (self LocalVars) SetFloat(index uint, val float32) {
-bits := math.Float32bits(val)
-self[index].num = int32(bits)
+	bits := math.Float32bits(val)
+	self[index].num = int32(bits)
 }
 func (self LocalVars) GetFloat(index uint) float32 {
-bits := uint32(self[index].num)
-return math.Float32frombits(bits)
+	bits := uint32(self[index].num)
+	return math.Float32frombits(bits)
 }
+```
 long变量则需要拆成两个int变量。
+``` go
 func (self LocalVars) SetLong(index uint, val int64) {
-self[index].num = int32(val)
-self[index+1].num = int32(val >> 32)
+	self[index].num = int32(val)
+	self[index+1].num = int32(val >> 32)
 }
 func (self LocalVars) GetLong(index uint) int64 {
-low := uint32(self[index].num)high := uint32(self[index+1].num)
-return int64(high)<<32 | int64(low)
+	low := uint32(self[index].num)high := uint32(self[index+1].num)
+	return int64(high)<<32 | int64(low)
 }
+```
 double变量可以先转成long类型，然后按照long变量来处理。
+``` go
 func (self LocalVars) SetDouble(index uint, val float64) {
-bits := math.Float64bits(val)
-self.SetLong(index, int64(bits))
+	bits := math.Float64bits(val)
+	self.SetLong(index, int64(bits))
 }
 func (self LocalVars) GetDouble(index uint) float64 {
-bits := uint64(self.GetLong(index))
-return math.Float64frombits(bits)
+	bits := uint64(self.GetLong(index))
+	return math.Float64frombits(bits)
 }
+```
 最后是引用值，也比较简单，直接存取即可。
+``` go
 func (self LocalVars) SetRef(index uint, ref *Object) {
-self[index].ref = ref
+	self[index].ref = ref
 }
 func (self LocalVars) GetRef(index uint) *Object {
-return self[index].ref
+	return self[index].ref
 }
-请读者注意，我们并没有真的对boolean、byte、short和char类型
-定义存取方法，这些类型的值都可以转换成int值类来处理。下面我
-们来实现操作数栈。4.3.5 操作数栈
-操作数栈的实现方式和局部变量表类似。在ch04\rtda目录下创
-建operand_stack.go文件，在其中定义OperandStack结构体，代码如
-下：
+```
+请读者注意，我们并没有真的对boolean、byte、short和char类型定义存取方法，这些类型的值都可以转换成int值类来处理。下面我们来实现操作数栈。
+
+#### 4.3.5 操作数栈
+操作数栈的实现方式和局部变量表类似。在ch04\rtda目录下创建operand_stack.go文件，在其中定义OperandStack结构体，代码如下：
+``` go
 package rtda
 import "math"
 type OperandStack struct {
-size uint
-slots []Slot
+	size uint
+	slots []Slot
 }
-操作数栈的大小是编译器已经确定的，所以可以用[]Slot实现。
-size字段用于记录栈顶位置。继续编辑operand_stack.go，在其中实
-现newOperandStack()函数，代码如下：
+```
+操作数栈的大小是编译器已经确定的，所以可以用[]Slot实现。size字段用于记录栈顶位置。继续编辑operand_stack.go，在其中实现newOperandStack()函数，代码如下：
+``` go
 func newOperandStack(maxStack uint) *OperandStack {
-if maxStack > 0 {
-return &OperandStack{
-slots: make([]Slot, maxStack),
+	if maxStack > 0 {
+		return &OperandStack{
+			slots: make([]Slot, maxStack),
+		}
+	}
+	return nil
 }
-}
-return nil
-}
-代码也比较简单，在此就不多解释了。和局部变量表类似，需
-要定义一些方法从操作数栈中弹出，或者往其中推入各种类型的变量。先看最简单的int变量。
+```
+代码也比较简单，在此就不多解释了。和局部变量表类似，需要定义一些方法从操作数栈中弹出，或者往其中推入各种类型的变量。先看最简单的int变量。
+``` go
 func (self *OperandStack) PushInt(val int32) {
-self.slots[self.size].num = val
-self.size++
+	self.slots[self.size].num = val
+	self.size++
 }
 func (self *OperandStack) PopInt() int32 {
-self.size--
-return self.slots[self.size].num
+	self.size--
+	return self.slots[self.size].num
 }
-PushInt()方法往栈顶放一个int变量，然后把size加1。PopInt()
-方法则恰好相反，先把size减1，然后返回变量值。float变量还是先
-转成int类型，然后按int变量处理。
+```
+PushInt()方法往栈顶放一个int变量，然后把size加1。PopInt()方法则恰好相反，先把size减1，然后返回变量值。float变量还是先转成int类型，然后按int变量处理。
+``` go
 func (self *OperandStack) PushFloat(val float32) {
-bits := math.Float32bits(val)
-self.slots[self.size].num = int32(bits)
-self.size++
+	bits := math.Float32bits(val)
+	self.slots[self.size].num = int32(bits)
+	self.size++
 }
 func (self *OperandStack) PopFloat() float32 {
-self.size--
-bits := uint32(self.slots[self.size].num)
-return math.Float32frombits(bits)
+	self.size--
+	bits := uint32(self.slots[self.size].num)
+	return math.Float32frombits(bits)
 }
-把long变量推入栈顶时，要拆成两个int变量。弹出时，先弹出
-两个int变量，然后组装成一个long变量。
+```
+把long变量推入栈顶时，要拆成两个int变量。弹出时，先弹出两个int变量，然后组装成一个long变量。
+``` go
 func (self *OperandStack) PushLong(val int64) {
-self.slots[self.size].num = int32(val)
-self.slots[self.size+1].num = int32(val >> 32)
-self.size += 2
+	self.slots[self.size].num = int32(val)
+	self.slots[self.size+1].num = int32(val >> 32)
+	self.size += 2
 }
 func (self *OperandStack) PopLong() int64 {self.size -= 2
-low := uint32(self.slots[self.size].num)
-high := uint32(self.slots[self.size+1].num)
-return int64(high)<<32 | int64(low)
+	low := uint32(self.slots[self.size].num)
+	high := uint32(self.slots[self.size+1].num)
+	return int64(high)<<32 | int64(low)
 }
+```
 double变量先转成long类型，然后按long变量处理。
+``` go
 func (self *OperandStack) PushDouble(val float64) {
-bits := math.Float64bits(val)
-self.PushLong(int64(bits))
+	bits := math.Float64bits(val)
+	self.PushLong(int64(bits))
 }
 func (self *OperandStack) PopDouble() float64 {
-bits := uint64(self.PopLong())
-return math.Float64frombits(bits)
+	bits := uint64(self.PopLong())
+	return math.Float64frombits(bits)
 }
+```
 最后看引用类型，代码如下：
+``` go
 func (self *OperandStack) PushRef(ref *Object) {
-self.slots[self.size].ref = ref
-self.size++
+	self.slots[self.size].ref = ref
+	self.size++
 }
 func (self *OperandStack) PopRef() *Object {
-self.size--
-ref := self.slots[self.size].ref
-self.slots[self.size].ref = nil
-return ref
+	self.size--
+	ref := self.slots[self.size].ref
+	self.slots[self.size].ref = nil
+	return ref
 }
-PushRef()方法比较简单，此处不做太多解释。PopRef()方法
-需要说明一点:弹出引用后，把Slot结构体的ref字段设置成nil，这样
-做是为了帮助Go的垃圾收集器回收Object结构体实例。
-至此，局部变量表和操作数栈都准备好了。仅通过代码来理解它们可能不是很直观，下面我们将通过一个具体的例子来分析局部
-变量表和操作数的使用。4.3.6 局部变量表和操作数栈实例分析
+```
+PushRef()方法比较简单，此处不做太多解释。PopRef()方法需要说明一点：弹出引用后，把Slot结构体的ref字段设置成nil，这样做是为了帮助Go的垃圾收集器回收Object结构体实例。
+
+至此，局部变量表和操作数栈都准备好了。仅通过代码来理解它们可能不是很直观，下面我们将通过一个具体的例子来分析局部变量表和操作数的使用。
+
+#### 4.3.6 局部变量表和操作数栈实例分析
 以圆形的周长公式为例进行分析，下面是Java方法的代码。
+``` java
 public static float circumference(float r) {
-float pi = 3.14f;
-float area = 2 * pi * r;
-return area;
+	float pi = 3.14f;
+	float area = 2 * pi * r;
+	return area;
 }
-上面的方法会被javac编译器编译成如下字节码:
-00
-02
-03
-04
-05
-06
-07
-08
-09
-10
-ldc #4
-fstore_1
-fconst_2
-fload_1
-fmul
-fload_0
-fmul
-fstore_2
-fload_2
-return
-下面分析这段字节码的执行。circumference()方法的局部变量
-表大小是3，操作数栈深度是2。假设调用方法时，传递给它的参数
-是1.6f，方法开始执行前，帧的状态如图4-3所示。图4-3 circumference()方法执行示意图(1)
+```
+上面的方法会被javac编译器编译成如下字节码：
+```
+00  ldc #4
+02  fstore_1
+03  fconst_2
+04  fload_1
+05  fmul
+06  fload_0
+07  fmul
+08  fstore_2
+09  fload_2
+10 return
+```
+下面分析这段字节码的执行。circumference()方法的局部变量表大小是3，操作数栈深度是2。假设调用方法时，传递给它的参数是1.6f，方法开始执行前，帧的状态如图4-3所示。
+
+图4-3 circumference()方法执行示意图(1)
+
 第一条指令是ldc，它把3.14f推入栈顶，如图4-4所示。
+
 图4-4 circumference()方法执行示意图(2)
-注意，上面是局部变量表和操作数栈过去的状态，最下面是当
-前状态。接着是fstore_1指令，它把栈顶的3.14f弹出，放到#1号局部
-变量中，如图4-5所示。
+
+注意，上面是局部变量表和操作数栈过去的状态，最下面是当前状态。接着是fstore_1指令，它把栈顶的3.14f弹出，放到#1号局部变量中，如图4-5所示。
+
 fconst_2指令把2.0f推到栈顶，如图4-6所示。
-图4-5 circumference()方法执行示意图(3)图4-6 circumference()方法执行示意图(4)
+
+图4-5 circumference()方法执行示意图(3)
+
+图4-6 circumference()方法执行示意图(4)
+
 fload_1指令把#1号局部变量推入栈顶，如图4-7所示。
+
 图4-7 circumference()方法执行示意图(5)
-fmul指令执行浮点数乘法。它把栈顶的两个浮点数弹出，相
-乘，然后把结果推入栈顶，如图4-8所示。
-fload_0指令把#0号局部变量推入栈顶，如图4-9所示。fmul继续乘法计算，如图4-10所示。
-fstore_2指令把操作数栈顶的float值弹出，放入#2号局部变量
-表，如图4-11所示。
+
+fmul指令执行浮点数乘法。它把栈顶的两个浮点数弹出，相乘，然后把结果推入栈顶，如图4-8所示。
+
+fload_0指令把#0号局部变量推入栈顶，如图4-9所示。
+
+fmul继续乘法计算，如图4-10所示。
+
+fstore_2指令把操作数栈顶的float值弹出，放入#2号局部变量表，如图4-11所示。
+
 图4-8 circumference()方法执行示意图(6)
-图4-9 circumference()方法执行示意图(7)图4-10 circumference()方法执行示意图(8)
+
+图4-9 circumference()方法执行示意图(7)
+
+图4-10 circumference()方法执行示意图(8)
+
 图4-11 circumference()方法执行示意图(9)
-fload_2指令把#2号局部变量推入操作数栈顶，如图4-12所示。图4-12 circumference()方法执行示意图(10)
-最后freturn指令把操作数栈顶的float变量弹出，返回给方法调
-用者，如图4-13所示。
-如果上面的例子理解起来有点困难，请不要担心。这里重点看
-局部变量表和操作数栈的用法就可以了，后面的章节会详细介绍
-Java虚拟机指令集。图4-13 circumference()方法执行示意图(11)4.4 测试本章代码
-本节简单测试局部变量表和操作数栈的用法，在下一章它们
-才会真正派上用场。打开ch04\main.go文件，修改import语句，代码
-如下：
+
+fload_2指令把#2号局部变量推入操作数栈顶，如图4-12所示。
+
+图4-12 circumference()方法执行示意图(10)
+
+最后freturn指令把操作数栈顶的float变量弹出，返回给方法调用者，如图4-13所示。
+
+如果上面的例子理解起来有点困难，请不要担心。这里重点看局部变量表和操作数栈的用法就可以了，后面的章节会详细介绍Java虚拟机指令集。
+
+图4-13 circumference()方法执行示意图(11)
+
+### 4.4 测试本章代码
+本节简单测试局部变量表和操作数栈的用法，在下一章它们才会真正派上用场。打开ch04\main.go文件，修改import语句，代码如下：
+``` go
 package main
 import "fmt"
 import "jvmgo/ch04/rtda"
 func main() {...}
 func startJVM(cmd *Cmd) {...}
+```
 main()方法不变，修改startJVM方法，代码如下：
+``` go
 func startJVM(cmd *Cmd) {
-frame := rtda.NewFrame(100, 100)
-testLocalVars(frame.LocalVars())
-testOperandStack(frame.OperandStack())
+	frame := rtda.NewFrame(100, 100)
+	testLocalVars(frame.LocalVars())
+	testOperandStack(frame.OperandStack())
 }
+```
 testLocalVars()函数测试局部变量，代码如下：
+``` go
 func testLocalVars(vars rtda.LocalVars) {
-vars.SetInt(0, 100)
-vars.SetInt(, 1-100)
-vars.SetLong(2, 2997924580)
-vars.SetLong(4, -2997924580)
-vars.SetFloat(6, 3.1415926)
-vars.SetDouble(7, 2.71828182845)
-vars.SetRef(9, nil)
-println(vars.GetInt(0))
-println(vars.GetInt(1))
-println(vars.GetLong(2))
-println(vars.GetLong(4))println(vars.GetFloat(6))
-println(vars.GetDouble(7))
-println(vars.GetRef(9))
+	vars.SetInt(0, 100)
+	vars.SetInt(, 1-100)
+	vars.SetLong(2, 2997924580)
+	vars.SetLong(4, -2997924580)
+	vars.SetFloat(6, 3.1415926)
+	vars.SetDouble(7, 2.71828182845)
+	vars.SetRef(9, nil)
+	println(vars.GetInt(0))
+	println(vars.GetInt(1))
+	println(vars.GetLong(2))
+	println(vars.GetLong(4))println(vars.GetFloat(6))
+	println(vars.GetDouble(7))
+	println(vars.GetRef(9))
 }
+```
 testOperandStack()函数测试操作数栈，代码如下：
+``` go
 func testOperandStack(ops *rtda.OperandStack) {
-ops.PushInt(100)
-ops.PushInt(-100)
-ops.PushLong(2997924580)
-ops.PushLong(-2997924580)
-ops.PushFloat(3.1415926)
-ops.PushDouble(2.71828182845)
-ops.PushRef(nil)
-println(ops.PopRef())
-println(ops.PopDouble())
-println(ops.PopFloat())
-println(ops.PopLong())
-println(ops.PopLong())
-println(ops.PopInt())
-println(ops.PopInt())
+	ops.PushInt(100)
+	ops.PushInt(-100)
+	ops.PushLong(2997924580)
+	ops.PushLong(-2997924580)
+	ops.PushFloat(3.1415926)
+	ops.PushDouble(2.71828182845)
+	ops.PushRef(nil)
+	println(ops.PopRef())
+	println(ops.PopDouble())
+	println(ops.PopFloat())
+	println(ops.PopLong())
+	println(ops.PopLong())
+	println(ops.PopInt())
+	println(ops.PopInt())
 }
-打开命令行窗口，执行下面的命令编译本章代码:
+```
+打开命令行窗口，执行下面的命令编译本章代码：
+```
 go install jvmgo\ch04
-编译成功后，在D:\go\workspace\bin目录下出现ch04.exe文件。
-执行ch04.exe，运行结果如图4-14所示。图4-14 ch04.exe的运行结果4.5 本章小结
-本章介绍了运行时数据区，初步实现了Thread、Stack、Frame、
-OperandStack和LocalVars等线程私有的运行时数据区。下一章将实
-现字节码解释器，到时候方法就可以在我们的Java虚拟机里运行
-了。第5章 指令集和解释器
-由第3章可知，编译之后的Java方法以字节码的形式存储在
-class文件中。在第4章中，初步实现了Java虚拟机栈、帧、操作数栈
-和局部变量表等运行时数据区。本章将在前两章的基础上编写一个
-简单的解释器，并且实现大约150条指令。在后面的章节中，会不断
-改进这个解释器，让它可以执行更多的指令。
-在开始阅读本章之前，先把本章的目录结构准备好。复制ch04
-目录，改名为ch05。修改main.go等文件，把import语句中的ch04都改
-成ch05。在ch05目录中创建instructions子目录。现在我们的目录结
-构看起来应该是下面这样:
+```
+编译成功后，在D:\go\workspace\bin目录下出现ch04.exe文件。执行ch04.exe，运行结果如图4-14所示。
+
+图4-14 ch04.exe的运行结果
+
+### 4.5 本章小结
+本章介绍了运行时数据区，初步实现了Thread、Stack、Frame、OperandStack和LocalVars等线程私有的运行时数据区。下一章将实现字节码解释器，到时候方法就可以在我们的Java虚拟机里运行了。
+
+## 第5章 指令集和解释器
+由第3章可知，编译之后的Java方法以字节码的形式存储在class文件中。在第4章中，初步实现了Java虚拟机栈、帧、操作数栈和局部变量表等运行时数据区。本章将在前两章的基础上编写一个简单的解释器，并且实现大约150条指令。在后面的章节中，会不断改进这个解释器，让它可以执行更多的指令。
+
+在开始阅读本章之前，先把本章的目录结构准备好。复制ch04目录，改名为ch05。修改main.go等文件，把import语句中的ch04都改成ch05。在ch05目录中创建instructions子目录。现在我们的目录结构看起来应该是下面这样：
+```
 D:\go\workspace\src
-|-jvmgo
-|-ch01 ~ ch04
-|-ch05
-|-classfile
-|-classpath
-|-instructions
-|-rtda
-|-cmd.go
-|-main.go5.1 字节码和指令集
-Java虚拟机顾名思义，就是一台虚拟的机器，而字节码
-(bytecode)就是运行在这台虚拟机器上的机器码。我们已经知道，
-每一个类或者接口都会被Java编译器编译成一个class文件，类或接
-口的方法信息就放在class文件的method_info结构中 [1] 。如果方法
-不是抽象的，也不是本地方法，方法的Java代码就会被编译器编译
-成字节码(即使方法是空的，编译器也会生成一条return语句)，存
-放在method_info结构的Code属性中。仍以第3章的ClassFileTest类为
-例，其main()方法如图5-1所示。图5-1 用classpy观察方法字节码
-字节码中存放编码后的Java虚拟机指令。每条指令都以一个单
-字节的操作码(opcode)开头，这就是字节码名称的由来。由于只使
-用一字节表示操作码，显而易见，Java虚拟机最多只能支持256(2 8 )
-条指令。到第八版为止，Java虚拟机规范已经定义了205条指令，操
-作码分别是0(0x00)到202(0xCA)、254(0xFE)和255(0xFF)。这205
-条指令构成了Java虚拟机的指令集(instruction set)。和汇编语言类
-似，为了便于记忆，Java虚拟机规范给每个操作码都指定了一个助
-记符(mnemonic)。比如操作码是0x00这条指令，因为它什么也不
-做，所以它的助记符是nop(no operation)。
-Java虚拟机使用的是变长指令，操作码后面可以跟零字节或多
-字节的操作数(operand)。如果把指令想象成函数的话，操作数就是
-它的参数。为了让编码后的字节码更加紧凑，很多操作码本身就隐
-含了操作数，比如把常数0推入操作数栈的指令是iconst_0。下面通
-过具体的例子来观察Java虚拟机指令。图5-2为ClassFileTest.main()
-方法的第一条指令。图5-2 用classpy观察getstatic指令
-可以看到，该指令的操作码是0xB2，助记符是getstatic。它的操
-作数是0x0002，代表常量池里的第二个常量。
-在第4章中讨论过，操作数栈和局部变量表只存放数据的值，
-并不记录数据类型。结果就是:指令必须知道自己在操作什么类型
-的数据。这一点也直接反映在了操作码的助记符上。例如，iadd指
-令就是对int值进行加法操作;dstore指令把操作数栈顶的double值
-弹出，存储到局部变量表中;areturn从方法中返回引用值。也就是
-说，如果某类指令可以操作不同类型的变量，则助记符的第一个字
-母表示变量类型。助记符首字母和变量类型的对应关系如表5-1所
-示。
-表5-1 助记符首字母和变量类型对应表Java虚拟机规范把已经定义的205条指令按用途分成了11类，
-分别是:常量(constants)指令、加载(loads)指令、存储(stores)指令、
-操作数栈(stack)指令、数学(math)指令、转换(conversions)指令、比
-较(comparisons)指令、控制(control)指令、引用(references)指令、
-扩展(extended)指令和保留(reserved)指令。
-保留指令一共有3条。其中一条是留给调试器的，用于实现断
-点，操作码是202(0xCA)，助记符是breakpoint。另外两条留给Java
-虚拟机实现内部使用，操作码分别是254(0xFE)和266(0xFF)，助记
-符是impdep1和impdep2。这三条指令不允许出现在class文件中。
-本章将要实现的指令涉及11类中的9类。在第9章讨论本地方法
-调用时会用到保留指令中的impdep1指令，引用指令则分布在第6、
-第7、第8、第10章等章节中。为了便于管理，我们把每种指令的源文件都放在各自的包里，所有指令都共用的代码则放在base包里。
-因此ch05\instructions目录下会有如下10个子目录:
+  |-jvmgo
+  |-ch01 ~ ch04
+  |-ch05
+    |-classfile
+	|-classpath
+	|-instructions
+	|-rtda
+	|-cmd.go
+	|-main.go
+```
+
+### 5.1 字节码和指令集
+Java虚拟机顾名思义，就是一台虚拟的机器，而字节码(bytecode)就是运行在这台虚拟机器上的机器码。我们已经知道，每一个类或者接口都会被Java编译器编译成一个class文件，类或接口的方法信息就放在class文件的method_info结构中 [1] 。如果方法不是抽象的，也不是本地方法，方法的Java代码就会被编译器编译成字节码(即使方法是空的，编译器也会生成一条return语句)，存放在method_info结构的Code属性中。仍以第3章的ClassFileTest类为例，其main()方法如图5-1所示。
+
+图5-1 用classpy观察方法字节码
+
+字节码中存放编码后的Java虚拟机指令。每条指令都以一个单字节的操作码(opcode)开头，这就是字节码名称的由来。由于只使用一字节表示操作码，显而易见，Java虚拟机最多只能支持256(2^8)条指令。到第八版为止，Java虚拟机规范已经定义了205条指令，操作码分别是0(0x00)到202(0xCA)、254(0xFE)和255(0xFF)。这205条指令构成了Java虚拟机的指令集(instruction set)。和汇编语言类似，为了便于记忆，Java虚拟机规范给每个操作码都指定了一个助记符(mnemonic)。比如操作码是0x00这条指令，因为它什么也不做，所以它的助记符是nop(no operation)。
+
+Java虚拟机使用的是变长指令，操作码后面可以跟零字节或多字节的操作数(operand)。如果把指令想象成函数的话，操作数就是它的参数。为了让编码后的字节码更加紧凑，很多操作码本身就隐含了操作数，比如把常数0推入操作数栈的指令是iconst_0。下面通过具体的例子来观察Java虚拟机指令。图5-2为ClassFileTest.main()方法的第一条指令。
+
+图5-2 用classpy观察getstatic指令
+
+可以看到，该指令的操作码是0xB2，助记符是getstatic。它的操作数是0x0002，代表常量池里的第二个常量。
+
+在第4章中讨论过，操作数栈和局部变量表只存放数据的值，并不记录数据类型。结果就是：指令必须知道自己在操作什么类型的数据。这一点也直接反映在了操作码的助记符上。例如，iadd指令就是对int值进行加法操作；dstore指令把操作数栈顶的double值弹出，存储到局部变量表中；areturn从方法中返回引用值。也就是说，如果某类指令可以操作不同类型的变量，则助记符的第一个字母表示变量类型。助记符首字母和变量类型的对应关系如表5-1所示。
+
+表5-1 助记符首字母和变量类型对应表
+| 助记符首字母 | 数据类型 | 例  子 |
+|:--:|:--:|:--:|
+| a | reference | aload、astore、areturn |
+| b | byte/boolean | bipush、baload |
+| c | char | caload、castore |
+| d | double | dload、dstore、dadd |
+| f | float | fload、fstore、fadd |
+| i | int | iload、istore、iadd |
+| l | long | load、lstore、ladd |
+| s | short | sipush、sastore |
+
+Java虚拟机规范把已经定义的205条指令按用途分成了11类，分别是：常量(constants)指令、加载(loads)指令、存储(stores)指令、操作数栈(stack)指令、数学(math)指令、转换(conversions)指令、比较(comparisons)指令、控制(control)指令、引用(references)指令、扩展(extended)指令和保留(reserved)指令。
+
+保留指令一共有3条。其中一条是留给调试器的，用于实现断点，操作码是202(0xCA)，助记符是breakpoint。另外两条留给Java虚拟机实现内部使用，操作码分别是254(0xFE)和266(0xFF)，助记符是impdep1和impdep2。这三条指令不允许出现在class文件中。
+
+本章将要实现的指令涉及11类中的9类。在第9章讨论本地方法调用时会用到保留指令中的impdep1指令，引用指令则分布在第6、第7、第8、第10章等章节中。为了便于管理，我们把每种指令的源文件都放在各自的包里，所有指令都共用的代码则放在base包里。因此ch05\instructions目录下会有如下10个子目录:
+```
 D:\go\workspace\src
-|-jvmgo
-|-ch05
-|-classfile
-|-classpath
-|-rtda
-|-instructions
-|-base
-|-comparisons
-|-constants
-|-control
-|-conversions
-|-extended
-|-loads
-|-math
-|-stack
-|-stores
+  |-jvmgo
+  |-ch05
+    |-classfile
+	|-classpath
+	|-rtda
+	|-instructions
+	  |-base
+	  |-comparisons
+	  |-constants
+	  |-control
+	  |-conversions
+	  |-extended
+	  |-loads
+	  |-math
+	  |-stack
+	  |-stores
+```
 请读者先创建好这些目录。
-[1] 如果读者已经忘记了class文件结构，可以回到第3章复习。5.2 指令和指令解码
-Java虚拟机规范的2.11节介绍了Java虚拟机解释器的大致逻
-辑，如下所示:
+
+[1] 如果读者已经忘记了class文件结构，可以回到第3章复习。
+
+### 5.2 指令和指令解码
+Java虚拟机规范的2.11节介绍了Java虚拟机解释器的大致逻辑，如下所示：
+``` java
 do {
-atomically calculate pc and fetch opcode at pc;
-if (operands) fetch operands;
-execute the action for the opcode;
+	atomically calculate pc and fetch opcode at pc;
+	if (operands) fetch operands;
+	execute the action for the opcode;
 } while (there is more to do);
-每次循环都包含三个部分:计算pc、指令解码、指令执行。可以
-把这个逻辑用Go语言写成一个for循环，里面是个大大的switch-case
-语句。但这样的话，代码的可读性将非常差。所以采用另外一种方
-式:把指令抽象成接口，解码和执行逻辑写在具体的指令实现中。
-这样编写出的解释器就和Java虚拟机规范里的伪代码一样简单，代
-码如下：
+```
+每次循环都包含三个部分：计算pc、指令解码、指令执行。可以把这个逻辑用Go语言写成一个for循环，里面是个大大的switch-case语句。但这样的话，代码的可读性将非常差。所以采用另外一种方式：把指令抽象成接口，解码和执行逻辑写在具体的指令实现中。这样编写出的解释器就和Java虚拟机规范里的伪代码一样简单，代码如下：
+``` go
 for {
-pc := calculatePC()
-opcode := bytecode[pc]
-inst := createInst(opcode)
-inst.fetchOperands(bytecode)
-inst.execute()
+	pc := calculatePC()
+	opcode := bytecode[pc]
+	inst := createInst(opcode)
+	inst.fetchOperands(bytecode)
+	inst.execute()
 }
-上面给出的仍然是伪代码。将在5.12节编写解释器代码，在5.3~5.11节分类实现具体的指令。本节先定义指令接口，然后定义
-一个结构体用来辅助指令解码。5.2.1 Instruction接口
-在ch05\instructions\base目录下创建instruction.go文件，在其中
-定义Instruction接口，代码如下：
+```
+上面给出的仍然是伪代码。将在5.12节编写解释器代码，在5.3~5.11节分类实现具体的指令。本节先定义指令接口，然后定义一个结构体用来辅助指令解码。
+
+#### 5.2.1 Instruction接口
+在ch05\instructions\base目录下创建instruction.go文件，在其中定义Instruction接口，代码如下：
+``` go
 package base
 import "jvmgo/ch05/rtda"
 type Instruction interface {
-FetchOperands(reader *BytecodeReader)
-Execute(frame *rtda.Frame)
+	FetchOperands(reader *BytecodeReader)
+	Execute(frame *rtda.Frame)
 }
-FetchOperands()方法从字节码中提取操作数，Execute()方法
-执行指令逻辑。有很多指令的操作数都是类似的。为了避免重复代
-码，按照操作数类型定义一些结构体，并实现FetchOperands()方
-法。这相当于Java中的抽象类，具体的指令继承这些结构体，然后
-专注实现Execute()方法即可。
-在instruction.go文件中定义NoOperandsInstruction结构体，代码
-如下：
+```
+FetchOperands()方法从字节码中提取操作数，Execute()方法执行指令逻辑。有很多指令的操作数都是类似的。为了避免重复代码，按照操作数类型定义一些结构体，并实现FetchOperands()方法。这相当于Java中的抽象类，具体的指令继承这些结构体，然后专注实现Execute()方法即可。
+
+在instruction.go文件中定义NoOperandsInstruction结构体，代码如下：
+``` go
 type NoOperandsInstruction struct {}
-NoOperandsInstruction表示没有操作数的指令，所以没有定义任何字段。FetchOperands()方法自然也是空空如也，什么也不用
-读，代码如下：
+```
+NoOperandsInstruction表示没有操作数的指令，所以没有定义任何字段。FetchOperands()方法自然也是空空如也，什么也不用读，代码如下：
+``` go
 func (self *NoOperandsInstruction) FetchOperands(reader *BytecodeReader) {
-// nothing to do
+	// nothing to do
 }
-继续编辑instruction.go文件，在其中定义BranchInstruction结构
-体，代码如下：
+```
+继续编辑instruction.go文件，在其中定义BranchInstruction结构体，代码如下：
+``` go
 type BranchInstruction struct {
-Offset int
+	Offset int
 }
-BranchInstruction表示跳转指令，Offset字段存放跳转偏移量。
-FetchOperands()方法从字节码中读取一个uint16整数，转成int后赋
-给Offset字段。代码如下：
+```
+BranchInstruction表示跳转指令，Offset字段存放跳转偏移量。FetchOperands()方法从字节码中读取一个uint16整数，转成int后赋给Offset字段。代码如下：
+``` go
 func (self *BranchInstruction) FetchOperands(reader *BytecodeReader) {
-self.Offset = int(reader.ReadInt16())
+	self.Offset = int(reader.ReadInt16())
 }
-继续编辑instruction.go文件，在其中定义Index8Instruction结构
-体，代码如下：
-type Index8Instruction struct {Index uint
+```
+继续编辑instruction.go文件，在其中定义Index8Instruction结构体，代码如下：
+``` go
+type Index8Instruction struct {
+	Index uint
 }
-存储和加载类指令需要根据索引存取局部变量表，索引由单
-字节操作数给出。把这类指令抽象成Index8Instruction结构体，用
-Index字段表示局部变量表索引。FetchOperands()方法从字节码中
-读取一个int8整数，转成uint后赋给Index字段。代码如下：
+```
+存储和加载类指令需要根据索引存取局部变量表，索引由单字节操作数给出。把这类指令抽象成Index8Instruction结构体，用Index字段表示局部变量表索引。FetchOperands()方法从字节码中读取一个int8整数，转成uint后赋给Index字段。代码如下：
+``` go
 func (self *Index8Instruction) FetchOperands(reader *BytecodeReader) {
-self.Index = uint(reader.ReadUint8())
+	self.Index = uint(reader.ReadUint8())
 }
-最后在instruction.go文件中定义Index16Instruction结构体，代
-码如下：
+```
+最后在instruction.go文件中定义Index16Instruction结构体，代码如下：
+``` go
 type Index16Instruction struct {
-Index uint
+	Index uint
 }
-有一些指令需要访问运行时常量池，常量池索引由两字节操
-作数给出。把这类指令抽象成Index16Instruction结构体，用Index字
-段表示常量池索引。FetchOperands()方法从字节码中读取一个
-uint16整数，转成uint后赋给Index字段。代码如下：
+```
+有一些指令需要访问运行时常量池，常量池索引由两字节操作数给出。把这类指令抽象成Index16Instruction结构体，用Index字段表示常量池索引。FetchOperands()方法从字节码中读取一个uint16整数，转成uint后赋给Index字段。代码如下：
+``` go
 func (self *Index16Instruction) FetchOperands(reader *BytecodeReader) {
-self.Index = uint(reader.ReadUint16())}
-指令接口和“抽象”指令定义好了，下面来看BytecodeReader结
-构体。5.2.2 BytecodeReader
-在ch05\instructions\base目录下创建bytecode_reader.go文件，在
-其中定义BytecodeReader结构体，代码如下：
+	self.Index = uint(reader.ReadUint16())
+}
+```
+指令接口和“抽象”指令定义好了，下面来看BytecodeReader结构体。
+
+#### 5.2.2 BytecodeReader
+在ch05\instructions\base目录下创建bytecode_reader.go文件，在其中定义BytecodeReader结构体，代码如下：
+``` go
 package base
 type BytecodeReader struct {
-code
-[]byte
-pc
-int
+	code []byte
+	pc   int
 }
-code字段存放字节码，pc字段记录读取到了哪个字节。为了避
-免每次解码指令都新创建一个BytecodeReader实例，给它定义一个
-Reset()方法，代码如下：
+```
+code字段存放字节码，pc字段记录读取到了哪个字节。为了避免每次解码指令都新创建一个BytecodeReader实例，给它定义一个Reset()方法，代码如下：
+``` go
 func (self *BytecodeReader) Reset(code []byte, pc int) {
-self.code = code
-self.pc = pc
+	self.code = code
+	self.pc = pc
 }
-下面实现一系列的Read()方法。先看最简单的ReadUint8()方
-法，代码如下：
+```
+下面实现一系列的Read()方法。先看最简单的ReadUint8()方法，代码如下：
+``` go
 func (self *BytecodeReader) ReadUint8() uint8 {
-i := self.code[self.pc]
-self.pc++
-return i
-}ReadInt8()方法调用ReadUint8()，然后把读取到的值转成int8
-返回，代码如下：
+	i := self.code[self.pc]
+	self.pc++
+	return i
+}
+```
+ReadInt8()方法调用ReadUint8()，然后把读取到的值转成int8返回，代码如下：
+``` go
 func (self *BytecodeReader) ReadInt8() int8 {
-return int8(self.ReadUint8())
+	return int8(self.ReadUint8())
 }
+```
 ReadUint16()连续读取两字节，代码如下：
+``` go
 func (self *BytecodeReader) ReadUint16() uint16 {
-byte1 := uint16(self.ReadUint8())
-byte2 := uint16(self.ReadUint8())
-return (byte1 << 8) | byte2
+	byte1 := uint16(self.ReadUint8())
+	byte2 := uint16(self.ReadUint8())
+	return (byte1 << 8) | byte2
 }
-ReadInt16()方法调用ReadUint16()，然后把读取到的值转成
-int16返回，代码如下：
+```
+ReadInt16()方法调用ReadUint16()，然后把读取到的值转成int16返回，代码如下：
+``` go
 func (self *BytecodeReader) ReadInt16() int16 {
-return int16(self.ReadUint16())
+	return int16(self.ReadUint16())
 }
+```
 ReadInt32()方法连续读取4字节，代码如下：
+``` go
 func (self *BytecodeReader) ReadInt32() int32 {
-byte1 := int32(self.ReadUint8())
-byte2 := int32(self.ReadUint8())
-byte3 := int32(self.ReadUint8())
-byte4 := int32(self.ReadUint8())
-return (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4
-}还需要定义两个方法:ReadInt32s()和SkipPadding()。这两个
-方法只有tableswitch和lookupswitch指令使用，介绍这两条指令时再
-给出代码。
-在接下来的9个小节中，将按照分类依次实现约150条指令，占
-整个指令集的3/4。读者千万不要被150这个数字吓倒，因为很多指
-令其实是非常相似的。比如iload、lload、fload、dload和aload这5条指
-令，除了操作的数据类型不同以外，代码几乎一样。再比如
-iload_0、iload_1、iload_2和iload_3这四条指令，只是iload指令的特
-例(局部变量表索引隐含在操作码中)，操作逻辑完全一样。
-如果逐一列出这150余条指令的代码，既枯燥乏味，也相当浪
-费纸张。为了节约篇幅，只讨论一些具有代表意义的指令的实现代
-码，从这些指令可以很容易想象到其他指令的实现。附录A给出了
-完整的指令集列表，里面有每个指令的操作码、助记符和本书中实
-现它们的章节，以方便读者参考。5.3 常量指令
-常量指令把常量推入操作数栈顶。常量可以来自三个地方:隐
-含在操作码里、操作数和运行时常量池。常量指令共有21条，本节
-实现其中的18条。另外3条是ldc系列指令，用于从运行时常量池中
-加载常量，将在第6章介绍。5.3.1 nop指令
-nop指令是最简单的一条指令，因为它什么也不做。在
-ch05\instructions\constants目录下创建nop.go文件，在其中实现nop
-指令，代码如下：
+	byte1 := int32(self.ReadUint8())
+	byte2 := int32(self.ReadUint8())
+	byte3 := int32(self.ReadUint8())
+	byte4 := int32(self.ReadUint8())
+	return (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4
+}
+```
+还需要定义两个方法：ReadInt32s()和SkipPadding()。这两个方法只有tableswitch和lookupswitch指令使用，介绍这两条指令时再给出代码。
+
+在接下来的9个小节中，将按照分类依次实现约150条指令，占整个指令集的3/4。读者千万不要被150这个数字吓倒，因为很多指令其实是非常相似的。比如iload、lload、fload、dload和aload这5条指令，除了操作的数据类型不同以外，代码几乎一样。再比如iload_0、iload_1、iload_2和iload_3这四条指令，只是iload指令的特例(局部变量表索引隐含在操作码中)，操作逻辑完全一样。
+
+如果逐一列出这150余条指令的代码，既枯燥乏味，也相当浪费纸张。为了节约篇幅，只讨论一些具有代表意义的指令的实现代码，从这些指令可以很容易想象到其他指令的实现。附录A给出了完整的指令集列表，里面有每个指令的操作码、助记符和本书中实现它们的章节，以方便读者参考。
+
+### 5.3 常量指令
+常量指令把常量推入操作数栈顶。常量可以来自三个地方：隐含在操作码里、操作数和运行时常量池。常量指令共有21条，本节实现其中的18条。另外3条是ldc系列指令，用于从运行时常量池中加载常量，将在第6章介绍。
+
+#### 5.3.1 nop指令
+nop指令是最简单的一条指令，因为它什么也不做。在ch05\instructions\constants目录下创建nop.go文件，在其中实现nop指令，代码如下：
+``` go
 package constants
 import "jvmgo/ch05/instructions/base"
 import "jvmgo/ch05/rtda"
 // Do nothing
 type NOP struct{ base.NoOperandsInstruction }
 func (self *NOP) Execute(frame *rtda.Frame) {
-// 什么也不用做
-}5.3.2 const系列指令
-这一系列指令把隐含在操作码中的常量值推入操作数栈顶。
-在ch05\instructions\constants目录下创建const.go文件，在其中定义
-15条指令，代码如下：
+	// 什么也不用做
+}
+```
+
+#### 5.3.2 const系列指令
+这一系列指令把隐含在操作码中的常量值推入操作数栈顶。在ch05\instructions\constants目录下创建const.go文件，在其中定义15条指令，代码如下：
+``` go
 package constants
 import "jvmgo/ch05/instructions/base"
 import "jvmgo/ch05/rtda"
@@ -2641,18 +2703,28 @@ type ICONST_4 struct{ base.NoOperandsInstruction }
 type ICONST_5 struct{ base.NoOperandsInstruction }
 type LCONST_0 struct{ base.NoOperandsInstruction }
 type LCONST_1 struct{ base.NoOperandsInstruction }
-以3条指令为例进行说明。aconst_null指令把null引用推入操作
-数栈顶，代码如下：
+```
+以3条指令为例进行说明。aconst_null指令把null引用推入操作数栈顶，代码如下：
+``` go
 func (self *ACONST_NULL) Execute(frame *rtda.Frame) {
-frame.OperandStack().PushRef(nil)
+	frame.OperandStack().PushRef(nil)
 }
-dconst_0指令把double型0推入操作数栈顶，代码如下：func (self *DCONST_0) Execute(frame *rtda.Frame) {
-frame.OperandStack().PushDouble(0.0)
+```
+dconst_0指令把double型0推入操作数栈顶，代码如下：
+``` go
+func (self *DCONST_0) Execute(frame *rtda.Frame) {
+	frame.OperandStack().PushDouble(0.0)
 }
+```
 iconst_m1指令把int型-1推入操作数栈顶，代码如下：
+``` go
 func (self *ICONST_M1) Execute(frame *rtda.Frame) {
-frame.OperandStack().PushInt(-1)
-}5.3.3 bipush和sipush指令
+	frame.OperandStack().PushInt(-1)
+}
+```
+
+------第192页-----20190705-----
+#### 5.3.3 bipush和sipush指令
 bipush指令从操作数中获取一个byte型整数，扩展成int型，然
 后推入栈顶。sipush指令从操作数中获取一个short型整数，扩展成
 int型，然后推入栈顶。在ch05\instructions\constants目录下创建
@@ -2672,7 +2744,7 @@ i := int32(self.val)
 frame.OperandStack().PushInt(i)
 }5.4 加载指令
 加载指令从局部变量表获取变量，然后推入操作数栈顶。加载
-指令共33条，按照所操作变量的类型可以分为6类:aload系列指令
+指令共33条，按照所操作变量的类型可以分为6类：aload系列指令
 操作引用类型变量、dload系列操作double类型变量、fload系列操作
 float变量、iload系列操作int变量、lload系列操作long变量、xaload操
 作数组。本节实现其中的25条，数组和xaload系列指令将在第8章讨
@@ -2736,7 +2808,7 @@ Execute()方法如下：
 func (self *LSTORE_2) Execute(frame *rtda.Frame) {
 _lstore(frame, 2)
 }5.6 栈指令
-栈指令直接对操作数栈进行操作，共9条:pop和pop2指令将栈
+栈指令直接对操作数栈进行操作，共9条：pop和pop2指令将栈
 顶变量弹出，dup系列指令复制栈顶变量，swap指令交换栈顶的两
 个变量。
 和其他类型的指令不同，栈指令并不关心变量类型。为了实现
@@ -2881,8 +2953,8 @@ stack.PushInt(result)
 }
 先从操作数栈中弹出两个int变量v2和v1。v1是要进行位移操作
 的变量，v2指出要移位多少比特。位移之后，把结果推入操作数栈。
-这里注意两点:第一，int变量只有32位，所以只取v2的前5个比特就
-足够表示位移位数了;第二，Go语言位移操作符右侧必须是无符号
+这里注意两点：第一，int变量只有32位，所以只取v2的前5个比特就
+足够表示位移位数了；第二，Go语言位移操作符右侧必须是无符号
 整数，所以需要对v2进行类型转换。
 算术右移指令需要扩展符号位，代码和左移指令基本上差不
 多。以lshr指令为例，其Execute()方法如下：
@@ -2951,9 +3023,9 @@ localVars.SetInt(self.Index, val)
 类型转换指令大致对应Java语言中的基本类型强制转换操作。
 类型转换指令有共15条，将全部在本节实现。引用类型转换对应的
 是checkcast指令，将在第6章介绍。
-按照被转换变量的类型，类型转换指令可以分为3种:i2x系列
-指令把int变量强制转换成其他类型;12x系列指令把long变量强制
-转换成其他类型;f2x系列指令把float变量强制转换成其他类型;d2x
+按照被转换变量的类型，类型转换指令可以分为3种：i2x系列
+指令把int变量强制转换成其他类型；12x系列指令把long变量强制
+转换成其他类型；f2x系列指令把float变量强制转换成其他类型；d2x
 系列指令把double变量强制转换成其他类型。以d2x系列指令为例
 进行讨论。
 在ch05\instructions\conversions目录下创建d2x.go文件，在其中
@@ -2972,7 +3044,7 @@ stack.PushInt(i)
 }
 因为Go语言可以很方便地转换各种基本类型的变量，所以类
 型转换指令实现起来还是比较容易的。5.9 比较指令
-比较指令可以分为两类:一类将比较结果推入操作数栈顶，一
+比较指令可以分为两类：一类将比较结果推入操作数栈顶，一
 类根据比较结果跳转。比较指令是编译器实现if-else、for、while等
 语句的基石，共有19条，将全部在本节实现。5.9.1 lcmp指令
 lcmp指令用于比较long变量。在ch05\instructions\comparisons目
@@ -3008,7 +3080,7 @@ type FCMPL struct{ base.NoOperandsInstruction }
 这两条指令和lcmp指令很像，但是除了比较的变量类型不同以
 外，还有一个重要的区别。由于浮点数计算有可能产生NaN(Not a
 Number)值，所以比较两个浮点数时，除了大于、等于、小于之外，
-还有第4种结果:无法比较。fcmpg和fcmpl指令的区别就在于对第4
+还有第4种结果：无法比较。fcmpg和fcmpl指令的区别就在于对第4
 种结果的定义。编写一个函数来统一比较float变量，代码如下：
 func _fcmp(frame *rtda.Frame, gFlag bool) {
 stack := frame.OperandStack()
@@ -3127,7 +3199,7 @@ base.Branch(frame, self.Offset)
 子句，从Java 6开始，Oracle的Java编译器已经不再使用这两条指令
 了，本书不讨论这两条指令。return系列指令有6条，用于从方法调
 用中返回，将在第7章讨论方法调用和返回时实现这6条指令。本节
-实现剩下的3条指令:goto、tableswitch和lookupswitch。5.10.1 goto指令
+实现剩下的3条指令：goto、tableswitch和lookupswitch。5.10.1 goto指令
 在ch05\instructions\control目录下创建goto.go文件，在其中定义
 goto指令，代码如下：
 package control
@@ -3139,8 +3211,8 @@ goto指令进行无条件跳转，其Execute()方法如下：
 func (self *GOTO) Execute(frame *rtda.Frame) {
 base.Branch(frame, self.Offset)
 }5.10.2 tableswitch指令
-Java语言中的switch-case语句有两种实现方式:如果case值可以
-编码成一个索引表，则实现成tableswitch指令;否则实现成
+Java语言中的switch-case语句有两种实现方式：如果case值可以
+编码成一个索引表，则实现成tableswitch指令；否则实现成
 lookupswitch指令。Java虚拟机规范的3.10小节里有两个例子，我们
 可以借用一下。下面这个Java方法中的switch-case可以编译成
 tableswitch指令，代码如下：
@@ -3153,7 +3225,7 @@ default: return -1;
 }
 }
 下面这个Java方法中的switch-case则需要编译成lookupswitch指
-令:
+令：
 int chooseFar(int i) {
 switch (i) {
 case -100: return -1;
@@ -3196,8 +3268,8 @@ func (self *BytecodeReader) SkipPadding() {
 for self.pc%4 != 0 {
 self.ReadUint8()}
 }
-defaultOffset对应默认情况下执行跳转所需的字节码偏移量;
-low和high记录case的取值范围;jumpOffsets是一个索引表，里面存
+defaultOffset对应默认情况下执行跳转所需的字节码偏移量；
+low和high记录case的取值范围；jumpOffsets是一个索引表，里面存
 放high-low+1个int值，对应各种case情况下，执行跳转所需的字节
 码偏移量。BytecodeReader结构体的ReadInt32s()方法如下：
 func (self *BytecodeReader) ReadInt32s(n int32) []int32 {
@@ -3297,7 +3369,7 @@ panic("Unsupported opcode: 0xa9!")
 FetchOperands()方法先从字节码中读取一字节的操作码，然
 后创建子指令实例，最后读取子指令的操作数。因为没有实现ret指
 令，所以暂时调用panic()函数终止程序执行。加载指令和存储指令
-都只有一个操作数，需要扩展成2字节，以iload为例:
+都只有一个操作数，需要扩展成2字节，以iload为例：
 case 0x15:
 inst := &loads.ILOAD{}
 inst.Index = uint(reader.ReadUint16())
@@ -3396,7 +3468,7 @@ defer catchErr(frame)
 loop(thread, bytecode)
 }
 Thread结构体的NewFrame()方法是新增加的，代码在
-ch05\rtda\thread.go文件中，如下所示:
+ch05\rtda\thread.go文件中，如下所示：
 func (self *Thread) NewFrame(maxLocals, maxStack uint) *Frame {
 return newFrame(self, maxLocals, maxStack)
 }
@@ -3461,9 +3533,9 @@ inst.Execute(frame)
 }
 }
 loop()函数循环执行“计算pc、解码指令、执行指令”这三个步
-骤，直到遇到错误!代码中有一个函数还没有给出代码:
+骤，直到遇到错误!代码中有一个函数还没有给出代码：
 NewInstruction()。这个函数是switch-case语句，根据操作码创建具
-体的指令，代码在ch05\instructions\factory.go文件中，如下所示:
+体的指令，代码在ch05\instructions\factory.go文件中，如下所示：
 package instructions
 import "fmt"
 import "jvmgo/ch05/instructions/base"
@@ -3508,7 +3580,7 @@ case 0x01: return aconst_null
 始上学，10岁开始学习数学。有一天，数学老师布置了一道题:问
 1+2+3......这样从1一直加到100等于多少。老师原以为孩子们要算
 上一段时间，可是没想到小高斯很快就给出了答案。高斯当然不是
-从1一直加到100，而是用更聪明的办法计算的:1+100=101，
+从1一直加到100，而是用更聪明的办法计算的：1+100=101，
 2+99=101......1加到100有50组这样的数，所以50*101=5050。
 本节用最笨的办法来计算这个题目，考验一下虚拟机是否可
 以工作。随书Java代码里有一个例子，代码如下：
@@ -3589,7 +3661,7 @@ ClassFile结构体。本章将进一步处理ClassFile结构体，把它加以�
 在开始学习本章之前，还是先把目录结构准备好。复制ch05目
 录，改名为ch06。修改main.go等文件，把import语句中的ch05全都改
 成ch06，然后在ch06\rtda目录中创建heap子目录。现在目录结构看
-起来应该是下面这样:D:\go\workspace\src
+起来应该是下面这样：D:\go\workspace\src
 |-jvmgo
 |-ch01 ~ ch05
 |-ch06
@@ -3868,8 +3940,8 @@ Class结构体还有几个字段没有说明。loader字段存放类加载器
 字段将在6.3节介绍。staticSlotCount和instanceSlotCount字段分别存
 放类变量和实例变量占据的空间大小，staticVars字段存放静态变
 量，这三个字段将在6.4节介绍。6.2 运行时常量池
-运行时常量池主要存放两类信息:字面量(literal)和符号引用
-(symbolic reference)。字面量包括整数、浮点数和字符串字面量;符
+运行时常量池主要存放两类信息：字面量(literal)和符号引用
+(symbolic reference)。字面量包括整数、浮点数和字符串字面量；符
 号引用包括类符号引用、字段符号引用、方法符号引用和接口方法
 符号引用。在ch06\rtda\heap目录下创建constant_pool.go文件，在其
 中定义Constant接口和ConstantPool结构体，代码如下：
@@ -4004,7 +4076,7 @@ string
 }
 func (self *MemberRef) copyMemberRefInfo(
 refInfo *classfile.ConstantMemberrefInfo) {...}
-读者可能会有疑问:在Java中，我们并不能在同一个类中定义
+读者可能会有疑问：在Java中，我们并不能在同一个类中定义
 名字相同，但类型不同的两个字段，那么字段符号引用为什么还要
 存放字段描述符呢?答案是，这只是Java语言的限制，而不是Java
 虚拟机规范的限制。也就是说，站在Java虚拟机的角度，一个类是
@@ -4088,7 +4160,7 @@ ClassLoader依赖Classpath来搜索和读取class文件，cp字段保存
 Classpath指针。classMap字段记录已经加载的类数据，key是类的完
 全限定名。在前面讨论中，方法区一直只是个抽象的概念，现在可
 以把classMap字段当作方法区的具体实现。NewClassLoader()函数
-创建ClassLoader实例，代码比较简单，如下所示:
+创建ClassLoader实例，代码比较简单，如下所示：
 func NewClassLoader(cp *classpath.Classpath) *ClassLoader {
 return &ClassLoader{
 cp:
@@ -4098,7 +4170,7 @@ make(map[string]*Class),
 }}
 LoadClass()方法把类数据加载到方法区，代码如下：
 func (self *ClassLoader) LoadClass(name string) *Class {
-if class, ok := self.classMap[name]; ok {
+if class, ok := self.classMap[name]； ok {
 return class // 类已经加载
 }
 return self.loadNonArrayClass(name)
@@ -4115,8 +4187,8 @@ link(class)
 fmt.Printf("[Loaded %s from %s]\n", name, entry)
 return class
 }
-可以看到，类的加载大致可以分为三个步骤:首先找到class文
-件并把数据读取到内存;然后解析class文件，生成虚拟机可以使用的类数据，并放入方法区;最后进行链接。下面分别讨论这三个步
+可以看到，类的加载大致可以分为三个步骤：首先找到class文
+件并把数据读取到内存；然后解析class文件，生成虚拟机可以使用的类数据，并放入方法区；最后进行链接。下面分别讨论这三个步
 骤。6.3.1 readClass()
 readClass()方法的代码如下：
 func (self *ClassLoader) readClass(name string) ([]byte, classpath.Entry) {
@@ -4241,7 +4313,7 @@ fields Slots
 间，以及哪个字段对应Slots中的哪个位置呢?第一个问题比较好解决，只要数一下类的字段即可。假设某个
 类有m个静态字段和n个实例字段，那么静态变量和实例变量所需
 的空间大小就分别是m'和n'。这里要注意两点。首先，类是可以继承
-的。也就是说，在数实例变量时，要递归地数超类的实例变量;其
+的。也就是说，在数实例变量时，要递归地数超类的实例变量；其
 次，long和double字段都占据两个位置，所以m'>=m, n'>=n。
 第二个问题也不算难，在数字段时，给字段按顺序编上号就可
 以了。这里有三点需要要注意。首先，静态字段和实例字段要分开
@@ -4399,14 +4471,14 @@ self.class = c
 通俗地讲，如果类D通过符号引用N引用类C的话，要解析N，
 先用D的类加载器加载C，然后检查D是否有权限访问C，如果没有，则抛出IllegalAccessError异常。Java虚拟机规范5.4.4节给出了类
 的访问控制规则，把这个规则翻译成Class结构体的
-isAccessibleTo()方法，代码如下(在class.go文件中):
+isAccessibleTo()方法，代码如下(在class.go文件中)：
 func (self *Class) isAccessibleTo(other *Class) bool {
 return self.IsPublic() || self.getPackageName() == other.getPackageName()
 }
-也就是说，如果类D想访问类C，需要满足两个条件之一:C是
+也就是说，如果类D想访问类C，需要满足两个条件之一：C是
 public，或者C和D在同一个运行时包内。第11章再讨论运行时包，
 这里先简单按照包名来检查。getPackageName()方法的代码如下
-(也在class.go文件中):
+(也在class.go文件中)：
 func (self *Class) getPackageName() string {
 if i := strings.LastIndex(self.name, "/"); i >= 0 {
 return self.name[:i]
@@ -4483,9 +4555,9 @@ return d == c
 非privated)，则只有同一个包下的类可以访问。否则，字段是
 private，只有声明这个字段的类才能访问。6.6 类和对象相关指令
 本节将实现10条类和对象相关的指令。new指令用来创建类实
-例;putstatic和getstatic指令用于存取静态变量;putfield和getfield用
-于存取实例变量;instanceof和checkcast指令用于判断对象是否属于
-某种类型;ldc系列指令把运行时常量池中的常量推到操作数栈顶。
+例；putstatic和getstatic指令用于存取静态变量；putfield和getfield用
+于存取实例变量；instanceof和checkcast指令用于判断对象是否属于
+某种类型；ldc系列指令把运行时常量池中的常量推到操作数栈顶。
 下面的Java代码演示了这些指令的用处。
 public class MyObject {
 public static int staticVar;
@@ -4577,7 +4649,7 @@ fieldRef := cp.GetConstant(self.Index).(*heap.FieldRef)
 field := fieldRef.ResolvedField()
 class := field.Class()
 先拿到当前方法、当前类和当前常量池，然后解析字段符号引用。如果声明字段的类还没有被初始化，则需要先初始化该类，这
-部分逻辑将在第7章实现。继续看代码:
+部分逻辑将在第7章实现。继续看代码：
 if !field.IsStatic() {
 panic("java.lang.IncompatibleClassChangeError")
 }
@@ -4590,7 +4662,7 @@ panic("java.lang.IllegalAccessError")
 IncompatibleClassChangeError异常。如果是final字段，则实际操作的
 是静态常量，只能在类初始化方法中给它赋值。否则，会抛出
 IllegalAccessError异常。类初始化方法由编译器生成，名字是
-<clinit>，具体请看第7章。继续看代码:
+<clinit>，具体请看第7章。继续看代码：
 descriptor := field.Descriptor()
 slotId := field.SlotId()
 slots := class.StaticVars()
@@ -4625,7 +4697,7 @@ panic("java.lang.IncompatibleClassChangeError")
 如果解析后的字段不是静态字段，也要抛出
 IncompatibleClassChangeError异常。如果声明字段的类还没有初始
 化好，也需要先初始化。getstatic只是读取静态变量的值，自然也就
-不用管它是否是final了。继续看剩下的代码:
+不用管它是否是final了。继续看剩下的代码：
 descriptor := field.Descriptor()slotId := field.SlotId()
 slots := class.StaticVars()
 stack := frame.OperandStack()
@@ -4658,7 +4730,7 @@ currentClass := currentMethod.Class()
 cp := currentClass.ConstantPool()
 fieldRef := cp.GetConstant(self.Index).(*heap.FieldRef)
 field := fieldRef.ResolvedField()
-基本上和putstatic一样，这里就不多解释了。看下一部分:
+基本上和putstatic一样，这里就不多解释了。看下一部分：
 if field.IsStatic() {
 panic("java.lang.IncompatibleClassChangeError")
 }
@@ -4670,7 +4742,7 @@ panic("java.lang.IllegalAccessError")
 粗)。第一，解析后的字段必须是实例字段，否则抛出
 IncompatibleClassChangeError。第二，如果是final字段，则只能在构
 造函数中初始化，否则抛出IllegalAccessError。在第7章会介绍构造
-函数。下面看剩下的代码:
+函数。下面看剩下的代码：
 descriptor := field.Descriptor()
 slotId := field.SlotId()
 stack := frame.OperandStack()
@@ -4711,7 +4783,7 @@ if field.IsStatic() {
 panic("java.lang.IncompatibleClassChangeError")
 }
 先是字段符号引用解析。这部分逻辑我们已经很熟悉了，不多
-解释。下面是第二部分代码:
+解释。下面是第二部分代码：
 stack := frame.OperandStack()ref := stack.PopRef()
 if ref == nil {
 panic("java.lang.NullPointerException")
@@ -4776,7 +4848,7 @@ import "jvmgo/ch06/rtda/heap"
 // Check whether object is of given type
 type CHECK_CAST struct{ base.Index16Instruction }
 checkcast指令和instanceof指令很像，区别在于:instanceof指令
-会改变操作数栈(弹出对象引用，推入判断结果);checkcast则不改
+会改变操作数栈(弹出对象引用，推入判断结果)；checkcast则不改
 变操作数栈(如果判断失败，直接抛出ClassCastException异常)。checkcast指令的Execute()方法如下：
 func (self *CHECK_CAST) Execute(frame *rtda.Frame) {
 stack := frame.OperandStack()
@@ -4797,7 +4869,7 @@ panic("java.lang.ClassCastException")
 引用可以转换成任何类型，否则解析类符号引用，判断对象是否是
 类的实例。如果是的话，指令执行结束，否则抛出
 ClassCastException。instanceof和checkcast指令一般都是配合使用
-的，像下面的Java代码这样:
+的，像下面的Java代码这样：
 if (xxx instanceof ClassYYY) {
 yyy = (ClassYYY) xxx;
 // use yyy
@@ -4822,7 +4894,7 @@ return s.isImplements(t)
 }
 }
 也就是说，在三种情况下，S类型的引用值可以赋值给T类型:S
-和T是同一类型;T是类且S是T的子类;或者T是接口且S实现了T接
+和T是同一类型；T是类且S是T的子类；或者T是接口且S实现了T接
 口。这是简化版的判断逻辑，因为还没有实现数组，第8章讨论数组
 时会继续完善这个方法。继续编辑class_hierarchy.go文件，在其中实
 现isSubClassOf()方法，代码如下：
@@ -5074,7 +5146,7 @@ System.out.println(myObj.instanceVar);
 }
 }
 }
-打开命令行窗口，执行下面的命令编译本章代码:
+打开命令行窗口，执行下面的命令编译本章代码：
 go install jvmgo\ch06
 命令执行完毕后，D:\go\workspace\bin目录会出现ch06.exe文
 件。用javac编译MyObject类，然后用ch06.exe执行MyObject程序，结
@@ -5091,12 +5163,12 @@ go install jvmgo\ch06
 开始本章之前，还是先把目录结构准备好。复制ch06目录，改
 名为ch07。修改main.go等文件，把import语句中的ch06全都替换成
 ch07。本章对目录结构没有太大的调整。7.1 方法调用概述
-从调用的角度来看，方法可以分为两类:静态方法(或者类方
+从调用的角度来看，方法可以分为两类：静态方法(或者类方
 法)和实例方法。静态方法通过类来调用，实例方法则通过对象引
 用来调用。静态方法是静态绑定的，也就是说，最终调用的是哪个
 方法在编译期就已经确定。实例方法则支持动态绑定，最终要调用
 哪个方法可能要推迟到运行期才能知道，本章将详细讨论这一点。
-从实现的角度来看，方法可以分为三类:没有实现(也就是抽
+从实现的角度来看，方法可以分为三类：没有实现(也就是抽
 象方法)、用Java语言(或者JVM上的其他语言，如Groovy和Scala等)
 实现和用本地语言(如C或者C++)实现。静态方法和抽象方法是互
 斥的。在Java 8之前，接口只能包含抽象方法。为了实现Lambda表达
@@ -5405,7 +5477,7 @@ invokespecial指令在第6章就定义好了，代码如下：
 // Invoke instance method; special handling for superclass, private，
 // and instance initialization method invocations
 type INVOKE_SPECIAL struct{ base.Index16Instruction }
-需要修改Execute()方法，代码稍微有些复杂，先看第一部分:
+需要修改Execute()方法，代码稍微有些复杂，先看第一部分：
 func (self *INVOKE_SPECIAL) Execute(frame *rtda.Frame) {
 currentClass := frame.Method().Class()
 cp := currentClass.ConstantPool()
@@ -5413,7 +5485,7 @@ methodRef := cp.GetConstant(self.Index).(*heap.MethodRef)
 resolvedClass := methodRef.ResolvedClass()
 resolvedMethod := methodRef.ResolvedMethod()
 先拿到当前类、当前常量池、方法符号引用，然后解析符号引
-用，拿到解析后的类和方法。继续看代码:
+用，拿到解析后的类和方法。继续看代码：
 if resolvedMethod.Name() == "<init>" && resolvedMethod.Class() != resolvedClas
 panic("java.lang.NoSuchMethodError")
 }
@@ -5422,7 +5494,7 @@ panic("java.lang.IncompatibleClassChangeError")
 }
 假定从方法符号引用中解析出来的类是C，方法是M。如果M
 是构造函数，则声明M的类必须是C，否则抛出NoSuchMethodError异常。如果M是静态方法，则抛出IncompatibleClassChangeError异
-常。继续看代码:
+常。继续看代码：
 ref := frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount())
 if ref == nil {
 panic("java.lang.NullPointerException")
@@ -5433,7 +5505,7 @@ NullPointerException异常。注意，在传递参数之前，不能破坏操作
 法，该方法返回距离操作数栈顶n个单元格的引用变量。比如
 GetRefFromTop(0)返回操作数栈顶引用，GetRefFromTop(1)返回从
 栈顶开始的倒数第二个引用，等等。GetRefFromTop()方法的代码
-很简单，在后面给出。继续看Execute()方法:
+很简单，在后面给出。继续看Execute()方法：
 if resolvedMethod.IsProtected() &&
 resolvedMethod.Class().IsSuperClassOf(currentClass) &&
 resolvedMethod.Class().GetPackageName() != currentClass.GetPackageName() &&
@@ -5453,7 +5525,7 @@ methodRef.Name(), methodRef.Descriptor())
 上面这段代码比较难懂，把它翻译成更容易理解的语言:如果
 调用的中超类中的函数，但不是构造函数，且当前类的
 ACC_SUPER标志被设置，需要一个额外的过程查找最终要调用的
-方法;否则前面从方法符号引用中解析出来的方法就是要调用的方
+方法；否则前面从方法符号引用中解析出来的方法就是要调用的方
 法。
 if methodToBeInvoked == nil || methodToBeInvoked.IsAbstract() {
 panic("java.lang.AbstractMethodError")
@@ -5566,7 +5638,7 @@ panic("java.lang.IncompatibleClassChangeError")
 }
 先从运行时常量池中拿到并解析接口方法符号引用，如果解
 析后的方法是静态方法或私有方法，则抛出
-IncompatibleClassChangeError异常。继续看代码:
+IncompatibleClassChangeError异常。继续看代码：
 ref := frame.OperandStack().GetRefFromTop(resolvedMethod.ArgSlotCount() - 1)
 if ref == nil {
 panic("java.lang.NullPointerException")
@@ -5576,7 +5648,7 @@ panic("java.lang.IncompatibleClassChangeError")
 }
 从操作数栈中弹出this引用，如果引用是null，则抛出
 NullPointerException异常。如果引用所指对象的类没有实现解析出
-来的接口，则抛出IncompatibleClassChangeError异常。继续看代码:methodToBeInvoked := heap.LookupMethodInClass(ref.Class(),
+来的接口，则抛出IncompatibleClassChangeError异常。继续看代码：methodToBeInvoked := heap.LookupMethodInClass(ref.Class(),
 methodRef.Name(), methodRef.Descriptor())
 if methodToBeInvoked == nil || methodToBeInvoked.IsAbstract() {
 panic("java.lang.AbstractMethodError")
@@ -5586,7 +5658,7 @@ panic("java.lang.IllegalAccessError")
 }
 查找最终要调用的方法。如果找不到，或者找到的方法是抽象
 的，则抛出Abstract-MethodError异常。如果找到的方法不是public，
-则抛出IllegalAccessError异常，否则，一切正常，调用方法:
+则抛出IllegalAccessError异常，否则，一切正常，调用方法：
 base.InvokeMethod(frame, methodToBeInvoked)
 }
 至此，4条方法调用指令都实现完毕了。再总结一下这4条指令
@@ -5619,7 +5691,7 @@ defer catchErr(thread)
 loop(thread, logInst)
 }
 logInst参数控制是否把指令执行信息打印到控制台。更重要的
-变化在loop()函数中，代码如下所示:
+变化在loop()函数中，代码如下所示：
 func loop(thread *rtda.Thread, logInst bool) {
 reader := &base.BytecodeReader{}
 for {
@@ -5643,14 +5715,14 @@ break
 }
 在每次循环开始，先拿到当前帧，然后根据pc从当前方法中解
 码出一条指令。指令执行完毕之后，判断Java虚拟机栈中是否还有
-帧。如果没有则退出循环;否则继续。Thread结构体的
+帧。如果没有则退出循环；否则继续。Thread结构体的
 IsStackEmpty()方法是新增加的，代码在ch07\rtda\thread.go中，如下
-所示:
+所示：
 func (self *Thread) IsStackEmpty() bool {
 return self.stack.isEmpty()
 }
 它只是调用了Stack结构体的isEmpty()方法，代码在
-ch07\rtda\jvm_stack.go中，如下所示:
+ch07\rtda\jvm_stack.go中，如下所示：
 func (self *Stack) isEmpty() bool {
 return self._top == nil
 }
@@ -5749,7 +5821,7 @@ fmt.Printf("[Loaded %s from %s]\n", name, entry)
 }
 return class
 }一切都准备就绪，打开命令行窗口，执行下面的命令编译本章
-代码:
+代码：
 go install jvmgo\ch07
 命令执行完毕后，在D:\go\workspace\bin目录下出现ch07.exe文
 件。下面这个类演示了各种情况下，4种方法调用命令的使用。
@@ -5946,8 +6018,8 @@ method.Class().Name(), method.Name(), method.Descriptor()))
 Java虚拟机直接支持数组，对字符串的支持则由java.lang.String和相
 关的类提供。本章分为两部分，前半部分讨论数组和数组相关指
 令，后半部分讨论字符串。
-在本章的讨论中，数组 一般指数组对象 ;在不至于引起混淆
-的情况下，也可能指数组类 ;在其他情况下，会明确指出是数组类
+在本章的讨论中，数组 一般指数组对象 ；在不至于引起混淆
+的情况下，也可能指数组类 ；在其他情况下，会明确指出是数组类
 还是数组对象 。如果数组的元素是基本类型，就把它叫作基本类型
 数组 ，否则，数组的元素是引用类型，把它叫作引用类型数组 。基
 本类型数组肯定都是一维数组 ，如果引用类型数组的元素也是数
@@ -5959,12 +6031,12 @@ Java虚拟机直接支持数组，对字符串的支持则由java.lang.String和
 有下面几个原因:
 首先，数组类和普通的类是不同的。普通的类从class文件中加
 载，但是数组类由Java虚拟机在运行时生成。数组的类名是左方括
-号([)+数组元素的类型描述符;数组的类型描述符就是类名本身。
+号([)+数组元素的类型描述符；数组的类型描述符就是类名本身。
 例如，int[]的类名是[I, int[][]的类名是[[I, Object[]的类名是
 [Ljava/lang/Object;, String[][]的类名是[[java/lang/String;，等等。
 其次，创建数组的方式和创建普通对象的方式不同。普通对象
 由new指令创建，然后由构造函数初始化。基本类型数组由newarray
-指令创建;引用类型数组由anewarray指令创建;另外还有一个专门
+指令创建；引用类型数组由anewarray指令创建；另外还有一个专门
 的multianewarray指令用于创建多维数组。
 最后，很显然，数组和普通对象存放的数据也是不同的。普通
 对象中存放的是实例变量，通过putfield和getfield指令存取。数组对
@@ -5997,7 +6069,7 @@ class: class,
 data: newSlots(class.instanceSlotCount),
 }
 }因为Fields()方法也仍然只针对普通对象，所以它的代码也需
-要做相应调整，如下所示:
+要做相应调整，如下所示：
 func (self *Object) Fields() Slots {
 return self.data.(Slots)
 }
@@ -6113,7 +6185,7 @@ return class
 java.lang.Object，并且实现了java.lang.Cloneable和java.io.Serializable
 接口。类加载器改造完毕，下面来实现数组相关指令。8.3 数组相关指令
 本节要实现20条指令，其中newarray、anewarray、
-multianewarray和arraylength指令属于引用类指令;<t>aload和
+multianewarray和arraylength指令属于引用类指令；<t>aload和
 <t>astore系列指令各有8条，分别属于加载类和存储类指令。下面的
 Java程序演示了部分数组相关指令的用处。
 public class ArrayDemo {
@@ -6246,7 +6318,7 @@ arr := arrClass.NewArray(uint(count))
 stack.PushRef(arr)}
 上面的代码比较容易理解，这里就不详细解释了。Class结构体
 的ArrayClass()方法返回与类对应的数组类，代码在class.go文件
-中，如下所示:
+中，如下所示：
 func (self *Class) ArrayClass() *Class {
 arrayClassName := getArrayClassName(self.name)
 return self.loader.LoadClass(arrayClassName)
@@ -6402,7 +6474,7 @@ checkNotNil(arrRef)
 ints := arrRef.Ints()
 checkIndex(len(ints), index)
 ints[index] = int32(val)
-}iastore指令的三个操作数分别是:要赋给数组元素的值、数组
+}iastore指令的三个操作数分别是：要赋给数组元素的值、数组
 索引、数组引用，依次从操作数栈中弹出。如果数组引用是null，则
 抛出NullPointerException。如果数组索引小于0或者大于等于数组
 长度，则抛出ArrayIndexOutOfBoundsException异常。这两个检查和
@@ -6411,7 +6483,7 @@ ints[index] = int32(val)
 令。8.3.6 multianewarray指令
 multianewarray指令创建多维数组。在
 ch08\instructions\references目录下创建multianewarray.go文件，在其
-中定义multianewarray指令，代码如下所示:
+中定义multianewarray指令，代码如下所示：
 package references
 import "jvmgo/ch08/instructions/base"
 import "jvmgo/ch08/rtda"
@@ -6576,7 +6648,7 @@ return sc == tc || tc.isAssignableFrom(sc)
 return false
 }注意，粗体部分是原来的代码，其余都是新增代码。由于篇幅
 限制，就不详细解释这个函数了，请读者阅读Java虚拟机规范的
-8.6.5节对instanceof和checkcast指令的描述。需要注意的是:
+8.6.5节对instanceof和checkcast指令的描述。需要注意的是：
 ·数组可以强制转换成Object类型(因为数组的超类是Object)。
 ·数组可以强制转换成Cloneable和Serializable类型(因为数组实
 现了这两个接口)。
@@ -6616,7 +6688,7 @@ System.out.println(i);
 }
 }
 }
-打开命令行窗口，执行下面的命令编译本章代码:
+打开命令行窗口，执行下面的命令编译本章代码：
 go install jvmgo\ch08命令执行完毕后，在D:\go\workspace\bin目录下出现ch08.exe文
 件。用javac编译，然后用ch08.exe执行BubbleSortTest类，结果如图8-
 1所示。
@@ -7033,7 +7105,7 @@ new指令分配了一个对象。此时Java虚拟机的内存状态如图9-1所
 和java.lang.Class类的数据。在堆中，object1和object2分别是
 java.lang.Object和java.lang.Class的类对象。object3是单独的
 java.lang.Object实例。虽然已经简化到了极点，但仍然有8条箭头，希望有密集恐惧症的读者不要被吓倒。
-[1] 在本书中，类对象特指java.lang.Class类的实例;对象泛指任何类
+[1] 在本书中，类对象特指java.lang.Class类的实例；对象泛指任何类
 的实例。9.3.2 修改类加载器
 Class和Object结构体准备好了，接下来修改类加载器，让每一
 个加载到方法区中的类都有一个类对象与之相关联。打开
@@ -7097,7 +7169,7 @@ System.out.println(float.class);
 System.out.println(double.class);
 和数组类一样，基本类型的类也是由Java虚拟机在运行期间生
 成的。继续编辑class_loader.go文件，修改NewClassLoader()函数，
-在其中添加如下一行代码:
+在其中添加如下一行代码：
 func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
 ... // 前面的代码不变
 loader.loadBasicClasses()
@@ -7271,7 +7343,7 @@ import _ "jvmgo/ch09/native/java/lang"
 函数，所以必须在包名前面加上下划线，否则无法通过编译。这个
 技术在Go语言中叫作“import for side effect”。 [1]
 [1] https://golang.org/doc/effective_go.html#blank_import9.3.6 测试本节代码
-打开命令行窗口，执行下面的命令编译本章代码:
+打开命令行窗口，执行下面的命令编译本章代码：
 go install jvmgo\ch09
 命令执行完毕后，在D:\go\workspace\bin目录下出现ch09.exe文
 件。用ch09.exe运行下面的Java程序:
@@ -7302,15 +7374,15 @@ System.out.println(new String[0].getClass().getName()); //[Ljava.lang.St
 9.4.1 Java类库
 在Java语言中，通过加号来拼接字符串。作为优化，javac编辑
 器会把字符串拼接操作转换成StringBuilder的使用。例如下面这段
-Java代码:
+Java代码：
 String hello = "hello,";
 String world = "world!";
 String str = hello + world;
 System.out.println(str);
-很可能会被javac优化为下面这样:
+很可能会被javac优化为下面这样：
 String str = new StringBuilder().append("hello,").append("world!").toString();
 System.out.println(str);
-为了运行上面的代码，本节将实现以下3个本地方法:
+为了运行上面的代码，本节将实现以下3个本地方法：
 ·System.arrayCopy()
 ·Float.floatToRawIntBits()·Double.doubleToRawLongBits()
 这些方法是在哪里使用的呢?StringBuilder.append()方法只是
@@ -7523,8 +7595,8 @@ args) {
 重新编译本章代码，然后测试StringTest程序，结果如图9-3所
 示。
 图9-3 StringTest程序执行结果9.5 Object.hashCode()、equals()和toString()
-Object类有3个非常重要的方法:hashCode()返回对象的哈希
-码;equals()用来比较两个对象是否“相同”;toString()返回对象的字
+Object类有3个非常重要的方法：hashCode()返回对象的哈希
+码；equals()用来比较两个对象是否“相同”；toString()返回对象的字
 符串表示。hashCode()是个本地方法，equals()和toString()则是用
 Java写的，它们的代码如下：
 package java.lang;
@@ -7652,7 +7724,7 @@ CloneTest程序执行结果如图9-5所示。
 机没有做任何调整。
 以int类型为例，它的包装类是java.lang.Integer。它提供了2个方
 法来帮助编译器在int变量和Integer对象之间转换:静态方法value()
-把int变量包装成Integer对象;实例方法intValue()返回被包装的int变
+把int变量包装成Integer对象；实例方法intValue()返回被包装的int变
 量。这两个方法的代码如下：
 package java.lang;
 public final class Integer extends Number implements Comparable<Integer> {
@@ -7766,7 +7838,7 @@ BoxTest程序的执行结果如图9-6所示。图9-6 BoxTest程序执行结果9.
 把目录结构准备好。复制ch09目录，改名为ch10。修改main.go等文
 件，把import语句中的ch09全都替换成ch10。本章对目录结构没有
 太大的调整。10.1 异常处理概述
-在Java语言中，异常可以分为两类:Checked异常和Unchecked
+在Java语言中，异常可以分为两类：Checked异常和Unchecked
 异常。Unchecked异常包括java.lang.RuntimeException、
 java.lang.Error以及它们的子类，其他异常都是Checked异常。所有异
 常都最终继承自java.lang.Throwable。如果一个方法有可能导致
@@ -7792,7 +7864,7 @@ if (i == 0) {
 throw new TestExc();
 }
 }
-上面的方法编译之后，产生下面的字节码:
+上面的方法编译之后，产生下面的字节码：
 0
 // 把参数
 iload_1
@@ -7863,7 +7935,7 @@ tryItOut();
 handleExc(e);
 }
 }
-上面的方法编译之后，产生下面的字节码:
+上面的方法编译之后，产生下面的字节码：
 1
 aload_0
 // 把局部变量
@@ -8136,8 +8208,8 @@ lineNumber
 int
 }
 StackTraceElement结构体用来记录Java虚拟机栈帧信息:
-lineNumber字段给出帧正在执行哪行代码;methodName字段给出方
-法名;className字段给出声明方法的类名;fileName字段给出类所
+lineNumber字段给出帧正在执行哪行代码；methodName字段给出方
+法名；className字段给出声明方法的类名；fileName字段给出类所
 在的文件名。下面实现java.lang.Throwable的fillInStackTrace()本地
 方法，代码如下：
 // private native Throwable fillInStackTrace(int dummy);
@@ -8304,7 +8376,7 @@ ch11。本章对目录结构没有太大的调整。11.1 System类是如何被�
 大家都知道，System类有3个公开的静态常量:out、err和in。其
 中out和err用于向标准输出流和标准错误流中写入信息，in用于从
 标准输入流中读取信息。那么这3个常量是在哪里被赋值的呢?看
-一下System类的源代码:
+一下System类的源代码：
 // java.lang.System
 public final class System {
 public final static InputStream in = null;
@@ -8443,11 +8515,11 @@ args 参数self.mainThread.PushFrame(frame)
 interpret(self.mainThread, self.cmd.verboseInstFlag)
 }
 execMain()方法的前半部分代码是从main.go文件中拷贝过来
-的，我们已经比较熟悉了。后半部分代码需要解释的一点是:在调
+的，我们已经比较熟悉了。后半部分代码需要解释的一点是：在调
 用main()方法之前，需要给它传递args参数，这是通过直接操作局
 部变量表实现的。createArgsArray()方法把Go的[]string变量转换成
 Java的字符串数组，代码是从interpreter.go文件中拷贝过来的，如下
-所示:
+所示：
 func (self *JVM) createArgsArray() *heap.Object {
 stringClass := self.classLoader.LoadClass("java/lang/String")
 argsLen := uint(len(self.cmd.args))
@@ -8473,6 +8545,7 @@ System.out.println()等方法，还需要实现很多Java类库中的本地方
 到控制台的，其他类型变量的打印原理同字符串类似。11.3 System.out.println()是如何工作的
 回到System.initializeSystemClass()方法，进一步省略之后，其
 代码如下：
+``` java
 // java.lang.System
 public final static PrintStream out = null;
 private static void initializeSystemClass() {
@@ -8481,8 +8554,11 @@ FileOutputStream fdOut = new FileOutputStream(FileDescriptor.out);
 setOut0(newPrintStream(fdOut, props.getProperty("sun.stdout.encoding")));
 ... // 其他代码
 }
+```
 setOut0()是个本地方法，代码如下：
+``` java
 private static native void setOut0(PrintStream out);
+```
 newPrintStream()方法的代码如下：
 ``` java
 private static PrintStream newPrintStream(FileOutputStream fos, String enc) {
@@ -8537,10 +8613,10 @@ goBytes = *((*[]byte)(ptr))
 return
 }
 ```
-如果读者属于完美主义者，很容易会发现这里的小瑕疵:FileOutputStream应该可以处理任何文件而不仅仅是标准输出。没错，不过本章就到此为止了，感兴趣的读者可以继续完善代码，让FileOutputStream可以支持任何文件。下面测试本章代码。
+如果读者属于完美主义者，很容易会发现这里的小瑕疵：FileOutputStream应该可以处理任何文件而不仅仅是标准输出。没错，不过本章就到此为止了，感兴趣的读者可以继续完善代码，让FileOutputStream可以支持任何文件。下面测试本章代码。
 
 #### 11.4 测试本章代码
-打开命令行窗口，执行下面的命令编译本章代码:
+打开命令行窗口，执行下面的命令编译本章代码：
 ```
 go install jvmgo\ch11
 ```
@@ -8558,9 +8634,9 @@ go install jvmgo\ch11
 
 第7、第9、第10章讨论了方法调用。其中第7章主要讨论了Java方法的调用和返回，并且实现了相关指令。第9章讨论了本地方法调用，并且实现了Java类库中一些最重要的本地方法。第10章讨论了异常处理，并且实现了athrow指令。
 
-第5章编写了一个简单的解释器，从这一章开始，我们陆续实现了约200条指令。在Java虚拟机规范已经定义的205条指令中，只剩下8条还没有实现，分别是:控制指令中的jsr和ret;扩展指令中的jsr_w;引用类指令中的invokedynamic、monitorenter和monitorexit;以及保留指令中的breakpoint和impldep2。
+第5章编写了一个简单的解释器，从这一章开始，我们陆续实现了约200条指令。在Java虚拟机规范已经定义的205条指令中，只剩下8条还没有实现，分别是：控制指令中的jsr和ret；扩展指令中的jsr_w；引用类指令中的invokedynamic、monitorenter和monitorexit；以及保留指令中的breakpoint和impldep2。
 
-不过遗憾的是，有很多重要的内容没有讨论:class文件验证、内存管理和垃圾回收、类加载器的委派模型、多线程、JIT，等等。如果本书有机会出第2版，希望可以涵盖这些内容。
+不过遗憾的是，有很多重要的内容没有讨论：class文件验证、内存管理和垃圾回收、类加载器的委派模型、多线程、JIT，等等。如果本书有机会出第2版，希望可以涵盖这些内容。
 
 ## 附录 指令表
 ### Constants
