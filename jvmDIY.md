@@ -1,5 +1,7 @@
 # 自己动手写Java虚拟机
 
+![封面](https://i.loli.net/2019/07/07/5d2170d67c0c453651.png)
+
 ## 前言
 
 ### 为什么编写本书
@@ -31,7 +33,7 @@ Go是Google公司于2012年推出的系统编程语言。从到硬件的距离�
 - 第08章：讨论数组和字符串，实现数组相关指令和字符串池。
 - 第09章：讨论本地方法调用，实现Object.hashCode()等本地方法。
 - 第10章：讨论异常处理机制，实现athrow指令。
-- 第11章：讨论System类的初始化过程和System.out.println()的工作原理等，并对全𢙳蚝总结。
+- 第11章：讨论System类的初始化过程和System.out.println()的工作原理等，并对全书进行总结。
 
 ### 本书面向读者
 
@@ -113,12 +115,14 @@ Java虚拟机非常复杂，要想真正理解它的工作原理，最好的方�
 #### 1.1.1 安装JDK
 我们都知道，要想运行Java程序，只有Java虚拟机是不够的，还需要有Java类库。Java虚拟机和Java类库一起，构成了Java运行时环境。本书编写的Java虚拟机依赖于JDK类库，另外，编译本书中的Java示例代码也需要JDK。从Oracle网站 [1] 上下载最新版本(写作本章时是8u66)的JDK安装文件，双击运行即可。安装完毕之后，打开命令行窗口执行java-version命令，如果看到类似图1-1所示的输出，就证明安装成功了。
 
+![图1-1](https://i.loli.net/2019/07/07/5d2171ad8e89979217.png)
 图1-1 java-version命令输出
 [1]http://www.oracle.com/technetwork/java/javase/downloads/index.html。
 
 #### 1.1.2 安装Go
 从Go语言官网 [1] 下载最新版本(写作本章时是1.5.1)的Go安装文件，双击运行即可。安装完毕之后，打开命令行窗口执行go version命令，如果看到类似图1-2所示的输出，就证明安装成功了。
 
+![图1-2](https://i.loli.net/2019/07/07/5d21720e37bc884394.png)
 图1-2 go version命令输出
 go [2] 命令是Go语言提供的命令行工具，用来管理Go源代码。go命令就像瑞士军刀，里面包含了各种小工具。用Go语言编写程序，基本上只需要go命令就可以了。go命令里的小工具是各种子命令，version是其中之一。其他常用的子命令包括help、fmt、install和test等。
 
@@ -129,9 +133,12 @@ go命令行工具希望所有的Go源代码被都放在一个工作空间中。�
 
 实际上只有src目录是必须要有的，go会自动创建pkg和bin目录。工作空间可以位于任何地方，本书使用D:\go\workspace作为工作空间。那么go如何知道工作空间在哪里呢？答案是通过GOPATH环境变量。在桌面上右键单击“我的电脑”图标，在弹出的菜单中单击“属性”，然后单击“高级系统设置”；在“系统属性”对话框中单击“环境变量”按钮，然后添加GOPATH变量即可，如图1-3所示。
 
+![图1-3](https://i.loli.net/2019/07/07/5d2172599182949216.png)
 图1-3 设置GOPATH环境变量
 
 打开命令行窗口，执行go env命令，如果看到类似图1-4所示的输出，GOPATH环境变量就设置成功了。
+
+![图1-4](https://i.loli.net/2019/07/07/5d2172bf0618078423.png)
 图1-4 使用go env命令查看GOPATH环境变量
 - [1]https://golang.org/dl/(如果Go官网无法访问，可以从http://golangtc.com/download)下载。
 - [2] 后文中，首字母小写的go特指go命令行工具。
@@ -181,7 +188,7 @@ javaw [-options] -jar jarfile [args]
 [1] 完整的java命令用法请参考http://docs.oracle.com/javase/8/docs/technotes/tools/windows/java.html。
 
 ### 1.3 编写命令行工具
-开发环境已经准备就绪，java命令也已经介绍完毕，相信读者已经迫不及待想开始写代码了吧!下面根据java命令的第一种用法，自己动手编写一个类似的命令行工具。
+开发环境已经准备就绪，java命令也已经介绍完毕，相信读者已经迫不及待想开始写代码了吧！下面根据java命令的第一种用法，自己动手编写一个类似的命令行工具。
 
 先定义一个结构体来表示命令行选项和参数。在ch01目录下创建cmd.go文件 [1] ，用你喜欢的文本编辑器 [2] 打开它，然后在其中定义Cmd结构体，代码如下：
 ``` go
@@ -261,6 +268,7 @@ go install jvmgo\ch01
 ```
 命令执行完毕后，如果没有看到任何输出就证明编译成功了，此时在D:\go\workspace\bin目录下会出现ch01.exe文件。现在，可以用各种参数进行测试。笔者的测试结果如图1-5所示。
 
+![图1-5](https://i.loli.net/2019/07/07/5d2173176e55630965.png)
 图1-5 ch01.exe测试结果
 
 ### 1.5 本章小结
@@ -3161,11 +3169,11 @@ type IFGE struct{ base.BranchInstruction }
 ```
 if<cond>指令把操作数栈顶的int变量弹出，然后跟0进行比较，满足条件则跳转。假设从栈顶弹出的变量是x，则指令执行跳转操作的条件如下：
 
-- ·ifeq:x==0
-- ·ifne:x!=0
-- ·iflt:x<0
-- ·ifle:x<=0·ifgt:x>0
-- ·ifge:x>=0
+- ifeq:x==0
+- ifne:x!=0
+- iflt:x<0
+- ifle:x<=0·ifgt:x>0
+- ifge:x>=0
 
 以ifeq指令为例，其Execute()方法如下：
 ``` go
@@ -3594,7 +3602,7 @@ func loop(thread *rtda.Thread, bytecode []byte) {
 	}
 }
 ```
-loop()函数循环执行“计算pc、解码指令、执行指令”这三个步骤，直到遇到错误!代码中有一个函数还没有给出代码：NewInstruction()。这个函数是switch-case语句，根据操作码创建具体的指令，代码在ch05\instructions\factory.go文件中，如下所示：
+loop()函数循环执行“计算pc、解码指令、执行指令”这三个步骤，直到遇到错误！代码中有一个函数还没有给出代码：NewInstruction()。这个函数是switch-case语句，根据操作码创建具体的指令，代码在ch05\instructions\factory.go文件中，如下所示：
 ``` go
 package instructions
 import "fmt"
@@ -3707,12 +3715,12 @@ go install jvmgo\ch05
 
 图5-3 GaussTest程序执行结果(1)
 
-方法执行，并打印出了执行过的指令。在我们预料之中，方法执行的最后出现了错误，局部变量表和操作数栈的状态也打印了出来，如图5-4所示。仔细观察局部变量表可以看到5050这个数字，这正是我们的计算结果!
+方法执行，并打印出了执行过的指令。在我们预料之中，方法执行的最后出现了错误，局部变量表和操作数栈的状态也打印了出来，如图5-4所示。仔细观察局部变量表可以看到5050这个数字，这正是我们的计算结果！
 
 图5-4 GaussTest程序执行结果(2)
 
 ### 5.14 本章小结
-虽然还有很多缺陷，但是我们的Java虚拟机已经可以解释执行字节码了，这是一个很大的进步!下一章将讨论类和对象在内存中的布局，并且开始实现引用类指令。还等什么？快来阅读吧!
+虽然还有很多缺陷，但是我们的Java虚拟机已经可以解释执行字节码了，这是一个很大的进步！下一章将讨论类和对象在内存中的布局，并且开始实现引用类指令。还等什么？快来阅读吧！
 
 ## 第6章 类和对象
 在第4章，我们初步实现了线程私有的运行时数据区，在此基础上，第5章实现了一个简单的解释器和150多条指令。这些指令主要是操作局部变量表和操作数栈、进行数学运算、比较运算和跳转控制等。本章将实现线程共享的运行时数据区，包括方法区和运行时常量池。
@@ -5940,914 +5948,879 @@ func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
 本章讨论了方法调用和返回，并且实现了类初始化逻辑。如果说在前面几章里，我们的Java虚拟机还是个小baby只会爬的话，到了本章结尾，它已经可以满地跑了。下一章将讨论数组和字符串，届时，我们的小baby就有更多的玩具可以玩耍了。
 
 ## 第8章 数组和字符串
-----第359页---20170706001----
-在大部分编程语言中，数组和字符串都是最基本的数据类型。
-Java虚拟机直接支持数组，对字符串的支持则由java.lang.String和相
-关的类提供。本章分为两部分，前半部分讨论数组和数组相关指
-令，后半部分讨论字符串。
-在本章的讨论中，数组 一般指数组对象 ；在不至于引起混淆
-的情况下，也可能指数组类 ；在其他情况下，会明确指出是数组类
-还是数组对象 。如果数组的元素是基本类型，就把它叫作基本类型
-数组 ，否则，数组的元素是引用类型，把它叫作引用类型数组 。基
-本类型数组肯定都是一维数组 ，如果引用类型数组的元素也是数
-组，那么它就是多维数组 。
-开始学习本章之前，还是先把目录结构准备好。复制ch07目
-录，改名为ch08。修改main.go等文件，把import语句中的ch07全都替
-换成ch08。本章对目录结构没有太大的调整。8.1 数组概述
-数组在Java虚拟机中是个比较特殊的概念。为什么这么说呢？
-有下面几个原因:
-首先，数组类和普通的类是不同的。普通的类从class文件中加
-载，但是数组类由Java虚拟机在运行时生成。数组的类名是左方括
-号([)+数组元素的类型描述符；数组的类型描述符就是类名本身。
-例如，int[]的类名是[I, int[][]的类名是[[I, Object[]的类名是
-[Ljava/lang/Object;, String[][]的类名是[[java/lang/String;，等等。
-其次，创建数组的方式和创建普通对象的方式不同。普通对象
-由new指令创建，然后由构造函数初始化。基本类型数组由newarray
-指令创建；引用类型数组由anewarray指令创建；另外还有一个专门
-的multianewarray指令用于创建多维数组。
-最后，很显然，数组和普通对象存放的数据也是不同的。普通
-对象中存放的是实例变量，通过putfield和getfield指令存取。数组对
-象中存放的则是数组元素，通过<t>aload和<t>astore系列指令按索
-引存取。其中<t>可以是a、b、c、d、f、i、l或者s，分别用于存取引用、byte、char、double、float、int、long或short类型的数组。另外，还有一
-个arraylength指令，用于获取数组长度。
-Java虚拟机规范给了实现者充分的自由来实现数组，下面就动
-手吧!8.2 数组实现
-将在类和对象的基础上实现数组类和数组对象，先来看数组
-对象。8.2.1 数组对象
-和普通对象一样，数组也是分配在堆中的，通过引用来使用。
-所以需要改造Object结构体，让它既可以表示普通的对象，也可以
-表示数组。打开ch08\rtda\heap\object.go，修改Object结构体，改动如
-下：
+在大部分编程语言中，数组和字符串都是最基本的数据类型。Java虚拟机直接支持数组，对字符串的支持则由java.lang.String和相关的类提供。本章分为两部分，前半部分讨论数组和数组相关指令，后半部分讨论字符串。
+
+在本章的讨论中，数组 一般指数组对象 ；在不至于引起混淆的情况下，也可能指数组类 ；在其他情况下，会明确指出是数组类还是数组对象 。如果数组的元素是基本类型，就把它叫作基本类型数组 ，否则，数组的元素是引用类型，把它叫作引用类型数组 。基本类型数组肯定都是一维数组 ，如果引用类型数组的元素也是数组，那么它就是多维数组。
+
+开始学习本章之前，还是先把目录结构准备好。复制ch07目录，改名为ch08。修改main.go等文件，把import语句中的ch07全都替换成ch08。本章对目录结构没有太大的调整。
+
+### 8.1 数组概述
+数组在Java虚拟机中是个比较特殊的概念。为什么这么说呢？有下面几个原因：
+
+首先，数组类和普通的类是不同的。普通的类从class文件中加载，但是数组类由Java虚拟机在运行时生成。数组的类名是左方括号([)+数组元素的类型描述符；数组的类型描述符就是类名本身。例如，int[]的类名是[I, int[][]的类名是[[I, Object[]的类名是[Ljava/lang/Object;, String[][]的类名是[[java/lang/String;，等等。
+
+其次，创建数组的方式和创建普通对象的方式不同。普通对象由new指令创建，然后由构造函数初始化。基本类型数组由newarray指令创建；引用类型数组由anewarray指令创建；另外还有一个专门的multianewarray指令用于创建多维数组。
+
+最后，很显然，数组和普通对象存放的数据也是不同的。普通对象中存放的是实例变量，通过putfield和getfield指令存取。数组对象中存放的则是数组元素，通过<t>aload和<t>astore系列指令按索引存取。其中<t>可以是a、b、c、d、f、i、l或者s，分别用于存取引用、byte、char、double、float、int、long或short类型的数组。另外，还有一个arraylength指令，用于获取数组长度。
+
+Java虚拟机规范给了实现者充分的自由来实现数组，下面就动手吧！
+
+### 8.2 数组实现
+将在类和对象的基础上实现数组类和数组对象，先来看数组对象。
+
+#### 8.2.1 数组对象
+和普通对象一样，数组也是分配在堆中的，通过引用来使用。所以需要改造Object结构体，让它既可以表示普通的对象，也可以表示数组。打开ch08\rtda\heap\object.go，修改Object结构体，改动如下：
+``` go
 type Object struct {
-class
-*Class
-data
-interface{}
+	class  *Class
+	data   interface{}
 }
-把fields字段改为data，类型也从Slots变成了interface{}。Go语
-言的interface{}类型很像C语言中的void*，该类型的变量可以容纳
-任何类型的值。对于普通对象来说，data字段中存放的仍然还是
-Slots变量。但是对于数组，可以在其中放各种类型的数组，详见下
-文。newObject()用来创建普通对象，因此需要做相应的调整，改动
-如下：
+```
+把fields字段改为data，类型也从Slots变成了interface{}。Go语言的interface{}类型很像C语言中的void*，该类型的变量可以容纳任何类型的值。对于普通对象来说，data字段中存放的仍然还是Slots变量。但是对于数组，可以在其中放各种类型的数组，详见下文。newObject()用来创建普通对象，因此需要做相应的调整，改动如下：
+``` go
 func newObject(class *Class) *Object {
-return &Object{
-class: class,
-data: newSlots(class.instanceSlotCount),
+	return &Object{
+		class: class,
+		data: newSlots(class.instanceSlotCount),
+	}
 }
-}因为Fields()方法也仍然只针对普通对象，所以它的代码也需
-要做相应调整，如下所示：
+```
+因为Fields()方法也仍然只针对普通对象，所以它的代码也需要做相应调整，如下所示：
+``` go
 func (self *Object) Fields() Slots {
-return self.data.(Slots)
+	return self.data.(Slots)
 }
-需要给Object结构体添加几个数组特有的方法，为了让代码更
-加清晰，在单独的文件中定义这些方法。在ch08/rtda/heap目录下创
-建array_object.go文件，在其中实现8个方法，代码如下：
+```
+需要给Object结构体添加几个数组特有的方法，为了让代码更加清晰，在单独的文件中定义这些方法。在ch08/rtda/heap目录下创建array_object.go文件，在其中实现8个方法，代码如下：
+``` go
 package heap
-func (self *Object)
-func (self *Object)
-func (self *Object)
-func (self *Object)
-func (self *Object)
-func (self *Object)
-func (self *Object)
-func (self *Object)
-Bytes() []int8 { return self.data.([]int8) }
-Shorts() []int16 { return self.data.([]int16) }
-Ints() []int32 { return self.data.([]int32) }
-Longs() []int64 { return self.data.([]int64) }
-Chars() []uint16 { return self.data.([]uint16) }
-Floats() []float32 { return self.data.([]float32) }
-Doubles() []float64 { return self.data.([]float64) }
-Refs() []*Object { return self.data.([]*Object) }
-上面这8个方法分别针对引用类型数组和7种基本类型数组返
-回具体的数组数据。继续编辑array_object.go文件，在其中添加
-ArrayLength()方法，代码如下：
+
+func (self *Object) Bytes() []int8      { return self.data.([]int8) }
+func (self *Object) Shorts() []int16    { return self.data.([]int16) }
+func (self *Object) Ints() []int32      { return self.data.([]int32) }
+func (self *Object) Longs() []int64     { return self.data.([]int64) }
+func (self *Object) Chars() []uint16    { return self.data.([]uint16) }
+func (self *Object) Floats() []float32  { return self.data.([]float32) }
+func (self *Object) Doubles() []float64 { return self.data.([]float64) }
+func (self *Object) Refs() []*Object    { return self.data.([]*Object) }
+```
+上面这8个方法分别针对引用类型数组和7种基本类型数组返回具体的数组数据。继续编辑array_object.go文件，在其中添加ArrayLength()方法，代码如下：
+``` go
 func (self *Object) ArrayLength() int32 {
-switch self.fields.(type) {
-case []int8: return int32(len(self.data.([]int8)))
-case []int16: return int32(len(self.data.([]int16)))
-case []int32: return int32(len(self.data.([]int32)))
-case []int64: return int32(len(self.data.([]int64)))case []uint16: return int32(len(self.data.([]uint16)))
-case []float32: return int32(len(self.data.([]float32)))
-case []float64: return int32(len(self.data.([]float64)))
-case []*Object: return int32(len(self.data.([]*Object)))
-default: panic("Not array!")
+	switch self.fields.(type) {
+	case []int8:
+		return int32(len(self.data.([]int8)))
+	case []int16:
+		return int32(len(self.data.([]int16)))
+	case []int32:
+		return int32(len(self.data.([]int32)))
+	case []int64:
+		return int32(len(self.data.([]int64)))
+	case []uint16:
+		return int32(len(self.data.([]uint16)))
+	case []float32:
+		return int32(len(self.data.([]float32)))
+	case []float64:
+		return int32(len(self.data.([]float64)))
+	case []*Object:
+		return int32(len(self.data.([]*Object)))
+	default:
+		panic("Not array!")
+	}
 }
-}
-读者也许会好奇，为什么返回数组数据的方法有8个，但却只
-有一个统一的ArrayLength()方法呢？答案是，这些方法主要是供
-<t>aload、<t>astore和arraylength指令使用的。<t>aload和<t>astore系
-列指令各有8条，所以针对每种类型都提供一个方法，返回相应的
-数组数据。因为arraylength指令只有一条，所以ArrayLength()方法
-需要自己判断数组类型。
-那么为什么没有实现Booleans()方法呢？因为将使用[]int8来
-表示布尔数组，所以只需要Bytes()方法即可。心急的读者可以先跳
-到8.3小节，看看数组相关指令是如何实现的。下面实现数组类。8.2.2 数组类
-不需要修改Class结构体，只给它添加几个数组特有的方法即
-可。为了强调这些方法只针对数组类，同时也避免class.go文件变得
-过长，把这些方法定义在新的文件中。
-在ch08/rtda/heap目录下创建array_class.go文件，在其中定义
-NewArray()方法，代码如下：
+```
+读者也许会好奇，为什么返回数组数据的方法有8个，但却只有一个统一的ArrayLength()方法呢？答案是，这些方法主要是供<t>aload、<t>astore和arraylength指令使用的。<t>aload和<t>astore系列指令各有8条，所以针对每种类型都提供一个方法，返回相应的数组数据。因为arraylength指令只有一条，所以ArrayLength()方法需要自己判断数组类型。
+
+那么为什么没有实现Booleans()方法呢？因为将使用[]int8来表示布尔数组，所以只需要Bytes()方法即可。心急的读者可以先跳到8.3小节，看看数组相关指令是如何实现的。下面实现数组类。
+
+#### 8.2.2 数组类
+不需要修改Class结构体，只给它添加几个数组特有的方法即可。为了强调这些方法只针对数组类，同时也避免class.go文件变得过长，把这些方法定义在新的文件中。
+
+在ch08/rtda/heap目录下创建array_class.go文件，在其中定义NewArray()方法，代码如下：
+``` go
 func (self *Class) NewArray(count uint) *Object {
-if !self.IsArray() {
-panic("Not array class: " + self.name)
+	if !self.IsArray() {
+		panic("Not array class: " + self.name)
+	}
+	switch self.Name() {
+	case "[Z":
+		return &Object{self, make([]int8, count)}
+	case "[B":
+		return &Object{self, make([]int8, count)}
+	case "[C":
+		return &Object{self, make([]uint16, count)}
+	case "[S":
+		return &Object{self, make([]int16, count)}
+	case "[I":
+		return &Object{self, make([]int32, count)}
+	case "[J":
+		return &Object{self, make([]int64, count)}
+	case "[F":
+		return &Object{self, make([]float32, count)}
+	case "[D":
+		return &Object{self, make([]float64, count)}
+	default:
+		return &Object{self, make([]*Object, count)}
+	}
 }
-switch self.Name() {
-case "[Z": return &Object{self, make([]int8, count)}
-case "[B": return &Object{self, make([]int8, count)}
-case "[C": return &Object{self, make([]uint16, count)}
-case "[S": return &Object{self, make([]int16, count)}
-case "[I": return &Object{self, make([]int32, count)}
-case "[J": return &Object{self, make([]int64, count)}
-case "[F": return &Object{self, make([]float32, count)}
-case "[D": return &Object{self, make([]float64, count)}
-default: return &Object{self, make([]*Object, count)}
+```
+NewArray()方法专门用来创建数组对象。如果类并不是数组类，就调用panic()函数终止程序执行，否则根据数组类型创建数组对象。注意:布尔数组是使用字节数组来表示的。继续编辑array_class.go，在其中定义IsArray()方法，代码如下：
+``` go
+func (self *Class) IsArray() bool {
+	return self.name[0] == '['
 }
-}
-NewArray()方法专门用来创建数组对象。如果类并不是数组
-类，就调用panic()函数终止程序执行，否则根据数组类型创建数组
-对象。注意:布尔数组是使用字节数组来表示的。继续编辑
-array_class.go，在其中定义IsArray()方法，代码如下：func (self *Class) IsArray() bool {
-return self.name[0] == '['
-}
-还会在array_class.go文件中实现其他几个方法，等用到时再介
-绍。下面修改类加载器，让它可以加载数组类。8.2.3 加载数组类
-打开ch08\rtda\heap\class_loader.go文件，修改LoadClass()方法，
-改动如下：
+```
+还会在array_class.go文件中实现其他几个方法，等用到时再介绍。下面修改类加载器，让它可以加载数组类。
+
+#### 8.2.3 加载数组类
+打开ch08\rtda\heap\class_loader.go文件，修改LoadClass()方法，改动如下：
+``` go
 func (self *ClassLoader) LoadClass(name string) *Class {
-if class, ok := self.classMap[name]; ok {
-return class // 已经加载
+	if class, ok := self.classMap[name]; ok {
+		return class // 已经加载
+	}
+	if name[0] == '[' {
+		return self.loadArrayClass(name)
+	}
+	return self.loadNonArrayClass(name)
 }
-if name[0] == '[' {
-return self.loadArrayClass(name)
-}
-return self.loadNonArrayClass(name)
-}
-这里增加了类型判断，如果要加载的类是数组类，则调用新的
-loadArrayClass()方法，否则还按照原来的逻辑。loadArrayClass()方
-法需要生成一个Class结构体实例，代码如下：
+```
+这里增加了类型判断，如果要加载的类是数组类，则调用新的loadArrayClass()方法，否则还按照原来的逻辑。loadArrayClass()方法需要生成一个Class结构体实例，代码如下：
+``` go
 func (self *ClassLoader) loadArrayClass(name string) *Class {
-class := &Class{
-accessFlags:
-ACC_PUBLIC, // todo
-name:
-name,
-loader:
-self,
-initStarted:
-true,
-superClass:
-self.LoadClass("java/lang/Object"),
-interfaces:
-[]*Class{
-self.LoadClass("java/lang/Cloneable"),
-self.LoadClass("java/io/Serializable"),
-},
+	class := &Class{
+		accessFlags: ACC_PUBLIC, // todo
+		name:        name,
+		loader:      self,
+		initStarted: true,
+		superClass:  self.LoadClass("java/lang/Object"),
+		interfaces: []*Class{
+			self.LoadClass("java/lang/Cloneable"),
+			self.LoadClass("java/io/Serializable"),
+		},
+	}
+	self.classMap[name] = class
+	return class
 }
-self.classMap[name] = class
-return class
-}前面三个字段的值比较好理解，不多解释。因为数组类不需要
-初始化，所以把initStarted字段设置成true。数组类的超类是
-java.lang.Object，并且实现了java.lang.Cloneable和java.io.Serializable
-接口。类加载器改造完毕，下面来实现数组相关指令。8.3 数组相关指令
-本节要实现20条指令，其中newarray、anewarray、
-multianewarray和arraylength指令属于引用类指令；<t>aload和
-<t>astore系列指令各有8条，分别属于加载类和存储类指令。下面的
-Java程序演示了部分数组相关指令的用处。
+```
+前面三个字段的值比较好理解，不多解释。因为数组类不需要初始化，所以把initStarted字段设置成true。数组类的超类是java.lang.Object，并且实现了java.lang.Cloneable和java.io.Serializable接口。类加载器改造完毕，下面来实现数组相关指令。
+
+### 8.3 数组相关指令
+本节要实现20条指令，其中newarray、anewarray、multianewarray和arraylength指令属于引用类指令；<t>aload和<t>astore系列指令各有8条，分别属于加载类和存储类指令。下面的Java程序演示了部分数组相关指令的用处。
+``` java
 public class ArrayDemo {
-public static void main(String[] args) {
-int[] a1 = new int[10];
-// newarray
-String[] a2 = new String[10];
-// anewarray
-int[][] a3 = new int[10][10];
-// multianewarray
-int x = a1.length;
-// arraylength
-a1[0] = 100;
-// iastore
-int y = a1[0];
-// iaload
-a2[0] = "abc";
-// aastore
-String s = a2[0];
-// aaload
+    public static void main(String[] args) {
+        int[] a1 = new int[10];         // newarray
+        String[] a2 = new String[10];   // anewarray
+        int[][] a3 = new int[10][10];   // multianewarray
+        int x = a1.length;              // arraylength
+        a1[0] = 100;                    // iastore
+        int y = a1[0];                  // iaload
+        a2[0] = "abc";                  // aastore
+        String s = a2[0];               // aaload
+    }
 }
-}
-下面从newarray指令开始。8.3.1 newarray指令
-newarray指令用来创建基本类型数组，包括boolean[]、byte[]、
-char[]、short[]、int[]、long[]、float[]和double[]8种。在
-ch08\instructions\references目录下创建newarray.go，在其中定义
-newarray指令，代码如下：
+```
+下面从newarray指令开始。
+
+#### 8.3.1 newarray指令
+newarray指令用来创建基本类型数组，包括boolean[]、byte[]、char[]、short[]、int[]、long[]、float[]和double[]8种。在ch08\instructions\references目录下创建newarray.go，在其中定义newarray指令，代码如下：
+``` go
 package references
 import "jvmgo/ch08/instructions/base"
 import "jvmgo/ch08/rtda"
 import "jvmgo/ch08/rtda/heap"
-const (...) // atype 常量
+const (
+	...
+) // atype 常量
 // Create new array of primitive
 type NEW_ARRAY struct {
-atype uint8
+	atype uint8
 }
-newarray指令需要两个操作数。第一个操作数是一个uint8整
-数，在字节码中紧跟在指令操作码后面，表示要创建哪种类型的数
-组。Java虚拟机规范把这个操作数叫作atype，并且规定了它的有效
-值。把这些值定义为常量，代码如下：
+```
+newarray指令需要两个操作数。第一个操作数是一个uint8整数，在字节码中紧跟在指令操作码后面，表示要创建哪种类型的数组。Java虚拟机规范把这个操作数叫作atype，并且规定了它的有效值。把这些值定义为常量，代码如下：
+``` go
 const (
-AT_BOOLEAN
-AT_CHAR
-AT_FLOAT
-AT_DOUBLE
-AT_BYTE
-AT_SHORT
-=
-=
-=
-=
-=
-=
-4
-5
-6
-7
-8
-9AT_INT
-AT_LONG
-= 10
-= 11
+	AT_BOOLEAN = 4
+	AT_CHAR    = 5
+	AT_FLOAT   = 6
+	AT_DOUBLE  = 7
+	AT_BYTE    = 8
+	AT_SHORT   = 9
+	AT_INT     = 10
+	AT_LONG    = 11
 )
+```
 FetchOperands()方法读取atype的值，代码如下：
+``` go
 func (self *NEW_ARRAY) FetchOperands(reader *base.BytecodeReader) {
-self.atype = reader.ReadUint8()
+	self.atype = reader.ReadUint8()
 }
-newarray指令的第二个操作数是count，从操作数栈中弹出，表
-示数组长度。Execute()方法根据atype和count创建基本类型数组，
-代码如下：
+```
+newarray指令的第二个操作数是count，从操作数栈中弹出，表示数组长度。Execute()方法根据atype和count创建基本类型数组，代码如下：
+``` go
 func (self *NEW_ARRAY) Execute(frame *rtda.Frame) {
-stack := frame.OperandStack()
-count := stack.PopInt()
-if count < 0 {
-panic("java.lang.NegativeArraySizeException")
+	stack := frame.OperandStack()
+	count := stack.PopInt()
+	if count < 0 {
+		panic("java.lang.NegativeArraySizeException")
+	}
+	classLoader := frame.Method().Class().Loader()
+	arrClass := getPrimitiveArrayClass(classLoader, self.atype)
+	arr := arrClass.NewArray(uint(count))
+	stack.PushRef(arr)
 }
-classLoader := frame.Method().Class().Loader()
-arrClass := getPrimitiveArrayClass(classLoader, self.atype)
-arr := arrClass.NewArray(uint(count))
-stack.PushRef(arr)
+```
+如果count小于0，则抛出NegativeArraySizeException异常，否则根据atype值使用当前类的类加载器加载数组类，然后创建数组对象并推入操作数栈。getPrimitiveArrayClass()函数的代码如下：
+``` go
+func getPrimitiveArrayClass(loader *heap.ClassLoader, atype uint8) *heap.Class {
+	switch atype {	
+	case AT_BOOLEAN:
+		return loader.LoadClass("[Z")
+	case AT_BYTE:
+		return loader.LoadClass("[B")
+	case AT_CHAR:
+		return loader.LoadClass("[C")
+	case AT_SHORT:
+		return loader.LoadClass("[S")
+	case AT_INT:
+		return loader.LoadClass("[I")
+	case AT_LONG:
+		return loader.LoadClass("[J")
+	case AT_FLOAT:
+		return loader.LoadClass("[F")
+	case AT_DOUBLE:
+		return loader.LoadClass("[D")
+	default:
+		panic("Invalid atype!")
+	}
 }
-如果count小于0，则抛出NegativeArraySizeException异常，否则
-根据atype值使用当前类的类加载器加载数组类，然后创建数组对
-象并推入操作数栈。getPrimitiveArrayClass()函数的代码如下：
-func getPrimitiveArrayClass(loader *heap.ClassLoader, atype uint8) *heap.Classcase AT_BOOLEAN:
-return loader.LoadClass("[Z")
-case AT_BYTE:
-return loader.LoadClass("[B")
-case AT_CHAR:
-return loader.LoadClass("[C")
-case AT_SHORT:
-return loader.LoadClass("[S")
-case AT_INT:
-return loader.LoadClass("[I")
-case AT_LONG:
-return loader.LoadClass("[J")
-case AT_FLOAT:
-return loader.LoadClass("[F")
-case AT_DOUBLE:
-return loader.LoadClass("[D")
-default: panic("Invalid atype!")
-}
-}
-下面实现anewarray指令。8.3.2 anewarray指令
-anewarray指令用来创建引用类型数组。在
-ch08\instructions\references目录下创建anewarray.go文件，在其中定
-义anewarray指令，代码如下：
+```
+下面实现anewarray指令。
+
+#### 8.3.2 anewarray指令
+anewarray指令用来创建引用类型数组。在ch08\instructions\references目录下创建anewarray.go文件，在其中定义anewarray指令，代码如下：
+``` go
 package references
 import "jvmgo/ch08/instructions/base"
 import "jvmgo/ch08/rtda"
 import "jvmgo/ch08/rtda/heap"
 // Create new array of reference
 type ANEW_ARRAY struct{ base.Index16Instruction }
-anewarray指令也需要两个操作数。第一个操作数是uint16索
-引，来自字节码。通过这个索引可以从当前类的运行时常量池中找
-到一个类符号引用，解析这个符号引用就可以得到数组元素的类。
-第二个操作数是数组长度，从操作数栈中弹出。Execute()方法根据
-数组元素的类型和数组长度创建引用类型数组，代码如下：
+```
+anewarray指令也需要两个操作数。第一个操作数是uint16索引，来自字节码。通过这个索引可以从当前类的运行时常量池中找到一个类符号引用，解析这个符号引用就可以得到数组元素的类。第二个操作数是数组长度，从操作数栈中弹出。Execute()方法根据数组元素的类型和数组长度创建引用类型数组，代码如下：
+``` go
 func (self *ANEW_ARRAY) Execute(frame *rtda.Frame) {
-cp := frame.Method().Class().ConstantPool()
-classRef := cp.GetConstant(self.Index).(*rtc.ClassRef)
-componentClass := classRef.ResolvedClass()
-stack := frame.OperandStack()
-count := stack.PopInt()
-if count < 0 {
-panic("java.lang.NegativeArraySizeException")
+	cp := frame.Method().Class().ConstantPool()
+	classRef := cp.GetConstant(self.Index).(*rtc.ClassRef)
+	componentClass := classRef.ResolvedClass()
+	stack := frame.OperandStack()
+	count := stack.PopInt()
+	if count < 0 {
+		panic("java.lang.NegativeArraySizeException")
+	}
+	arrClass := componentClass.ArrayClass()
+	arr := arrClass.NewArray(uint(count))
+	stack.PushRef(arr)
 }
-arrClass := componentClass.ArrayClass()
-arr := arrClass.NewArray(uint(count))
-stack.PushRef(arr)}
-上面的代码比较容易理解，这里就不详细解释了。Class结构体
-的ArrayClass()方法返回与类对应的数组类，代码在class.go文件
-中，如下所示：
+```
+上面的代码比较容易理解，这里就不详细解释了。Class结构体的ArrayClass()方法返回与类对应的数组类，代码在class.go文件中，如下所示：
+``` go
 func (self *Class) ArrayClass() *Class {
-arrayClassName := getArrayClassName(self.name)
-return self.loader.LoadClass(arrayClassName)
+	arrayClassName := getArrayClassName(self.name)
+	return self.loader.LoadClass(arrayClassName)
 }
-先根据类名得到数组类名，然后调用类加载器加载数组类即
-可。在ch08\rtda\heap目录下创建class_name_helper.go文件，在其中
-实现getArrayClassName()函数，代码如下：
+```
+先根据类名得到数组类名，然后调用类加载器加载数组类即可。在ch08\rtda\heap目录下创建class_name_helper.go文件，在其中实现getArrayClassName()函数，代码如下：
+``` go
 package heap
 func getArrayClassName(className string) string {
-return "[" + toDescriptor(className)
+	return "[" + toDescriptor(className)
 }
-把类名转变成类型描述符，然后在前面加上方括号即可。在
-class_name_helper.go文件中实现toDescriptor()函数，代码如下：
+```
+把类名转变成类型描述符，然后在前面加上方括号即可。在class_name_helper.go文件中实现toDescriptor()函数，代码如下：
+``` go
 func toDescriptor(className string) string {
-if className[0] == '[' {
-return className
+	if className[0] == '[' {
+		return className
+	}
+	if d, ok := primitiveTypes[className]; ok {
+		return d
+	}
+	return "L" + className + ";"
 }
-if d, ok := primitiveTypes[className]; ok {
-return d
-}return "L" + className + ";"
-}
-如果是数组类名，描述符就是类名，直接返回即可。如果是基
-本类型名，返回对应的类型描述符，否则肯定是普通的类名，前面
-加上方括号，结尾加上分号即可得到类型描述符。primitiveTypes变
-量也在class_name_helper.go文件中定义，代码如下：
+```
+如果是数组类名，描述符就是类名，直接返回即可。如果是基本类型名，返回对应的类型描述符，否则肯定是普通的类名，前面加上方括号，结尾加上分号即可得到类型描述符。primitiveTypes变量也在class_name_helper.go文件中定义，代码如下：
+``` go
 var primitiveTypes = map[string]string{
-"void":
-"V",
-"boolean":
-"Z",
-"byte":
-"B",
-"short":
-"S",
-"int":
-"I",
-"long":
-"J",
-"char":
-"C",
-"float":
-"F",
-"double":
-"D",
+	"void":    "V",
+	"boolean": "Z",
+	"byte":    "B",
+	"short":   "S",
+	"int":     "I",
+	"long":    "J",
+	"char":    "C",
+	"float":   "F",
+	"double":  "D",
 }
-除了newarray和anewarray，还有一个multianewarray指令，专门
-用来创建多维数组。这个指令比较复杂，放到最后实现。下面来看
-arraylength指令。8.3.3 arraylength指令
-arraylength指令用于获取数组长度。在
-ch08\instructions\references目录下创建arraylength.go，在其中定义
-arraylength指令，代码如下：
+```
+除了newarray和anewarray，还有一个multianewarray指令，专门用来创建多维数组。这个指令比较复杂，放到最后实现。下面来看arraylength指令。
+
+#### 8.3.3 arraylength指令
+arraylength指令用于获取数组长度。在ch08\instructions\references目录下创建arraylength.go，在其中定义arraylength指令，代码如下：
+``` go
 package references
 import "jvmgo/ch08/instructions/base"
 import "jvmgo/ch08/rtda"
 // Get length of array
 type ARRAY_LENGTH struct{ base.NoOperandsInstruction }
-arraylength指令只需要一个操作数，即从操作数栈顶弹出的数
-组引用。Execute()方法把数组长度推入操作数栈顶，代码如下：
+```
+arraylength指令只需要一个操作数，即从操作数栈顶弹出的数组引用。Execute()方法把数组长度推入操作数栈顶，代码如下：
+``` go
 func (self *ARRAY_LENGTH) Execute(frame *rtda.Frame) {
-stack := frame.OperandStack()
-arrRef := stack.PopRef()
-if arrRef == nil {
-panic("java.lang.NullPointerException")
+	stack := frame.OperandStack()
+	arrRef := stack.PopRef()
+	if arrRef == nil {
+		panic("java.lang.NullPointerException")
+	}
+	arrLen := arrRef.ArrayLength()
+	stack.PushInt(arrLen)
 }
-arrLen := arrRef.ArrayLength()
-stack.PushInt(arrLen)
-}
-如果数组引用是null，则需要抛出NullPointerException异常，否
-则取数组长度，推入操作数栈顶即可。下面实现<t>aload和
-<t>astore系列指令。8.3.4 <t>aload指令
-<t>aload系列指令按索引取数组元素值，然后推入操作数栈。
-在ch08\instructions\loads目录下创建xaload.go文件，在其中定义8条
-指令，代码如下：
+```
+如果数组引用是null，则需要抛出NullPointerException异常，否则取数组长度，推入操作数栈顶即可。下面实现<t>aload和<t>astore系列指令。
+
+#### 8.3.4 <t>aload指令
+<t>aload系列指令按索引取数组元素值，然后推入操作数栈。在ch08\instructions\loads目录下创建xaload.go文件，在其中定义8条指令，代码如下：
+``` go
 package loads
 import "jvmgo/ch08/instructions/base"
 import "jvmgo/ch08/rtda"
 import "jvmgo/ch08/rtda/heap"
-type AALOAD struct{ base.NoOperandsInstruction
-type BALOAD struct{ base.NoOperandsInstruction
-type CALOAD struct{ base.NoOperandsInstruction
-type DALOAD struct{ base.NoOperandsInstruction
-type FALOAD struct{ base.NoOperandsInstruction
-type IALOAD struct{ base.NoOperandsInstruction
-type LALOAD struct{ base.NoOperandsInstruction
-type SALOAD struct{ base.NoOperandsInstruction
-}
-}
-}
-}
-}
-}
-}
-}
-这8条指令的实现大同小异，为了节约篇幅，以aaload指令为例
-进行说明。其Execute()方法如下：
+type AALOAD struct{ base.NoOperandsInstruction }
+type BALOAD struct{ base.NoOperandsInstruction }
+type CALOAD struct{ base.NoOperandsInstruction }
+type DALOAD struct{ base.NoOperandsInstruction }
+type FALOAD struct{ base.NoOperandsInstruction }
+type IALOAD struct{ base.NoOperandsInstruction }
+type LALOAD struct{ base.NoOperandsInstruction }
+type SALOAD struct{ base.NoOperandsInstruction }
+```
+这8条指令的实现大同小异，为了节约篇幅，以aaload指令为例进行说明。其Execute()方法如下：
+``` go
 func (self *AALOAD) Execute(frame *rtda.Frame) {
-stack := frame.OperandStack()
-index := stack.PopInt()
-arrRef := stack.PopRef()
-checkNotNil(arrRef)
-refs := arrRef.Refs()
-checkIndex(len(refs), index)
-stack.PushRef(refs[index])
+	stack := frame.OperandStack()
+	index := stack.PopInt()
+	arrRef := stack.PopRef()
+	checkNotNil(arrRef)
+	refs := arrRef.Refs()
+	checkIndex(len(refs), index)
+	stack.PushRef(refs[index])
 }
-首先从操作数栈中弹出第一个操作数:数组索引，然后弹出第二个操作数:数组引用。如果数组引用是null，则抛出
-NullPointerException异常。这个判断在checkNotNil()函数中，代码
-如下：
+```
+首先从操作数栈中弹出第一个操作数:数组索引，然后弹出第二个操作数:数组引用。如果数组引用是null，则抛出NullPointerException异常。这个判断在checkNotNil()函数中，代码如下：
+``` go
 func checkNotNil(ref *heap.Object) {
-if ref == nil {
-panic("java.lang.NullPointerException")
+	if ref == nil {
+		panic("java.lang.NullPointerException")
+	}
 }
-}
-如果数组索引小于0，或者大于等于数组长度，则抛出
-ArrayIndexOutOfBoundsException。这个检查在checkIndex()函数
-中，代码如下：
+```
+如果数组索引小于0，或者大于等于数组长度，则抛出ArrayIndexOutOfBoundsException。这个检查在checkIndex()函数中，代码如下：
+``` go
 func checkIndex(arrLen int, index int32) {
-if index < 0 || index >= int32(arrLen) {
-panic("ArrayIndexOutOfBoundsException")
+	if index < 0 || index >= int32(arrLen) {
+		panic("ArrayIndexOutOfBoundsException")
+	}
 }
-}
-如果一切正常，则按索引取出数组元素，推入操作数栈顶。8.3.5 <t>astore指令
-<t>astore系列指令按索引给数组元素赋值。在
-ch08\instructions\stores目录下创建xastore.go文件，在其中定义8条指
-令，代码如下：
+```
+如果一切正常，则按索引取出数组元素，推入操作数栈顶。
+
+#### 8.3.5 <t>astore指令
+<t>astore系列指令按索引给数组元素赋值。在ch08\instructions\stores目录下创建xastore.go文件，在其中定义8条指令，代码如下：
+``` go
 package stores
 import "jvmgo/ch08/instructions/base"
 import "jvmgo/ch08/rtda"
 import "jvmgo/ch08/rtda/heap"
-type AASTORE struct{ base.NoOperandsInstruction
-type BASTORE struct{ base.NoOperandsInstruction
-type CASTORE struct{ base.NoOperandsInstruction
-type DASTORE struct{ base.NoOperandsInstruction
-type FASTORE struct{ base.NoOperandsInstruction
-type IASTORE struct{ base.NoOperandsInstruction
-type LASTORE struct{ base.NoOperandsInstruction
-type SASTORE struct{ base.NoOperandsInstruction
-}
-}
-}
-}
-}
-}
-}
-}
-这8条指令的实现是大同小异，以iastore为例进行说明，其
-Execute()方法如下：
+type AASTORE struct{ base.NoOperandsInstruction }
+type BASTORE struct{ base.NoOperandsInstruction }
+type CASTORE struct{ base.NoOperandsInstruction }
+type DASTORE struct{ base.NoOperandsInstruction }
+type FASTORE struct{ base.NoOperandsInstruction }
+type IASTORE struct{ base.NoOperandsInstruction }
+type LASTORE struct{ base.NoOperandsInstruction }
+type SASTORE struct{ base.NoOperandsInstruction }
+```
+这8条指令的实现是大同小异，以iastore为例进行说明，其Execute()方法如下：
+``` go
 func (self *IASTORE) Execute(frame *rtda.Frame) {
-stack := frame.OperandStack()
-val := stack.PopInt()
-index := stack.PopInt()
-arrRef := stack.PopRef()
-checkNotNil(arrRef)
-ints := arrRef.Ints()
-checkIndex(len(ints), index)
-ints[index] = int32(val)
-}iastore指令的三个操作数分别是：要赋给数组元素的值、数组
-索引、数组引用，依次从操作数栈中弹出。如果数组引用是null，则
-抛出NullPointerException。如果数组索引小于0或者大于等于数组
-长度，则抛出ArrayIndexOutOfBoundsException异常。这两个检查和
-<t>aload系列指令一样。如果一切正常，则按索引给数组元素赋值。
-<t>aload和<t>astore指令实现好了，下面来看multianewarray指
-令。8.3.6 multianewarray指令
-multianewarray指令创建多维数组。在
-ch08\instructions\references目录下创建multianewarray.go文件，在其
-中定义multianewarray指令，代码如下所示：
+	stack := frame.OperandStack()
+	val := stack.PopInt()
+	index := stack.PopInt()
+	arrRef := stack.PopRef()
+	checkNotNil(arrRef)
+	ints := arrRef.Ints()
+	checkIndex(len(ints), index)
+	ints[index] = int32(val)
+}
+```
+iastore指令的三个操作数分别是：要赋给数组元素的值、数组索引、数组引用，依次从操作数栈中弹出。如果数组引用是null，则抛出NullPointerException。如果数组索引小于0或者大于等于数组长度，则抛出ArrayIndexOutOfBoundsException异常。这两个检查和<t>aload系列指令一样。如果一切正常，则按索引给数组元素赋值。
+
+<t>aload和<t>astore指令实现好了，下面来看multianewarray指令。
+
+#### 8.3.6 multianewarray指令
+multianewarray指令创建多维数组。在ch08\instructions\references目录下创建multianewarray.go文件，在其中定义multianewarray指令，代码如下所示：
+``` go
 package references
 import "jvmgo/ch08/instructions/base"
 import "jvmgo/ch08/rtda"
 import "jvmgo/ch08/rtda/heap"
 // Create new multidimensional array
 type MULTI_ANEW_ARRAY struct {
-index
-uint16
-dimensions
-uint8
+	index      uint16
+	dimensions uint8
 }
-multianewarray指令的第一个操作数是个uint16索引，通过这个
-索引可以从运行时常量池中找到一个类符号引用，解析这个引用就
-可以得到多维数组类。第二个操作数是个uint8整数，表示数组维
-度。这两个操作数在字节码中紧跟在指令操作码后面，由
-FetchOperands()方法读取，代码如下：
+```
+multianewarray指令的第一个操作数是个uint16索引，通过这个索引可以从运行时常量池中找到一个类符号引用，解析这个引用就可以得到多维数组类。第二个操作数是个uint8整数，表示数组维度。这两个操作数在字节码中紧跟在指令操作码后面，由FetchOperands()方法读取，代码如下：
+``` go
 func (self *MULTI_ANEW_ARRAY) FetchOperands(reader *base.BytecodeReader) {
-self.index = reader.ReadUint16()
-self.dimensions = reader.ReadUint8()
+	self.index = reader.ReadUint16()
+	self.dimensions = reader.ReadUint8()
 }
-multianewarray指令还需要从操作数栈中弹出n个整数，分别代表每一个维度的数组长度。Execute()方法根据数组类、数组维度和
-各个维度的数组长度创建多维数组，代码如下：
+```
+multianewarray指令还需要从操作数栈中弹出n个整数，分别代表每一个维度的数组长度。Execute()方法根据数组类、数组维度和各个维度的数组长度创建多维数组，代码如下：
+``` go
 func (self *MULTI_ANEW_ARRAY) Execute(frame *rtda.Frame) {
-cp := frame.Method().Class().ConstantPool()
-classRef := cp.GetConstant(uint(self.index)).(*heap.ClassRef)
-arrClass := classRef.ResolvedClass()
-stack := frame.OperandStack()
-counts := popAndCheckCounts(stack, int(self.dimensions))
-arr := newMultiDimensionalArray(counts, arrClass)
-stack.PushRef(arr)
+	cp := frame.Method().Class().ConstantPool()
+	classRef := cp.GetConstant(uint(self.index)).(*heap.ClassRef)
+	arrClass := classRef.ResolvedClass()
+	stack := frame.OperandStack()
+	counts := popAndCheckCounts(stack, int(self.dimensions))
+	arr := newMultiDimensionalArray(counts, arrClass)
+	stack.PushRef(arr)
 }
+```
 这里提醒读者注意，在anewarray指令中，解析类符号引用后得
 到的是数组元素的类，而这里解析出来的直接就是数组类。
 popAndCheckCounts()函数从操作数栈中弹出n个int值，并且确保
 它们都大于等于0。如果其中任何一个小于0，则抛出
 NegativeArraySizeException异常。代码如下：
+``` go
 func popAndCheckCounts(stack *rtda.OperandStack, dimensions int) []int32 {
-counts := make([]int32, dimensions)
-for i := dimensions - 1; i >= 0; i-- {
-counts[i] = stack.PopInt()
-if counts[i] < 0 {
-panic("java.lang.NegativeArraySizeException")
+	counts := make([]int32, dimensions)
+	for i := dimensions - 1; i >= 0; i-- {
+		counts[i] = stack.PopInt()
+		if counts[i] < 0 {
+			panic("java.lang.NegativeArraySizeException")
+		}
+	}
+	return counts
 }
+```
+newMultiArray()函数创建多维数组，代码如下：
+``` go
+func newMultiDimensionalArray(counts []int32, arrClass *heap.Class) *heap.Object {
+	count := uint(counts[0])
+	arr := arrClass.NewArray(count)
+	if len(counts) > 1 {
+		refs := arr.Refs()
+		for i := range refs {
+			refs[i] = newMultiDimensionalArray(counts[1:], arrClass.ComponentClass
+		}
+	}
+	return arr
 }
-return counts
-}
-newMultiArray()函数创建多维数组，代码如下：func newMultiDimensionalArray(counts []int32, arrClass *heap.Class) *heap.Obje
-count := uint(counts[0])
-arr := arrClass.NewArray(count)
-if len(counts) > 1 {
-refs := arr.Refs()
-for i := range refs {
-refs[i] = newMultiDimensionalArray (counts[1:], arrClass.ComponentCla
-}
-}
-return arr
-}
-Class结构体的ComponentClass()方法返回数组类的元素类型
-在array_class.go文件中，代码如下：
+```
+Class结构体的ComponentClass()方法返回数组类的元素类型在array_class.go文件中，代码如下：
+``` go
 func (self *Class) ComponentClass() *Class {
-componentClassName := getComponentClassName(self.name)
-return self.loader.LoadClass(componentClassName)
+	componentClassName := getComponentClassName(self.name)
+	return self.loader.LoadClass(componentClassName)
 }
-ComponentClass()方法先根据数组类名推测出数组元素类名，
-然后用类加载器加载元素类即可。getComponentClassName()函数
-在ch08\rtda\heap\class_name_helper.go文件中，代码如下：
+```
+ComponentClass()方法先根据数组类名推测出数组元素类名，然后用类加载器加载元素类即可。getComponentClassName()函数在ch08\rtda\heap\class_name_helper.go文件中，代码如下：
+``` go
 func getComponentClassName(className string) string {
-if className[0] == '[' {
-componentTypeDescriptor := className[1:]
-return toClassName(componentTypeDescriptor)
+	if className[0] == '[' {
+		componentTypeDescriptor := className[1:]
+		return toClassName(componentTypeDescriptor)
+	}
+	panic("Not array: " + className)
 }
-panic("Not array: " + className)
-}
-数组类名以方括号开头，把它去掉就是数组元素的类型描述符，然后把类型描述符转成类名即可。toClassName()函数也在
-class_name_helper.go文件中，代码如下：
+```
+数组类名以方括号开头，把它去掉就是数组元素的类型描述符，然后把类型描述符转成类名即可。toClassName()函数也在class_name_helper.go文件中，代码如下：
+``` go
 func toClassName(descriptor string) string {
-if descriptor[0] == '[' { // array
-return descriptor
+	if descriptor[0] == '[' { // array
+		return descriptor
+	}
+	if descriptor[0] == 'L' { // object
+		return descriptor[1 : len(descriptor)-1]
+	}
+	for className, d := range primitiveTypes {
+		if d == descriptor { // primitive
+			return className
+		}
+	}
+	panic("Invalid descriptor: " + descriptor)
 }
-if descriptor[0] == 'L' { // object
-return descriptor[1 : len(descriptor)-1]
-}
-for className, d := range primitiveTypes {
-if d == descriptor { // primitive
-return className
-}
-}
-panic("Invalid descriptor: " + descriptor)
-}
-如果类型描述符以方括号开头，那么肯定是数组，描述符即是
-类名。如果类型描述符以L开头，那么肯定是类描述符，去掉开头的
-L和末尾的分号即是类名，否则判断是否是基本类型的描述符，如
-果是，返回基本类型名称，否则调用panic()函数终止程序执行。
-至此，multianewarray终于解释完了。由于该指令比较难理解，
-用一个例子分析。
+```
+如果类型描述符以方括号开头，那么肯定是数组，描述符即是类名。如果类型描述符以L开头，那么肯定是类描述符，去掉开头的L和末尾的分号即是类名，否则判断是否是基本类型的描述符，如果是，返回基本类型名称，否则调用panic()函数终止程序执行。
+
+至此，multianewarray终于解释完了。由于该指令比较难理解，用一个例子分析。
+``` java
 public void test() {
-int[][][] x = new int[3][4][5];
-}上面的Java方法创建了一个三维数组，编译之后的字节码如
-下：
-00
-01
-02
-03
-07
-08
-iconst_3
-iconst_4
-iconst_5
-multianewarray #5 // [[[I, 3
-astore_1
-return
-编译器先生成了三条iconst_n指令，然后又生成了一条
-multianewarray指令，剩下的两条指令和数组创建无关。
-multianewarray指令的第一个操作数是5，是个类引用，类名是[[[I
-说明要创建的是int[][][]数组。第二个操作数是3，说明要创建三维
-数组。
-当方法执行时，三条iconst_n指令先后把整数3、4、5推入操作
-数栈顶。multianewarray指令在解码时就已经拿到常量池索引(5)和
-数组维度(3)。在执行时，它先查找运行时常量池索引，知道要创建
-的是int[][][]数组，接着从操作数栈中弹出三个int值，依次是5、4、
-3。现在multianewarray指令拿到了全部信息，从最外维开始创建数
-组实例即可。专门用于数组的指令实现好了，但别忘了还需要修改
-ch08\instructions\factory.go文件，在其中添加这些指令的case语句。
-改动比较简单，这里就不给出代码了。下面修改instanceof和
-checkcast，让这两条指令可以正确用于数组对象。8.3.7 完善instanceof和checkcast指令
-虽然说是完善instanceof和checkcast指令，但实际上这两条指令
-的代码都没有任何变化。需要修改的是
-ch08\rtda\heap\class_hierarchy.go文件中的isAssignableFrom()方法，
-而且改动很大，代码如下：
+	int[][][] x = new int[3][4][5];
+}
+```
+上面的Java方法创建了一个三维数组，编译之后的字节码如下：
+```
+00 iconst_3
+01 iconst_4
+02 iconst_5
+03 multianewarray #5 // [[[I, 3
+07 astore_1
+08 return
+```
+编译器先生成了三条iconst_n指令，然后又生成了一条multianewarray指令，剩下的两条指令和数组创建无关。multianewarray指令的第一个操作数是5，是个类引用，类名是[[[I说明要创建的是int[][][]数组。第二个操作数是3，说明要创建三维数组。
+
+当方法执行时，三条iconst_n指令先后把整数3、4、5推入操作数栈顶。multianewarray指令在解码时就已经拿到常量池索引(5)和数组维度(3)。在执行时，它先查找运行时常量池索引，知道要创建的是int[][][]数组，接着从操作数栈中弹出三个int值，依次是5、4、3。现在multianewarray指令拿到了全部信息，从最外维开始创建数组实例即可。
+
+专门用于数组的指令实现好了，但别忘了还需要修改ch08\instructions\factory.go文件，在其中添加这些指令的case语句。改动比较简单，这里就不给出代码了。下面修改instanceof和checkcast，让这两条指令可以正确用于数组对象。
+
+#### 8.3.7 完善instanceof和checkcast指令
+虽然说是完善instanceof和checkcast指令，但实际上这两条指令的代码都没有任何变化。需要修改的是ch08\rtda\heap\class_hierarchy.go文件中的isAssignableFrom()方法，而且改动很大，代码如下：
+``` go
 func (self *Class) isAssignableFrom(other *Class) bool {
-s, t := other, self
-if s == t {
-return true
+	s, t := other, self
+	if s == t {
+		return true
+	}
+	if !s.IsArray() {
+		if !s.IsInterface() {
+			if !t.IsInterface() {
+				return s.IsSubClassOf(t)
+			} else {
+				return s.IsImplements(t)
+			}
+		} else {
+			if !t.IsInterface() {
+				return t.isJlObject()
+			} else {
+				return t.isSuperInterfaceOf(s)
+			}
+		}
+	} else {
+		if !t.IsArray() {
+			if !t.IsInterface() {
+				return t.isJlObject()
+			} else {
+				return t.isJlCloneable() || t.isJioSerializable()
+			}
+		} else {
+			sc := s.ComponentClass()
+			tc := t.ComponentClass()
+			return sc == tc || tc.isAssignableFrom(sc)
+		}
+	}
+	return false
 }
-if !s.IsArray() {
-if !s.IsInterface() {
-if !t.IsInterface() {
-return s.IsSubClassOf(t)
-} else {
-return s.IsImplements(t)
-}
-} else {
-if !t.IsInterface() {
-return t.isJlObject()
-} else {
-return t.isSuperInterfaceOf(s)
-}
-}
-} else {
-if !t.IsArray() {
-if !t.IsInterface() {
-return t.isJlObject()
-} else {
-return t.isJlCloneable() || t.isJioSerializable()
-}
-} else {
-sc := s.ComponentClass()
-tc := t.ComponentClass()
-return sc == tc || tc.isAssignableFrom(sc)
-}
-}
-return false
-}注意，粗体部分是原来的代码，其余都是新增代码。由于篇幅
-限制，就不详细解释这个函数了，请读者阅读Java虚拟机规范的
-8.6.5节对instanceof和checkcast指令的描述。需要注意的是：
-·数组可以强制转换成Object类型(因为数组的超类是Object)。
-·数组可以强制转换成Cloneable和Serializable类型(因为数组实
-现了这两个接口)。
-·如果下面两个条件之一成立，类型为[]SC的数组可以强制转
-换成类型为[]TC的数组:
-·TC和SC是同一个基本类型。
-·TC和SC都是引用类型，且SC可以强制转换成TC。8.4 测试数组
-数组相关的内容差不多都准备好了，下面用经典的冒泡排序
-算法测试。
+```
+注意，粗体部分是原来的代码，其余都是新增代码。由于篇幅限制，就不详细解释这个函数了，请读者阅读Java虚拟机规范的8.6.5节对instanceof和checkcast指令的描述。需要注意的是：
+- 数组可以强制转换成Object类型(因为数组的超类是Object)。
+- 数组可以强制转换成Cloneable和Serializable类型(因为数组实现了这两个接口)。
+- 如果下面两个条件之一成立，类型为[]SC的数组可以强制转换成类型为[]TC的数组:
+- TC和SC是同一个基本类型。
+- TC和SC都是引用类型，且SC可以强制转换成TC。
+
+### 8.4 测试数组
+数组相关的内容差不多都准备好了，下面用经典的冒泡排序算法测试。
+``` go
 package jvmgo.book.ch08;
 public class BubbleSortTest {
-public static void main(String[] args) {
-int[] arr = {22, 84, 77, , 1195, 9, 78, 56, 36, 97, 65, 36, 10, 24 ,92,
-bubbleSort(arr);
-printArray(arr);
+    public static void main(String[] args) {
+        int[] arr = {22, 84, 77, 11, 1195, 9, 78, 56, 36, 97, 65, 36, 10, 24, 92, 84};
+        bubbleSort(arr);
+        printArray(arr);
+    }
+    private static void bubbleSort(int[] arr) {
+        boolean swapped = true;
+        int j = 0;
+        int tmp;
+        while (swapped) {
+            swapped = false;
+            j++;
+            for (int i = 0; i < arr.length - j; i++) {
+                if (arr[i] > arr[i + 1]) {
+                    tmp = arr[i];
+                    arr[i] = arr[i + 1];
+                    arr[i + 1] = tmp;
+                    swapped = true;
+                }
+            }
+        }
+    }
+    private static void printArray(int[] arr) {
+        for (int i : arr) {
+            System.out.println(i);
+        }
+    }
 }
-private static void bubbleSort(int[] arr) {
-boolean swapped = true;
-int j = 0;
-int tmp;
-while (swapped) {
-swapped = false;
-j++;
-for (int i = 0; i < arr.length - j; i++) {
-if (arr[i] > arr[i + 1]) {
-tmp = arr[i];
-arr[i] = arr[i + 1];
-arr[i + 1] = tmp;
-swapped = true;
-}
-}
-}
-}
-private static void printArray(int[] arr) {
-for (int i : arr) {
-System.out.println(i);
-}
-}
-}
+```
 打开命令行窗口，执行下面的命令编译本章代码：
-go install jvmgo\ch08命令执行完毕后，在D:\go\workspace\bin目录下出现ch08.exe文
-件。用javac编译，然后用ch08.exe执行BubbleSortTest类，结果如图8-
-1所示。
-图8-1 BubbleSortTest程序执行结果8.5 字符串
-在class文件中，字符串是以MUTF8格式保存的，这一点在3.3.7
-节讨论过。在Java虚拟机运行期间，字符串以java.lang.String(后面
-简称String)对象的形式存在，而在String对象内部，字符串又是以
-UTF16格式保存的。字符串相关功能大部分都是由String(和
-StringBuilder等)类提供的，本节只实现一些辅助功能即可。
-String类有两个实例变量。其中一个是value，类型是字符数组，
-用于存放UTF16编码后的字符序列。另一个是hash，缓存计字符串
-的哈希码，代码如下：
+```
+go install jvmgo\ch08
+```
+命令执行完毕后，在D:\go\workspace\bin目录下出现ch08.exe文件。用javac编译，然后用ch08.exe执行BubbleSortTest类，结果如图8-1所示。
+
+图8-1 BubbleSortTest程序执行结果
+
+### 8.5 字符串
+在class文件中，字符串是以MUTF8格式保存的，这一点在3.3.7节讨论过。在Java虚拟机运行期间，字符串以java.lang.String(后面简称String)对象的形式存在，而在String对象内部，字符串又是以UTF16格式保存的。字符串相关功能大部分都是由String(和StringBuilder等)类提供的，本节只实现一些辅助功能即可。
+
+String类有两个实例变量。其中一个是value，类型是字符数组，用于存放UTF16编码后的字符序列。另一个是hash，缓存计字符串的哈希码，代码如下：
+``` go
 package java.lang;
 public final class String
-implements java.io.Serializable, Comparable<String>, CharSequence {
-/** The value is used for character storage. */
-private final char value[];
-/** Cache the hash code for the string */
-private int hash; // Default to 0
-... // 其他代码
+        implements java.io.Serializable, Comparable<String>, CharSequence {
+    /** The value is used for character storage. */
+    private final char value[];
+    /** Cache the hash code for the string */
+    private int hash; // Default to 0
+    ... // 其他代码
 }
-字符串对象是不可变(immutable)的，一旦构造好之后，就无法
-再改变其状态(这里指value字段)。String类有很多构造函数，其中一个是根据字符数组来创建String实例，代码如下：
-public String(char value[]) {
-this.value = Arrays.copyOf(value, value.length);
+```
+字符串对象是不可变(immutable)的，一旦构造好之后，就无法再改变其状态(这里指value字段)。String类有很多构造函数，其中一个是根据字符数组来创建String实例，代码如下：
+``` java
+public String(char value[]){
+    this.value=Arrays.copyOf(value,value.length);
 }
-本节将参考上面的构造函数，直接创建String实例。为了节约
-内存，Java虚拟机内部维护了一个字符串池。String类提供了
-intern()实例方法，可以把自己放入字符串池。代码如下：
+```
+本节将参考上面的构造函数，直接创建String实例。为了节约内存，Java虚拟机内部维护了一个字符串池。String类提供了intern()实例方法，可以把自己放入字符串池。代码如下：
+``` java
 public native String intern();
-本节将实现字符串池，由于intern()是本地方法，所以留到第9
-章实现。8.5.1 字符串池
-在ch08\rtda\heap目录下创建string_pool.go文件，在其中定义
-internedStrings变量，代码如下：
+```
+本节将实现字符串池，由于intern()是本地方法，所以留到第9章实现。
+
+#### 8.5.1 字符串池
+在ch08\rtda\heap目录下创建string_pool.go文件，在其中定义internedStrings变量，代码如下：
+``` go
 package heap
 import "unicode/utf16"
 var internedStrings = map[string]*Object{}
-用map来表示字符串池，key是Go字符串，value是Java字符串。
-继续编辑string_pool.go文件，在其中实现JString()函数，代码如下：
+```
+用map来表示字符串池，key是Go字符串，value是Java字符串。继续编辑string_pool.go文件，在其中实现JString()函数，代码如下：
+``` go
 func JString(loader *ClassLoader, goStr string) *Object {
-if internedStr, ok := internedStrings[goStr]; ok {
-return internedStr
+	if internedStr, ok := internedStrings[goStr]; ok {
+		return internedStr
+	}
+	chars := stringToUtf16(goStr)
+	jChars := &Object{loader.LoadClass("[C"), chars}
+	jStr := loader.LoadClass("java/lang/String").NewObject()
+	jStr.SetRefVar("value", "[C", jChars)
+	internedStrings[goStr] = jStr
+	return jStr
 }
-chars := stringToUtf16(goStr)
-jChars := &Object{loader.LoadClass("[C"), chars}
-jStr := loader.LoadClass("java/lang/String").NewObject()
-jStr.SetRefVar("value", "[C", jChars)
-internedStrings[goStr] = jStr
-return jStr
-}
-JString()函数根据Go字符串返回相应的Java字符串实例。如果
-Java字符串已经在池中，直接返回即可，否则先把Go字符串(UTF8
-格式)转换成Java字符数组(UTF16格式)，然后创建一个Java字符串
-实例，把它的value变量设置成刚刚转换而来的字符数组，最后把Java字符串放入池中。注意，这里其实是跳过了String的构造函数，
-直接用hack的方式创建实例。在前面分析过String类的代码，这样做
-虽然有点投机取巧，但确实是没有问题的。
-继续编辑string_pool.go文件文件，实现stringToUtf16()函数，代
-码如下：
+```
+JString()函数根据Go字符串返回相应的Java字符串实例。如果Java字符串已经在池中，直接返回即可，否则先把Go字符串(UTF8格式)转换成Java字符数组(UTF16格式)，然后创建一个Java字符串实例，把它的value变量设置成刚刚转换而来的字符数组，最后把Java字符串放入池中。注意，这里其实是跳过了String的构造函数，直接用hack的方式创建实例。在前面分析过String类的代码，这样做虽然有点投机取巧，但确实是没有问题的。
+
+继续编辑string_pool.go文件文件，实现stringToUtf16()函数，代码如下：
+``` go
 func stringToUtf16(s string) []uint16 {
-runes := []rune(s) // utf32
-return utf16.Encode(runes)
+	runes := []rune(s) // utf32
+	return utf16.Encode(runes)
 }
-Go语言字符串在内存中是UTF8编码的，先把它强制转成
-UTF32，然后调用utf16包的Encode()函数编码成UTF16。Object结
-构体的SetRefVar()方法直接给对象的引用类型实例变量赋值，代
-码如下(在object.go文件中)：
+```
+Go语言字符串在内存中是UTF8编码的，先把它强制转成UTF32，然后调用utf16包的Encode()函数编码成UTF16。Object结构体的SetRefVar()方法直接给对象的引用类型实例变量赋值，代码如下(在object.go文件中)：
+``` go
 func (self *Object) SetRefVar(name, descriptor string, ref *Object) {
-field := self.class.getField(name, descriptor, false)
-slots := self.data.(Slots)
-slots.SetRef(field.slotId, ref)
+	field := self.class.getField(name, descriptor, false)
+	slots := self.data.(Slots)
+	slots.SetRef(field.slotId, ref)
 }
-Class结构体的getField()函数根据字段名和描述符查找字段，
-代码如下(代码在class.go文件中)：func (self *Class) getField(name, descriptor string, isStatic) *Field {
-for c := self; c != nil; c = c.superClass {
-for _, field := range c.fields {
-if field.IsStatic() == isStatic &&
-field.name == name && field.descriptor == descriptor {
-return field
+```
+Class结构体的getField()函数根据字段名和描述符查找字段，代码如下(代码在class.go文件中)：
+``` go
+func (self *Class) getField(name, descriptor string, isStatic) *Field {
+	for c := self; c != nil; c = c.superClass {
+		for _, field := range c.fields {
+			if field.IsStatic() == isStatic &&
+				field.name == name && field.descriptor == descriptor {
+				return field
+			}
+		}
+	}
+	return nil
 }
-}
-}
-return nil
-}
-字符串池实现好了，下面修改ldc指令和类加载器，让它们支持
-字符串。8.5.2 完善ldc指令
-打开ch08\instructions\constants\ldc.go文件，添加一条import语
-句，代码如下：
+```
+字符串池实现好了，下面修改ldc指令和类加载器，让它们支持字符串。
+
+#### 8.5.2 完善ldc指令
+打开ch08\instructions\constants\ldc.go文件，添加一条import语句，代码如下：
+``` go
 package constants
 import "jvmgo/ch08/instructions/base"
 import "jvmgo/ch08/rtda"
 import "jvmgo/ch08/rtda/heap"
+```
 然后修改_ldc()函数，改动如下：
+``` go
 func _ldc(frame *rtda.Frame, index uint) {
-stack := frame.OperandStack()
-class := frame.Method().Class()
-c := class.ConstantPool().GetConstant(index)
-switch c.(type) {
-case int32: stack.PushInt(c.(int32))
-case float32: stack.PushFloat(c.(float32))
-case string:
-internedStr := heap.JString(class.Loader(), c.(string))
-stack.PushRef(internedStr)
-... // 其他代码不变
+	stack := frame.OperandStack()
+	class := frame.Method().Class()
+	c := class.ConstantPool().GetConstant(index)
+	switch c.(type) {
+	case int32:
+		stack.PushInt(c.(int32))
+	case float32:
+		stack.PushFloat(c.(float32))
+	case string:
+		internedStr := heap.JString(class.Loader(), c.(string))
+		stack.PushRef(internedStr)
+		... // 其他代码不变
+	}
 }
-如果ldc试图从运行时常量池中加载字符串常量，则先通过常
-量拿到Go字符串，然后把它转成Java字符串实例并把引用推入操作
-数栈顶。8.5.3 完善类加载器
-打开ch08\rtda\heap\class_loader.go文件，修改initStaticFinalVar
-函数，改动如下：
+```
+如果ldc试图从运行时常量池中加载字符串常量，则先通过常量拿到Go字符串，然后把它转成Java字符串实例并把引用推入操作数栈顶。
+
+#### 8.5.3 完善类加载器
+打开ch08\rtda\heap\class_loader.go文件，修改initStaticFinalVar函数，改动如下：
+``` go
 func initStaticFinalVar(class *Class, field *Field) {
-vars := class.staticVars
-cp := class.constantPool
-cpIndex := field.ConstValueIndex()
-slotId := field.SlotId()
-if cpIndex > 0 {
-switch field.Descriptor() {
-... // 其他
-case 语句不变
-case "Ljava/lang/String;":
-goStr := cp.GetConstant(cpIndex).(string)
-jStr := JString(class.Loader(), goStr)
-vars.SetRef(slotId, jStr)
+	vars := class.staticVars
+	cp := class.constantPool
+	cpIndex := field.ConstValueIndex()
+	slotId := field.SlotId()
+	if cpIndex > 0 {
+		switch field.Descriptor() {
+			... // 其他
+		case 语句不变
+		case "Ljava/lang/String;":
+			goStr := cp.GetConstant(cpIndex).(string)
+			jStr := JString(class.Loader(), goStr)
+			vars.SetRef(slotId, jStr)
+		}
+	}
 }
-}
-}
-这里增加了字符串类型静态常量的初始化逻辑，代码比较简
-单，就不多解释了。至此，字符串相关的工作都做完了，下面进行
-测试。8.6 测试字符串
-打开ch08\main.go文件，修改startJVM()函数。改动非常小，只
-是在调用interpret()函数时，把传递给Java主方法的参数传递给它，
-代码如下：
+```
+这里增加了字符串类型静态常量的初始化逻辑，代码比较简单，就不多解释了。至此，字符串相关的工作都做完了，下面进行测试。
+
+### 8.6 测试字符串
+打开ch08\main.go文件，修改startJVM()函数。改动非常小，只是在调用interpret()函数时，把传递给Java主方法的参数传递给它，代码如下：
+``` go
 func startJVM(cmd *Cmd) {
-... // 其他代码不变
-if mainMethod != nil {
-interpret(mainMethod, cmd.verboseInstFlag, cmd.args)
-} else {
-fmt.Printf("Main method not found in class %s\n", cmd.class)
+	... // 其他代码不变
+	if mainMethod != nil {
+		interpret(mainMethod, cmd.verboseInstFlag, cmd.args)
+	} else {
+		fmt.Printf("Main method not found in class %s\n", cmd.class)
+	}
 }
-}
+```
 打开interpreter.go文件，修改interpret()函数，改动如下：
+``` go
 func interpret(method *heap.Method, logInst bool, args []string) {
-thread := rtda.NewThread()
-frame := thread.NewFrame(method)
-thread.PushFrame(frame)
-jArgs := createArgsArray(method.Class().Loader(), args)
-frame.LocalVars().SetRef(0, jArgs)
-defer catchErr(thread)
-loop(thread, logInst)
+	thread := rtda.NewThread()
+	frame := thread.NewFrame(method)
+	thread.PushFrame(frame)
+	jArgs := createArgsArray(method.Class().Loader(), args)
+	frame.LocalVars().SetRef(0, jArgs)
+	defer catchErr(thread)
+	loop(thread, logInst)
 }
-interpret()函数接收从startJVM()函数中传递过来的args参数，
-然后调用createArgs-Array()函数把它转换成Java字符串数组，最后把这个数组推入操作数栈顶。至此，通过命令行传递给Java程序的
-参数终于可以派上用场了!createArgsArray()函数的代码如下：
+```
+interpret()函数接收从startJVM()函数中传递过来的args参数，然后调用createArgs-Array()函数把它转换成Java字符串数组，最后把这个数组推入操作数栈顶。至此，通过命令行传递给Java程序的参数终于可以派上用场了！createArgsArray()函数的代码如下：
+``` go
 func createArgsArray(loader *heap.ClassLoader, args []string) *heap.Object {
-stringClass := loader.LoadClass("java/lang/String")
-argsArr := stringClass.ArrayClass().NewArray(uint(len(args)))
-jArgs := argsArr.Refs()
-for i, arg := range args {
-jArgs[i] = heap.JString(loader, arg)
+	stringClass := loader.LoadClass("java/lang/String")
+	argsArr := stringClass.ArrayClass().NewArray(uint(len(args)))
+	jArgs := argsArr.Refs()
+	for i, arg := range args {
+		jArgs[i] = heap.JString(loader, arg)
+	}
+	return argsArr
 }
-return argsArr
-}
-最后，打开ch08\instructions\references\invokevirtual.go，修改
-_println()函数，让它可以打印字符串，改动如下：
+```
+最后，打开ch08\instructions\references\invokevirtual.go，修改_println()函数，让它可以打印字符串，改动如下：
+``` go
 // hack!
 func _println(stack *rtda.OperandStack, descriptor string) {
-switch descriptor {
-... // 其他
-case 语句不变
-case "(Ljava/lang/String;)V":
-jStr := stack.PopRef()
-goStr := heap.GoString(jStr)
-fmt.Println(goStr)
-... // 其他代码不变
+	switch descriptor {
+		... // 其他
+	case 语句不变
+	case "(Ljava/lang/String;)V":
+		jStr := stack.PopRef()
+		goStr := heap.GoString(jStr)
+		fmt.Println(goStr)
+		... // 其他代码不变
+	}
 }
+```
 GoString()函数在string_pool.go文件中，代码如下：
+``` go
 func GoString(jStr *Object) string {
-charArr := jStr.GetRefVar("value", "[C")return utf16ToString(charArr.Chars())
+	charArr := jStr.GetRefVar("value", "[C")return utf16ToString(charArr.Chars())
 }
-先拿到String对象的value变量值，然后把字符数组转换成Go字
-符串。Object结构体的GetRefVar()方法(在object.go文件中)如下：
+```
+先拿到String对象的value变量值，然后把字符数组转换成Go字符串。Object结构体的GetRefVar()方法(在object.go文件中)如下：
+``` go
 func (self *Object) GetRefVar(name, descriptor string) *Object {
-field := self.class.getField(name, descriptor, false)
-slots := self.data.(Slots)
-return slots.GetRef(field.slotId)
+	field := self.class.getField(name, descriptor, false)
+	slots := self.data.(Slots)
+	return slots.GetRef(field.slotId)
 }
+```
 utf16ToString()函数在string_pool.go文件中，代码如下：
+``` go
 func utf16ToString(s []uint16) string {
-runes := utf16.Decode(s) // utf8
-return string(runes)
+	runes := utf16.Decode(s) // utf8
+	return string(runes)
 }
-先把UTF16数据转换成UTF8编码，然后强制转换成Go字符串
-即可。一切就绪!重新编译本章代码，然后用ch08.exe执行在第1章
-就已经出现过的HelloWorld程序。
+```
+先把UTF16数据转换成UTF8编码，然后强制转换成Go字符串即可。一切就绪！重新编译本章代码，然后用ch08.exe执行在第1章就已经出现过的HelloWorld程序。
+``` java
 package jvmgo.book.ch01;
 public class HelloWorld {
-public static void main(String[] args) {
-System.out.println("Hello, world!");
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
 }
-}久违的“Hello，world!”终于出现在控制台上了，如图8-2所
-示。
+```
+久违的“Hello，world!”终于出现在控制台上了，如图8-2所示。
+
 图8-2 HelloWorld程序执行结果
+
 再执行一个稍微复杂一些的程序:
+``` java
 package jvmgo.book.ch08;
 public class PrintArgs {
-public static void main(String[] args) {
-for (String arg : args) {
-System.out.println(arg);
+    public static void main(String[] args) {
+        for (String arg : args) {
+            System.out.println(arg);
+        }
+    }
 }
-}
-}
+```
 执行结果如图8-3所示。
-图8-3 PrintArgs程序执行结果8.7 本章小结
-本章实现了数组和字符串，在本章的结尾，终于可以运行
-HelloWorld程序了。不过美中不足的是，我们并不是通过调用
-System.out.println()方法，而是通过hack的方式打印的。请读者不要
-着急，下一章会讨论本地方法调用，第10章会讨论异常处理。到了
-第11章，将最终去掉这个hack，让println()方法真正得以调用!第9章 本地方法调用
-在前面的8章里，我们一直在实现Java虚拟机的基本功能。我们
-已经知道，要想运行Java程序，除了Java虚拟机之外，还需要Java类
-库的配合。Java虚拟机和Java类库一起构成了Java运行时环境。Java
-类库主要用Java语言编写，一些无法用Java语言实现的方法则使用
-本地语言编写，这些方法叫作本地方法。从本章开始，将陆续实现
-一些Java类库中的本地方法。
-OpenJDK类库中的本地方法是用JNI(Java Native Interface) [1]
-编写的，但是要让虚拟机支持JNI规范还需要做大量的工作。由于
-本书的主要目的是介绍Java虚拟机的工作原理，为了不陷入JNI规
-范的细节之中，将使用Go语言来实现这些方法。
+
+图8-3 PrintArgs程序执行结果
+
+### 8.7 本章小结
+本章实现了数组和字符串，在本章的结尾，终于可以运行HelloWorld程序了。不过美中不足的是，我们并不是通过调用System.out.println()方法，而是通过hack的方式打印的。请读者不要着急，下一章会讨论本地方法调用，第10章会讨论异常处理。到了第11章，将最终去掉这个hack，让println()方法真正得以调用！
+
+## 第9章 本地方法调用
+在前面的8章里，我们一直在实现Java虚拟机的基本功能。我们已经知道，要想运行Java程序，除了Java虚拟机之外，还需要Java类库的配合。Java虚拟机和Java类库一起构成了Java运行时环境。Java类库主要用Java语言编写，一些无法用Java语言实现的方法则使用本地语言编写，这些方法叫作本地方法。从本章开始，将陆续实现一些Java类库中的本地方法。
+
+OpenJDK类库中的本地方法是用JNI(Java Native Interface) [1]编写的，但是要让虚拟机支持JNI规范还需要做大量的工作。由于本书的主要目的是介绍Java虚拟机的工作原理，为了不陷入JNI规范的细节之中，将使用Go语言来实现这些方法。
+
 开始编写代码之前，还是先把目录结构准备好。复制ch08目
 录，改名为ch09。修改main.go等文件，把import语句中的ch08全都替
 换成ch09。在ch09目录下创建native子目录，本章新增的go文件主要
 都在这个目录(和它的子目录)中。现在，目录结构看起来是下面这
-个样子:D:\go\workspace\src
+个样子:
+```
+D:\go\workspace\src
 |-jvmgo
 |-ch01 ~ ch08
 |-ch09
@@ -6859,232 +6832,216 @@ OpenJDK类库中的本地方法是用JNI(Java Native Interface) [1]
 |-cmd.go
 |-interpreter.go
 |-main.go
-[1]
-http://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/intro.html9.1 注册和查找本地方法
-在开始实现本地方法之前，先实现一个本地方法注册表，用来
-注册和查找本地方法。在ch09\native目录下创建registry.go，先在其
-中定义NativeMethod类型和registry变量，代码如下：
+```
+[1][http://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/intro.html](http://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/intro.html)
+
+### 9.1 注册和查找本地方法
+在开始实现本地方法之前，先实现一个本地方法注册表，用来注册和查找本地方法。在ch09\native目录下创建registry.go，先在其中定义NativeMethod类型和registry变量，代码如下：
+``` go
 package native
 import "jvmgo/ch09/rtda"
 type NativeMethod func(frame *rtda.Frame)
 var registry = map[string]NativeMethod{}
-把本地方法定义成一个函数，参数是Frame结构体指针，没有
-返回值。这个frame参数就是本地方法的工作空间，也就是连接Java
-虚拟机和Java类库的桥梁，后面会看到它是如何发挥作用的。
-registry变量是个哈希表，值是具体的本地方法实现。那么键是什么
-呢？继续编辑registry.go文件，在其中实现Register()函数，代码如
-下：
-func Register(className, methodName, methodDescriptor string, method NativeMet
+```
+把本地方法定义成一个函数，参数是Frame结构体指针，没有返回值。这个frame参数就是本地方法的工作空间，也就是连接Java虚拟机和Java类库的桥梁，后面会看到它是如何发挥作用的。registry变量是个哈希表，值是具体的本地方法实现。那么键是什么呢？继续编辑registry.go文件，在其中实现Register()函数，代码如下：
+``` go
+func Register(className, methodName, methodDescriptor string, method NativeMethod) {
 key := className + "~" + methodName + "~" + methodDescriptor
-registry[key] = method
+	registry[key] = method
 }
-类名、方法名和方法描述符加在一起才能唯一确定一个方法，所以把它们的组合作为本地方法注册表的键，Register()函数把前
-述三种信息和本地方法实现关联起来。继续编辑registry.go文件，在
-其中实现FindNativeMethod()方法，代码如下：
-func FindNativeMethod(className, methodName, methodDescriptor string) NativeMe
-key := className + "~" + methodName + "~" + methodDescriptor
-if method, ok := registry[key]; ok {
-return method
+```
+类名、方法名和方法描述符加在一起才能唯一确定一个方法，所以把它们的组合作为本地方法注册表的键，Register()函数把前述三种信息和本地方法实现关联起来。继续编辑registry.go文件，在其中实现FindNativeMethod()方法，代码如下：
+``` go
+func FindNativeMethod(className, methodName, methodDescriptor string) NativeMethod {
+	key := className + "~" + methodName + "~" + methodDescriptor
+	if method, ok := registry[key]; ok {
+		return method
+	}
+	if methodDescriptor == "()V" && methodName == "registerNatives" {
+		return emptyNativeMethod
+	}
+	return nil
 }
-if methodDescriptor == "()V" && methodName == "registerNatives" {
-return emptyNativeMethod
-}
-return nil
-}
-FindNativeMethod()方法根据类名、方法名和方法描述符查找
-本地方法实现，如果找不到，则返回nil。第7章结尾提到过，
-jva.lang.Object等类是通过一个叫作registerNatives()的本地方法来
-注册其他本地方法的。在本章和后面的章节中，将自己注册所有的
-本地方法实现。所以像registerNatives()这样的方法就没有太大的用
-处。为了避免重复代码，这里统一处理，如果遇到这样的本地方
-法，就返回一个空的实现，代码如下：
+```
+FindNativeMethod()方法根据类名、方法名和方法描述符查找本地方法实现，如果找不到，则返回nil。第7章结尾提到过，jva.lang.Object等类是通过一个叫作registerNatives()的本地方法来注册其他本地方法的。在本章和后面的章节中，将自己注册所有的本地方法实现。所以像registerNatives()这样的方法就没有太大的用处。为了避免重复代码，这里统一处理，如果遇到这样的本地方法，就返回一个空的实现，代码如下：
+``` go
 func emptyNativeMethod(frame *rtda.Frame) {
-// do nothing
-}本地方法注册表准备好了，下面介绍如何调用本地方法。9.2 调用本地方法
-第7章用一段hack代码来跳过本地方法的执行。现在，终于可
-以把这段代码删除了!编辑
-ch09\instructions\base\method_invoke_logic.go，把fmt包的导入语句
-和InvokeMethod()函数中的hack代码删除。为了节约篇幅，这里就
-不给出代码了。
-Java虚拟机规范并没有规定如何实现和调用本地方法，这给了
-我们充分的空间来发挥自己的想象力。读者很快就会看到，我们将
-利用Java虚拟机栈执行本地方法，所以除了删除上面的
-InvokeMethod()函数中的hack代码之外，不用做任何修改。
-但是，本地方法并没有字节码，如何利用Java虚拟机栈来执行
-呢？Java虚拟机规范预留了两条指令，操作码分别是0xFE和0xFF。
-下面将使用0xFE指令来达到这个目的。打开
-ch09\rtda\heap\method.go文件，修改newMethods()函数，改动如下：
+	// do nothing
+}
+```
+本地方法注册表准备好了，下面介绍如何调用本地方法。
+
+### 9.2 调用本地方法
+第7章用一段hack代码来跳过本地方法的执行。现在，终于可以把这段代码删除了！编辑ch09\instructions\base\method_invoke_logic.go，把fmt包的导入语句和InvokeMethod()函数中的hack代码删除。为了节约篇幅，这里就不给出代码了。
+
+Java虚拟机规范并没有规定如何实现和调用本地方法，这给了我们充分的空间来发挥自己的想象力。读者很快就会看到，我们将利用Java虚拟机栈执行本地方法，所以除了删除上面的InvokeMethod()函数中的hack代码之外，不用做任何修改。
+
+但是，本地方法并没有字节码，如何利用Java虚拟机栈来执行呢？Java虚拟机规范预留了两条指令，操作码分别是0xFE和0xFF。下面将使用0xFE指令来达到这个目的。打开ch09\rtda\heap\method.go文件，修改newMethods()函数，改动如下：
+``` go
 func newMethods(class *Class, cfMethods []*classfile.MemberInfo) []*Method {
-methods := make([]*Method, len(cfMethods))
-for i, cfMethod := range cfMethods {
-methods[i] = newMethod(class, cfMethod)
-}return methods
+	methods := make([]*Method, len(cfMethods))
+	for i, cfMethod := range cfMethods {
+		methods[i] = newMethod(class, cfMethod)
+	}return methods
 }
-为了避免newMethods()函数变得太长，我们抽取出一个
-newMethod()函数，代码如下：
+```
+为了避免newMethods()函数变得太长，我们抽取出一个newMethod()函数，代码如下：
+``` go
 func newMethod(class *Class, cfMethod *classfile.MemberInfo) *Method {
-method := &Method{}
-method.class = class
-method.copyMemberInfo(cfMethod)
-method.copyAttributes(cfMethod)
-md := parseMethodDescriptor(method.descriptor)
-method.calcArgSlotCount(md.parameterTypes)
-if method.IsNative() {
-method.injectCodeAttribute(md.returnType)
+	method := &Method{}
+	method.class = class
+	method.copyMemberInfo(cfMethod)
+	method.copyAttributes(cfMethod)
+	md := parseMethodDescriptor(method.descriptor)
+	method.calcArgSlotCount(md.parameterTypes)
+	if method.IsNative() {
+		method.injectCodeAttribute(md.returnType)
+	}
+	return method
 }
-return method
-}
-粗体部分需要解释一下：先计算argSlotCount字段，如果是本地
-方法，则注入字节码和其他信息。继续编辑method.go文件，添加
-injectCodeAttribute()方法，代码如下：
+```
+粗体部分需要解释一下：先计算argSlotCount字段，如果是本地方法，则注入字节码和其他信息。继续编辑method.go文件，添加injectCodeAttribute()方法，代码如下：
+``` go
 func (self *Method) injectCodeAttribute(returnType string) {
-self.maxStack = 4
-self.maxLocals = self.argSlotCount
-switch returnType[0] {
-case 'V': self.code = []byte{0xfe, 0xb1} // return
-case 'D': self.code = []byte{0xfe, 0xaf} // dreturn
-case 'F': self.code = []byte{0xfe, 0xae} // freturn
-case 'J': self.code = []byte{0xfe, 0xad} // lreturn
-case 'L', '[': self.code = []byte{0xfe, 0xb0} // areturn
-default: self.code = []byte{0xfe, 0xac} // ireturn
+	self.maxStack = 4
+	self.maxLocals = self.argSlotCount
+	switch returnType[0] {
+	case 'V':
+		self.code = []byte{0xfe, 0xb1} // return
+	case 'D':
+		self.code = []byte{0xfe, 0xaf} // dreturn
+	case 'F':
+		self.code = []byte{0xfe, 0xae} // freturn
+	case 'J':
+		self.code = []byte{0xfe, 0xad} // lreturn
+	case 'L', '[':
+		self.code = []byte{0xfe, 0xb0} // areturn
+	default:
+		self.code = []byte{0xfe, 0xac} // ireturn
+	}
 }
-}本地方法在class文件中没有Code属性，所以需要给maxStack和
-maxLocals字段赋值。本地方法帧的操作数栈至少要能容纳返回值，
-为了简化代码，暂时给maxStack字段赋值为4。因为本地方法帧的
-局部变量表只用来存放参数值，所以把argSlotCount赋给maxLocals
-字段刚好。至于code字段，也就是本地方法的字节码，第一条指令
-都是0xFE，第二条指令则根据函数的返回值选择相应的返回指令。
-另外，由于把方法描述符的解析挪到了newMethod()函数中，
-所以calcArgSlotCount()方法也稍微有些变化(增加了一个参数)，
-变动如下：
+```
+本地方法在class文件中没有Code属性，所以需要给maxStack和maxLocals字段赋值。本地方法帧的操作数栈至少要能容纳返回值，为了简化代码，暂时给maxStack字段赋值为4。因为本地方法帧的局部变量表只用来存放参数值，所以把argSlotCount赋给maxLocals字段刚好。至于code字段，也就是本地方法的字节码，第一条指令都是0xFE，第二条指令则根据函数的返回值选择相应的返回指令。
+
+另外，由于把方法描述符的解析挪到了newMethod()函数中，所以calcArgSlotCount()方法也稍微有些变化(增加了一个参数)，变动如下：
+``` go
 func (self *Method) calcArgSlotCount(paramTypes []string) {
-for _, paramType := range paramTypes {
-... // 其他代码不变
+	for _, paramType := range paramTypes {
+		... // 其他代码不变
+	}
 }
-下面我们来实现0xFE指令。在ch09\instructions目录下创建
-reserved子目录，然后在该目录下创建invokenative.go文件，在其中
-定义0xFE(后面称之为invokenative)指令，代码如下：
+```
+下面我们来实现0xFE指令。在ch09\instructions目录下创建reserved子目录，然后在该目录下创建invokenative.go文件，在其中定义0xFE(后面称之为invokenative)指令，代码如下：
+``` go
 package reserved
 import "jvmgo/ch09/instructions/base"
 import "jvmgo/ch09/rtda"
 import "jvmgo/ch09/native"type INVOKE_NATIVE struct{ base.NoOperandsInstruction }
+```
 这个指令不需要操作数，Execute()方法的代码如下：
+``` go
 func (self *INVOKE_NATIVE) Execute(frame *rtda.Frame) {
-method := frame.Method()
-className := method.Class().Name()
-methodName := method.Name()
-methodDescriptor := method.Descriptor()
-nativeMethod := native.FindNativeMethod(className, methodName, methodDescri
-if nativeMethod == nil {
-methodInfo := className + "." + methodName + methodDescriptor
-panic("java.lang.UnsatisfiedLinkError: " + methodInfo)
+	method := frame.Method()
+	className := method.Class().Name()
+	methodName := method.Name()
+	methodDescriptor := method.Descriptor()
+	nativeMethod := native.FindNativeMethod(className, methodName, methodDescriptor)
+	if nativeMethod == nil {
+		methodInfo := className + "." + methodName + methodDescriptor
+		panic("java.lang.UnsatisfiedLinkError: " + methodInfo)
+	}
+	nativeMethod(frame)
 }
-nativeMethod(frame)
-}
-根据类名、方法名和方法描述符从本地方法注册表中查找本
-地方法实现，如果找不到，则抛出UnsatisfiedLinkError异常，否则直
-接调用本地方法。最后，还需要修改instructions\factory.go文件，在
-其中添加invokenative指令的case语句，这里就不给出代码了。
-现在，万事俱备，只欠实现本地方法!接下来，我们将实现
-Object和String等类的一些本地方法。在后面几章中，还会实现更多
-的本地方法。9.3 反射
-Java的反射机制十分强大，本节讨论的内容只是冰山一角。9.3.1 类和对象之间的关系
-在Java中，类也表现为普通的对象，它的类是java.lang.Class。听
-起来有点像鸡生蛋还是蛋生鸡的问题:类也是对象，而对象又是类
-的实例。那么在Java虚拟机内部，究竟是先有类还是先有对象呢？
-下面就来一探究竟。
-如前所述，Java有强大的反射能力。可以在运行期间获取类的
-各种信息、存取静态和实例变量、调用方法，等等。要想运用这种
-能力，获取类对象 [1] 是第一步。在Java语言中，有两种方式可以获
-得类对象引用:使用类字面值和调用对象的getClass()方法。下面的
-Java代码演示了这两种方式。
+```
+根据类名、方法名和方法描述符从本地方法注册表中查找本地方法实现，如果找不到，则抛出UnsatisfiedLinkError异常，否则直接调用本地方法。最后，还需要修改instructions\factory.go文件，在其中添加invokenative指令的case语句，这里就不给出代码了。
+
+现在，万事俱备，只欠实现本地方法！接下来，我们将实现Object和String等类的一些本地方法。在后面几章中，还会实现更多的本地方法。
+
+### 9.3 反射
+Java的反射机制十分强大，本节讨论的内容只是冰山一角。
+
+#### 9.3.1 类和对象之间的关系
+在Java中，类也表现为普通的对象，它的类是java.lang.Class。听起来有点像鸡生蛋还是蛋生鸡的问题:类也是对象，而对象又是类的实例。那么在Java虚拟机内部，究竟是先有类还是先有对象呢？下面就来一探究竟。
+
+如前所述，Java有强大的反射能力。可以在运行期间获取类的各种信息、存取静态和实例变量、调用方法，等等。要想运用这种能力，获取类对象 [1] 是第一步。在Java语言中，有两种方式可以获得类对象引用:使用类字面值和调用对象的getClass()方法。下面的Java代码演示了这两种方式。
+``` java
 System.out.println(String.class);
 System.out.println("abc".getClass());
-在第6章中，通过Object结构体的class字段建立了类和对象之
-间的单向关系。现在把这个关系补充完整，让它成为双向的。打开
-ch09\rtda\heap\class.go文件，修改Class结构体，添加jClass字段，改
-动如下：type Class struct {
-... // 其他字段
-jClass *Object // java.lang.Class 实例
+```
+在第6章中，通过Object结构体的class字段建立了类和对象之间的单向关系。现在把这个关系补充完整，让它成为双向的。打开ch09\rtda\heap\class.go文件，修改Class结构体，添加jClass字段，改动如下：
+``` go
+type Class struct {
+	... // 其他字段
+	jClass *Object // java.lang.Class 实例
 }
-通过jClass字段，每个Class结构体实例都与一个类对象关联。
-另外需要给jClass字段定义Getter方法，代码比较简单，就不给出
-了。下面打开ch09\rtda\heap\object.go文件，修改Object结构体，添加
-extra字段，改动如下：
+```
+通过jClass字段，每个Class结构体实例都与一个类对象关联。另外需要给jClass字段定义Getter方法，代码比较简单，就不给出了。下面打开ch09\rtda\heap\object.go文件，修改Object结构体，添加extra字段，改动如下：
+``` go
 type Object struct {
-class *Class
-data interface{}
-extra interface{}
+	class *Class
+	data interface{}
+	extra interface{}
 }
-extra字段用来记录Object结构体实例的额外信息。同样给它定
-义Getter和Setter方法，这里就不给出代码了。这个字段之所以是
-interface{}类型，是因为它在后面几章还会有其他用途。本章，只用
-它来记录类对象对应的Class结构体指针。
-如果读者读到这里感觉有些吃力，请不要怀疑自己的理解能
-力，一定是笔者表达得不够好。另外，笔者在写这一节时，自己也
-是犯了很多次迷糊的。为了帮助大家更好地理解类和对象之间的关系，让我们想象这样一个极简化的Java虚拟机运行时状态:方法区
-中只加载了两个类，java.lang.Object和java.lang.Class;堆中只通过
-new指令分配了一个对象。此时Java虚拟机的内存状态如图9-1所
-示。
+```
+extra字段用来记录Object结构体实例的额外信息。同样给它定义Getter和Setter方法，这里就不给出代码了。这个字段之所以是interface{}类型，是因为它在后面几章还会有其他用途。本章，只用它来记录类对象对应的Class结构体指针。
+
+如果读者读到这里感觉有些吃力，请不要怀疑自己的理解能力，一定是笔者表达得不够好。另外，笔者在写这一节时，自己也是犯了很多次迷糊的。为了帮助大家更好地理解类和对象之间的关系，让我们想象这样一个极简化的Java虚拟机运行时状态:方法区中只加载了两个类，java.lang.Object和java.lang.Class;堆中只通过new指令分配了一个对象。此时Java虚拟机的内存状态如图9-1所示。
+
 图9-1 类和对象关系图
-图9-1只画出了Class和Object结构体的必要字段，并且刻意分
-开了堆和方法区。在方法区中，class1和class2分别是java.lang.Object
-和java.lang.Class类的数据。在堆中，object1和object2分别是
-java.lang.Object和java.lang.Class的类对象。object3是单独的
-java.lang.Object实例。虽然已经简化到了极点，但仍然有8条箭头，希望有密集恐惧症的读者不要被吓倒。
-[1] 在本书中，类对象特指java.lang.Class类的实例；对象泛指任何类
-的实例。9.3.2 修改类加载器
-Class和Object结构体准备好了，接下来修改类加载器，让每一
-个加载到方法区中的类都有一个类对象与之相关联。打开
-ch09\rtda\heap\class_loader.go文件，修改NewClassLoader()函数，改
-动如下：
+
+图9-1只画出了Class和Object结构体的必要字段，并且刻意分开了堆和方法区。在方法区中，class1和class2分别是java.lang.Object和java.lang.Class类的数据。在堆中，object1和object2分别是java.lang.Object和java.lang.Class的类对象。object3是单独的java.lang.Object实例。虽然已经简化到了极点，但仍然有8条箭头，希望有密集恐惧症的读者不要被吓倒。
+
+[1] 在本书中，类对象特指java.lang.Class类的实例；对象泛指任何类的实例。
+
+#### 9.3.2 修改类加载器
+Class和Object结构体准备好了，接下来修改类加载器，让每一个加载到方法区中的类都有一个类对象与之相关联。打开ch09\rtda\heap\class_loader.go文件，修改NewClassLoader()函数，改动如下：
+``` go
 func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
-loader := &ClassLoader{
-cp:
-cp,
-verboseFlag: verboseFlag,
-classMap:
-make(map[string]*Class),
+	loader := &ClassLoader{
+		cp:          cp,
+		verboseFlag: verboseFlag,
+		classMap:    make(map[string]*Class),
+	}
+	loader.loadBasicClasses()
+	return loader
 }
-loader.loadBasicClasses()
-return loader
-}
-在返回ClassLoader结构体实例之前，先调用loadBasicClasses()
-函数。这个函数也要添加到class_loader.go文件中，代码如下：
+```
+在返回ClassLoader结构体实例之前，先调用loadBasicClasses()函数。这个函数也要添加到class_loader.go文件中，代码如下：
+``` go
 func (self *ClassLoader) loadBasicClasses() {
-jlClassClass := self.LoadClass("java/lang/Class")
-for _, class := range self.classMap {
-if class.jClass == nil {
-class.jClass = jlClassClass.NewObject()
-class.jClass.extra = class
+	jlClassClass := self.LoadClass("java/lang/Class")
+	for _, class := range self.classMap {
+		if class.jClass == nil {
+			class.jClass = jlClassClass.NewObject()
+			class.jClass.extra = class
+		}
+	}
 }
-}
-}
-loadBasicClasses()函数先加载java.lang.Class类，这又会触发java.lang.Object等类和接口的加载。然后遍历classMap，给已经加载
-的每一个类关联类对象。好啦，问题已经解决了一半。下面修改
-LoadClass()方法，解决另一半问题。改动较大，代码如下：
+```
+loadBasicClasses()函数先加载java.lang.Class类，这又会触发java.lang.Object等类和接口的加载。然后遍历classMap，给已经加载的每一个类关联类对象。好啦，问题已经解决了一半。下面修改LoadClass()方法，解决另一半问题。改动较大，代码如下：
+``` go
 func (self *ClassLoader) LoadClass(name string) *Class {
-if class, ok := self.classMap[name]; ok {
-return class // already loaded
+	if class, ok := self.classMap[name]; ok {
+		return class // already loaded
+	}
+	var class *Class
+	if name[0] == '[' { // array class
+		class = self.loadArrayClass(name)
+	} else {
+		class = self.loadNonArrayClass(name)
+	}
+	if jlClassClass, ok := self.classMap["java/lang/Class"]; ok {
+		class.jClass = jlClassClass.NewObject()
+		class.jClass.extra = class
+	}
+	return class
 }
-var class *Class
-if name[0] == '[' { // array class
-class = self.loadArrayClass(name)
-} else {
-class = self.loadNonArrayClass(name)
-}
-if jlClassClass, ok := self.classMap["java/lang/Class"]; ok {
-class.jClass = jlClassClass.NewObject()
-class.jClass.extra = class
-}
-return class
-}
-主要的变动是粗体部分。在类加载完之后，看java.lang.Class是
-否已经加载。如果是，则给类关联类对象。这样，在
-loadBasicClasses()和LoadClass()方法的配合之下，所有加载到方
-法区的类都设置好了jClass字段。9.3.3 基本类型的类
-void和基本类型也有对应的类对象，但只能通过字面值来访
-问，如下面的Java代码所示。
+```
+主要的变动是粗体部分。在类加载完之后，看java.lang.Class是否已经加载。如果是，则给类关联类对象。这样，在loadBasicClasses()和LoadClass()方法的配合之下，所有加载到方法区的类都设置好了jClass字段。
+
+#### 9.3.3 基本类型的类
+void和基本类型也有对应的类对象，但只能通过字面值来访问，如下面的Java代码所示。
+``` java
 System.out.println(void.class);
 System.out.println(boolean.class);
 System.out.println(byte.class);
@@ -7094,948 +7051,932 @@ System.out.println(int.class);
 System.out.println(long.class);
 System.out.println(float.class);
 System.out.println(double.class);
+```
 和数组类一样，基本类型的类也是由Java虚拟机在运行期间生
 成的。继续编辑class_loader.go文件，修改NewClassLoader()函数，
 在其中添加如下一行代码：
+``` go
 func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
-... // 前面的代码不变
-loader.loadBasicClasses()
-loader.loadPrimitiveClasses()
-return loader
+	... // 前面的代码不变
+	loader.loadBasicClasses()
+	loader.loadPrimitiveClasses()
+	return loader
 }
-loadPrimitiveClasses()方法加载void和基本类型的类，代码如
-下：func (self *ClassLoader) loadPrimitiveClasses() {
-for primitiveType, _ := range primitiveTypes {
-self.loadPrimitiveClass(primitiveType) // primitiveType 是
-void 、
-int 、
-float 等
+```
+loadPrimitiveClasses()方法加载void和基本类型的类，代码如下：
+``` go
+func (self *ClassLoader) loadPrimitiveClasses() {
+	for primitiveType, _ := range primitiveTypes {
+		self.loadPrimitiveClass(primitiveType) // primitiveType 是void 、int 、float 等
+	}
 }
-}
-生成void和基本类型类的代码在loadPrimitiveClass()方法中，
-代码如下：
+```
+生成void和基本类型类的代码在loadPrimitiveClass()方法中，代码如下：
+``` go
 func (self *ClassLoader) loadPrimitiveClass(className string) {
-class := &Class{
-accessFlags:
-ACC_PUBLIC,
-name:
-className,
-loader:
-self,
-initStarted:
-true,
+	class := &Class{
+		accessFlags: ACC_PUBLIC,
+		name:        className,
+		loader:      self,
+		initStarted: true,
+	}
+	class.jClass = self.classMap["java/lang/Class"].NewObject()
+	class.jClass.extra = class
+	self.classMap[className] = class
 }
-class.jClass = self.classMap["java/lang/Class"].NewObject()
-class.jClass.extra = class
-self.classMap[className] = class
-}
-这里有三点需要说明。第一，void和基本类型的类名就是void、
-int、float等。第二，基本类型的类没有超类，也没有实现任何接口。
-第三，非基本类型的类对象是通过ldc指令加载到操作数栈中的，将
-在9.3.4节修改ldc指令，让它支持类对象。而基本类型的类对象，虽
-然在Java代码中看起来是通过字面量获取的，但是编译之后的指令并不是ldc，而是getstatic。每个基本类型都有一个包装类，包装类中
-有一个静态常量，叫作TYPE，其中存放的就是基本类型的类。例如
-java.lang.Integer类，代码如下：
+```
+这里有三点需要说明。第一，void和基本类型的类名就是void、int、float等。第二，基本类型的类没有超类，也没有实现任何接口。第三，非基本类型的类对象是通过ldc指令加载到操作数栈中的，将在9.3.4节修改ldc指令，让它支持类对象。而基本类型的类对象，虽然在Java代码中看起来是通过字面量获取的，但是编译之后的指令并不是ldc，而是getstatic。每个基本类型都有一个包装类，包装类中有一个静态常量，叫作TYPE，其中存放的就是基本类型的类。例如java.lang.Integer类，代码如下：
+``` java
 public final class Integer extends Number implements Comparable<Integer> {
 ... // 其他代码
-@SuppressWarnings("unchecked")
-public static final Class<Integer> TYPE
-= (Class<Integer>) Class.getPrimitiveClass("int");
+    @SuppressWarnings("unchecked")
+    public static final Class<Integer> TYPE
+            = (Class<Integer>) Class.getPrimitiveClass("int");
 ... // 其他代码
 }
-也就是说，基本类型的类是通过getstatic指令访问相应包装类
-的TYPE字段加载到操作数栈中的。Class.getPrimitiveClass()是个本
-地方法，将在9.3.5节实现它。包装类将在9.7小节详细讨论。9.3.4 修改ldc指令
-和基本类型、字符串字面值一样，类对象字面值也是由ldc指令
-加载的。本节修改ldc指令，让它可以加载类对象。打开
-ch09\instructions\constants\ldc.go文件，修改_ldc()函数，改动如下：
-func _ldc(frame *rtda.Frame, index uint) {
-stack := frame.OperandStack()
-class := frame.Method().Class()
-c := class.ConstantPool().GetConstant(index)
-switch c.(type) {
-case int32: ...
-case float32: ...
-case string: ...
-case *heap.ClassRef:
-classRef := c.(*heap.ClassRef)
-classObj := classRef.ResolvedClass().JClass()
-stack.PushRef(classObj)
-default: ...
+```
+也就是说，基本类型的类是通过getstatic指令访问相应包装类的TYPE字段加载到操作数栈中的。Class.getPrimitiveClass()是个本地方法，将在9.3.5节实现它。包装类将在9.7小节详细讨论。
+
+#### 9.3.4 修改ldc指令
+和基本类型、字符串字面值一样，类对象字面值也是由ldc指令加载的。本节修改ldc指令，让它可以加载类对象。打开ch09\instructions\constants\ldc.go文件，修改_ldc()函数，改动如下：
+``` go
+func _ldc(frame*rtda.Frame,index uint){
+	stack:=frame.OperandStack()
+	class :=frame.Method().Class()
+	c:=class.ConstantPool().GetConstant(index)
+	switch c.(type){
+	case int32:...
+	case float32:...
+	case string:...
+	case*heap.ClassRef:
+		classRef:=c.(*heap.ClassRef)
+		classObj:=classRef.ResolvedClass().JClass()
+		stack.PushRef(classObj)
+	default:...
+	}
 }
+```
+以上只是增加了一个case语句，其他地方没什么变化。如果运行时，常量池中的常量是类引用，则解析类引用，然后把类的类对象推入操作数栈顶。
+
+#### 9.3.5 通过反射获取类名
+为了支持通过反射获取类名，本小节将实现以下4个本地方法:
+
+- java.lang.Object.getClass()
+- java.lang.Class.getPrimitiveClass()
+- java.lang.Class.getName0()
+- java.lang.Class.desiredAssertionStatus0()
+
+Object.getClass()就不用多说了，它返回对象的类对象引用。Class.getPrimitiveClass()在9.3.3节提到过，基本类型的包装类在初始化时会调用这个方法给TPYE字段赋值。Character类是基本类型char的包装类，它在初始化时会调用Class.desiredAssertionStatus0()方法，所以这个方法也需要实现。最后，之所以要实现getName0()方法，是因为Class.getName()方法是依赖这个本地方法工作的，该方法的代码如下：
+``` go
+public String getName() {
+    String name = this.name;
+    if (name == null)
+        this.name = name = getName0();
+    return name;
 }
-以上只是增加了一个case语句，其他地方没什么变化。如果运
-行时，常量池中的常量是类引用，则解析类引用，然后把类的类对
-象推入操作数栈顶。9.3.5 通过反射获取类名
-为了支持通过反射获取类名，本小节将实现以下4个本地方
-法:
-·java.lang.Object.getClass()
-·java.lang.Class.getPrimitiveClass()
-·java.lang.Class.getName0()
-·java.lang.Class.desiredAssertionStatus0()
-Object.getClass()就不用多说了，它返回对象的类对象引用。
-Class.getPrimitiveClass()在9.3.3节提到过，基本类型的包装类在初
-始化时会调用这个方法给TPYE字段赋值。Character类是基本类型
-char的包装类，它在初始化时会调用Class.desiredAssertionStatus0()
-方法，所以这个方法也需要实现。最后，之所以要实现getName0()
-方法，是因为Class.getName()方法是依赖这个本地方法工作的，该
-方法的代码如下：
-// java.lang.Classpublic String getName() {
-String name = this.name;
-if (name == null)
-this.name = name = getName0();
-return name;
-}
-在ch09\native目录下创建java子目录，在java子目录下创建lang
-子目录，然后在lang目录中创建Object.go文件，在其中注册
-getClass()本地方法，代码如下：
+```
+在ch09\native目录下创建java子目录，在java子目录下创建lang子目录，然后在lang目录中创建Object.go文件，在其中注册getClass()本地方法，代码如下：
+``` go
 package lang
 import "jvmgo/ch09/native"
 import "jvmgo/ch09/rtda"
 func init() {
-native.Register("java/lang/Object", "getClass", "()Ljava/lang/Class;", getC
+	native.Register("java/lang/Object", "getClass", "()Ljava/lang/Class;", getClass())
 }
+```
 继续编辑Object.go，实现getClass()函数，代码如下：
+``` go
 // public final native Class<?> getClass();
 func getClass(frame *rtda.Frame) {
-this := frame.LocalVars().GetThis()
-class := this.Class().JClass()
-frame.OperandStack().PushRef(class)
+	this := frame.LocalVars().GetThis()
+	class := this.Class().JClass()
+	frame.OperandStack().PushRef(class)
 }
-这是实现的第一个本地方法，所以有必要详细解释一下。首
-先，从局部变量表中拿到this引用。GetThis()方法其实就是调用
-GetRef(0)，不过为了提高代码的可读性，给LocalVars结构体添加了
-这个方法。有了this引用后，通过Class()方法拿到它的Class结构体指针，进而又通过JClass()方法拿到它的类对象。最后，把类对象推
-入操作数栈顶。这样，只用了3行代码，Object.getClass()方法就实
-现好了。
-在ch09\native\java\lang目录下创建Class.go文件，在其中注册3
-个本地方法，代码如下：
+```
+这是实现的第一个本地方法，所以有必要详细解释一下。首先，从局部变量表中拿到this引用。GetThis()方法其实就是调用GetRef(0)，不过为了提高代码的可读性，给LocalVars结构体添加了这个方法。有了this引用后，通过Class()方法拿到它的Class结构体指针，进而又通过JClass()方法拿到它的类对象。最后，把类对象推入操作数栈顶。这样，只用了3行代码，Object.getClass()方法就实现好了。
+
+在ch09\native\java\lang目录下创建Class.go文件，在其中注册3个本地方法，代码如下：
+``` go
 package lang
 import "jvmgo/ch09/native"
 import "jvmgo/ch09/rtda"
 import "jvmgo/ch09/rtda/heap"
 func init() {
-native.Register("java/lang/Class", "getPrimitiveClass",
-"(Ljava/lang/String;)Ljava/lang/Class;", getPrimitiveClass)
-native.Register("java/lang/Class", "getName0", "()Ljava/lang/String;", getN
-native.Register("java/lang/Class", "desiredAssertionStatus0",
-"(Ljava/lang/Class;)Z", desiredAssertionStatus0)
+	native.Register("java/lang/Class", "getPrimitiveClass",
+		"(Ljava/lang/String;)Ljava/lang/Class;", getPrimitiveClass)
+	native.Register("java/lang/Class", "getName0", "()Ljava/lang/String;", getName)
+	native.Register("java/lang/Class", "desiredAssertionStatus0",
+		"(Ljava/lang/Class;)Z", desiredAssertionStatus0)
 }
+```
 先实现getPrimitiveClass()方法，代码如下：
+``` go
 // static native Class<?> getPrimitiveClass(String name);
 func getPrimitiveClass(frame *rtda.Frame) {
-nameObj := frame.LocalVars().GetRef(0)
-name := heap.GoString(nameObj)
-loader := frame.Method().Class().Loader()
-class := loader.LoadClass(name).JClass()
-frame.OperandStack().PushRef(class)
+	nameObj := frame.LocalVars().GetRef(0)
+	name := heap.GoString(nameObj)
+	loader := frame.Method().Class().Loader()
+	class := loader.LoadClass(name).JClass()
+	frame.OperandStack().PushRef(class)
 }
-getPrimitiveClass()是静态方法。先从局部变量表中拿到类名，
-这是个Java字符串，需要把它转成Go字符串。基本类型的类已经加载到了方法区中，直接调用类加载器的LoadClass()方法获取即可。
-最后，把类对象引用推入操作数栈顶。下面实现getName0()方法，
-代码如下：
+```
+getPrimitiveClass()是静态方法。先从局部变量表中拿到类名，这是个Java字符串，需要把它转成Go字符串。基本类型的类已经加载到了方法区中，直接调用类加载器的LoadClass()方法获取即可。最后，把类对象引用推入操作数栈顶。下面实现getName0()方法，代码如下：
+``` go
 // private native String getName0();
 func getName0(frame *rtda.Frame) {
-this := frame.LocalVars().GetThis()
-class := this.Extra().(*heap.Class)
-name := class.JavaName()
-nameObj := heap.JString(class.Loader(), name)
-frame.OperandStack().PushRef(nameObj)
+	this := frame.LocalVars().GetThis()
+	class := this.Extra().(*heap.Class)
+	name := class.JavaName()
+	nameObj := heap.JString(class.Loader(), name)
+	frame.OperandStack().PushRef(nameObj)
 }
-首先从局部变量表中拿到this引用，这是一个类对象引用，通
-过Extra()方法可以获得与之对应的Class结构体指针。然后拿到类
-名，转成Java字符串并推入操作数栈顶。注意这里需要的是
-java.lang.Object这样的类名，而非java/lang/Object。Class结构体的
-JavaName()方法返回转换后的类名，代码如下：
+```
+首先从局部变量表中拿到this引用，这是一个类对象引用，通过Extra()方法可以获得与之对应的Class结构体指针。然后拿到类名，转成Java字符串并推入操作数栈顶。注意这里需要的是java.lang.Object这样的类名，而非java/lang/Object。Class结构体的JavaName()方法返回转换后的类名，代码如下：
+``` go
 func (self *Class) JavaName() string {
-return strings.Replace(self.name, "/", ".", -1)
+	return strings.Replace(self.name, "/", ".", -1)
 }
-本书不讨论断言。desiredAssertionStatus0()方法把false推入操
-作数栈顶，代码如下：
-// private static native boolean desiredAssertionStatus0(Class<？> clazz);func desiredAssertionStatus0(frame *rtda.Frame) {
-frame.OperandStack().PushBoolean(false)
+```
+本书不讨论断言。desiredAssertionStatus0()方法把false推入操作数栈顶，代码如下：
+``` go
+// private static native boolean desiredAssertionStatus0(Class<？> clazz);
+func desiredAssertionStatus0(frame *rtda.Frame) {
+	frame.OperandStack().PushBoolean(false)
 }
-4个本地方法都实现好了，而且也已经在init()函数中注册，那
-么可以进行测试了吗？还不行，因为init()函数还没有机会执行。
-编辑ch09\instructions\reserved\invokenative.go文件，在其中导入lang
-包，代码如下：
+```
+4个本地方法都实现好了，而且也已经在init()函数中注册，那么可以进行测试了吗？还不行，因为init()函数还没有机会执行。编辑ch09\instructions\reserved\invokenative.go文件，在其中导入lang包，代码如下：
+``` go
 package reserved
 import "jvmgo/ch09/instructions/base"
 import "jvmgo/ch09/rtda"
 import "jvmgo/ch09/native"
 import _ "jvmgo/ch09/native/java/lang"
-如果没有任何包依赖lang包，它就不会被编译进可执行文件，
-上面的本地方法也就不会被注册。所以需要一个地方导入lang包，
-把它放在invokenative.go文件中。由于没有显示使用lang中的变量或
-函数，所以必须在包名前面加上下划线，否则无法通过编译。这个
-技术在Go语言中叫作“import for side effect”。 [1]
-[1] https://golang.org/doc/effective_go.html#blank_import9.3.6 测试本节代码
-打开命令行窗口，执行下面的命令编译本章代码：
+```
+如果没有任何包依赖lang包，它就不会被编译进可执行文件，上面的本地方法也就不会被注册。所以需要一个地方导入lang包，把它放在invokenative.go文件中。由于没有显示使用lang中的变量或函数，所以必须在包名前面加上下划线，否则无法通过编译。这个技术在Go语言中叫作“import for side effect”。 [1]
+
+[1] https://golang.org/doc/effective_go.html#blank_import9.3.6 测试本节代码打开命令行窗口，执行下面的命令编译本章代码：
+```
 go install jvmgo\ch09
-命令执行完毕后，在D:\go\workspace\bin目录下出现ch09.exe文
-件。用ch09.exe运行下面的Java程序:
+```
+命令执行完毕后，在D:\go\workspace\bin目录下出现ch09.exe文件。用ch09.exe运行下面的Java程序:
+``` java
+public class a {
 package jvmgo.book.ch09;
-public class GetClassTest {
-public static void main(String[] args) {
-System.out.println(void.class.getName()); // void
-System.out.println(boolean.class.getName()); // boolean
-System.out.println(byte.class.getName()); // byte
-System.out.println(char.class.getName()); // char
-System.out.println(short.class.getName()); // short
-System.out.println(int.class.getName()); // int
-System.out.println(long.class.getName()); // long
-System.out.println(float.class.getName()); // float
-System.out.println(double.class.getName()); // double
-System.out.println(Object.class.getName()); // java.lang.Object
-System.out.println(int[].class.getName()); // [I
-System.out.println(int[][].class.getName()); // [[I
-System.out.println(Object[].class.getName()); // [Ljava.lang.Object;
-System.out.println(Object[][].class.getName()); // [[Ljava.lang.Object;
-System.out.println(Runnable.class.getName()); // java.lang.Runnable
-System.out.println("abc".getClass().getName()); // java.lang.String
-System.out.println(new double[0].getClass().getName()); // [D
-System.out.println(new String[0].getClass().getName()); //[Ljava.lang.St
+    public class GetClassTest {
+        public static void main(String[] args) {
+            System.out.println(void.class.getName()); // void
+            System.out.println(boolean.class.getName()); // boolean
+            System.out.println(byte.class.getName()); // byte
+            System.out.println(char.class.getName()); // char
+            System.out.println(short.class.getName()); // short
+            System.out.println(int.class.getName()); // int
+            System.out.println(long.class.getName()); // long
+            System.out.println(float.class.getName()); // float
+            System.out.println(double.class.getName()); // double
+            System.out.println(Object.class.getName()); // java.lang.Object
+            System.out.println(int[].class.getName()); // [I
+            System.out.println(int[][].class.getName()); // [[I
+            System.out.println(Object[].class.getName()); // [Ljava.lang.Object;
+            System.out.println(Object[][].class.getName()); // [[Ljava.lang.Object;
+            System.out.println(Runnable.class.getName()); // java.lang.Runnable
+            System.out.println("abc".getClass().getName()); // java.lang.String
+            System.out.println(new double[0].getClass().getName()); // [D
+            System.out.println(new String[0].getClass().getName()); //[Ljava.lang.St
+        }
+    }
 }
-}
-运行结果如图9-2所示。图9-2 GetClassTest程序执行结果9.4 字符串拼接和String.intern()方法
-9.4.1 Java类库
-在Java语言中，通过加号来拼接字符串。作为优化，javac编辑
-器会把字符串拼接操作转换成StringBuilder的使用。例如下面这段
-Java代码：
+```
+运行结果如图9-2所示。
+
+图9-2 GetClassTest程序执行结果
+
+### 9.4 字符串拼接和String.intern()方法
+
+#### 9.4.1 Java类库
+在Java语言中，通过加号来拼接字符串。作为优化，javac编辑器会把字符串拼接操作转换成StringBuilder的使用。例如下面这段Java代码：
+``` java
 String hello = "hello,";
 String world = "world!";
 String str = hello + world;
 System.out.println(str);
+```
 很可能会被javac优化为下面这样：
+``` java
 String str = new StringBuilder().append("hello,").append("world!").toString();
 System.out.println(str);
+```
 为了运行上面的代码，本节将实现以下3个本地方法：
-·System.arrayCopy()
-·Float.floatToRawIntBits()·Double.doubleToRawLongBits()
-这些方法是在哪里使用的呢？StringBuilder.append()方法只是
-调用了超类的append()方法，代码如下：
-// java.lang.StringBuilder
+- System.arrayCopy()
+- Float.floatToRawIntBits()
+- Double.doubleToRawLongBits()
+这些方法是在哪里使用的呢？StringBuilder.append()方法只是调用了超类的append()方法，代码如下：
+``` java
 @Override
-public StringBuilder append(String str) {
-super.append(str); // 调用
+public StringBuilder append(String str){
+	super.append(str); // 调用
 AbstractStringBuilder.append()
-return this;
+	return this;
 }
-AbstractStringBuilder.append()方法调用了String.getChars()方
-法获取字符数组，代码如下：
-// java.lang.AbstractStringBuilder
+```
+AbstractStringBuilder.append()方法调用了String.getChars()方法获取字符数组，代码如下：
+``` java
 public AbstractStringBuilder append(String str) {
-if (str == null) return appendNull();
-int len = str.length();
-ensureCapacityInternal(count + len);
-str.getChars(0, len, value, count);
-count += len;
-return this;
+	if (str == null) return appendNull();
+	int len = str.length();
+	ensureCapacityInternal(count + len);
+	str.getChars(0, len, value, count);
+	count += len;
+	return this;
 }
-String.getChars()方法调用了System.arraycopy()方法拷贝数
-组，代码如下：
-// java.lang.String
+```
+String.getChars()方法调用了System.arraycopy()方法拷贝数组，代码如下：
+``` java
 public void getChars(int srcBegin, int srcEnd, char dst[], int dstBegin) {
-... // 其他代码System.arraycopy(value, srcBegin, dst, dstBegin, srcEnd - srcBegin);
+	... // 其他代码
+	System.arraycopy(value, srcBegin, dst, dstBegin, srcEnd - srcBegin);
 }
+```
 StringBuilder.toString()方法的代码如下：
+``` java
 // java.lang.StringBuilder
 @Override
 public String toString() {
-// Create a copy, don't share the array
-return new String(value, 0, count);
+	// Create a copy, don't share the array
+	return new String(value, 0, count);
 }
-它调用了String的构造函数，这个构造函数调用了
-Arrays.copyOfRange()方法，代码如下：
+```
+它调用了String的构造函数，这个构造函数调用了Arrays.copyOfRange()方法，代码如下：
+``` go
 // java.lang.String
 public String(char value[], int offset, int count) {
-... // 其他代码
-this.value = Arrays.copyOfRange(value, offset, offset+count);
+	... // 其他代码
+	
+	this.value = Arrays.copyOfRange(value, offset, offset+count);
 }
+```
 Arrays.copyOfRange()调用了Math.min()方法，代码如下：
+``` java
 // java.util.Arrays
 public static char[] copyOfRange(char[] original, int from, int to) {
-int newLength = to - from;
-if (newLength < 0) throw new IllegalArgumentException(from + " > " + to);
-char[] copy = new char[newLength];
-System.arraycopy(original, from, copy, 0,
-Math.min(original.length - from, newLength));
-return copy;
-}Math类在初始化时需要调用Float.floatToRawIntBits()和
-Double.doubleToRawLongBits()方法，代码如下：
+	int newLength = to - from;
+	if (newLength < 0) throw new IllegalArgumentException(from + " > " + to);
+	char[] copy = new char[newLength];
+	System.arraycopy(original, from, copy, 0,
+		Math.min(original.length - from, newLength));
+	return copy;
+}
+```
+Math类在初始化时需要调用Float.floatToRawIntBits()和Double.doubleToRawLongBits()方法，代码如下：
+``` go
 package java.lang;
 public final class Math {
-// Use raw bit-wise conversions on guaranteed non-NaN arguments.
-private static long negativeZeroFloatBits = Float.floatToRawIntBits(-0.0f)
-private static long negativeZeroDoubleBits = Double.doubleToRawLongBits(-0.
+	// Use raw bit-wise conversions on guaranteed non-NaN arguments.
+	private static long negativeZeroFloatBits = Float.floatToRawIntBits(-0.0f)
+	private static long negativeZeroDoubleBits = Double.doubleToRawLongBits(-0.
 }
-Java类库介绍完了，下面实现本地方法。9.4.2 System.arraycopy()方法
-在ch09\native\java\lang目录下创建System.go文件，在其中注册
-arraycopy()方法，代码如下：
+```
+Java类库介绍完了，下面实现本地方法。
+
+#### 9.4.2 System.arraycopy()方法
+在ch09\native\java\lang目录下创建System.go文件，在其中注册arraycopy()方法，代码如下：
+``` go
 package lang
 import "jvmgo/ch09/native"
 import "jvmgo/ch09/rtda"
 import "jvmgo/ch09/rtda/heap"
 func init() {
-native.Register("java/lang/System", "arraycopy",
-"(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy)
+	native.Register("java/lang/System", "arraycopy",
+		"(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy)
 }
-继续编辑System.go，实现arraycopy()方法。代码稍微有些复
-杂，先来看第一部分。
+```
+继续编辑System.go，实现arraycopy()方法。代码稍微有些复杂，先来看第一部分。
+``` go
 // public static native void arraycopy(
 // Object src, int srcPos, Object dest, int destPos, int length)
 func arraycopy(frame *rtda.Frame) {
-vars := frame.LocalVars()
-src := vars.GetRef(0)
-srcPos := vars.GetInt(1)
-dest := vars.GetRef(2)
-destPos := vars.GetInt(3)
-length := vars.GetInt(4)
-先从局部变量表中拿到5个参数。源数组和目标数组都不能是
-null，否则按照System类的Javadoc应该抛出NullPointerException异
-常，代码如下：if src == nil || dest == nil {
-panic("java.lang.NullPointerException")
+	vars := frame.LocalVars()
+	src := vars.GetRef(0)
+	srcPos := vars.GetInt(1)
+	dest := vars.GetRef(2)
+	destPos := vars.GetInt(3)
+	length := vars.GetInt(4)
+```
+先从局部变量表中拿到5个参数。源数组和目标数组都不能是null，否则按照System类的Javadoc应该抛出NullPointerException异常，代码如下：
+``` go
+if src == nil || dest == nil {
+	panic("java.lang.NullPointerException")
 }
-源数组和目标数组必须兼容才能拷贝，否则应该抛出
-ArrayStoreExceptio异常，代码如下：
-ArrayStoreExceptio 异常，代码如下：
+```
+源数组和目标数组必须兼容才能拷贝，否则应该抛出ArrayStoreExceptio异常，代码如下：
+``` java
 if !checkArrayCopy(src, dest) {
-panic("java.lang.ArrayStoreException")
+	panic("java.lang.ArrayStoreException")
 }
-checkArrayCopy()函数的代码稍后给出。接下来检查srcPos、
-destPos和length参数，如果有问题则抛出
-IndexOutOfBoundsException异常，代码如下：
-if srcPos < 0 || destPos < 0 || length < 0 ||
-srcPos+length > src.ArrayLength() ||
-destPos+length > dest.ArrayLength() {
-panic("java.lang.IndexOutOfBoundsException")
+```
+checkArrayCopy()函数的代码稍后给出。接下来检查srcPos、destPos和length参数，如果有问题则抛出IndexOutOfBoundsException异常，代码如下：
+``` go
+if srcPos< 0||destPos< 0||length< 0||
+    srcPos+length>src.ArrayLength()||
+    destPos+length>dest.ArrayLength(){
+    panic("java.lang.IndexOutOfBoundsException")
 }
-最后，参数合法，调用ArrayCopy()函数进行数组拷贝，代码如
-下：
-heap.ArrayCopy(src, dest, srcPos, destPos, length)
-}checkArrayCopy()函数首先确保src和dest都是数组，然后检查
-数组类型。如果两者都是引用数组，则可以拷贝，否则两者必须是
-相同类型的基本类型数组，代码如下：
+```
+最后，参数合法，调用ArrayCopy()函数进行数组拷贝，代码如下：
+``` java
+	heap.ArrayCopy(src, dest, srcPos, destPos, length)
+}
+```
+checkArrayCopy()函数首先确保src和dest都是数组，然后检查数组类型。如果两者都是引用数组，则可以拷贝，否则两者必须是相同类型的基本类型数组，代码如下：
+``` go
 func checkArrayCopy(src, dest *heap.Object) bool {
-srcClass := src.Class()
-destClass := dest.Class()
-if !srcClass.IsArray() || !destClass.IsArray() {
-return false
+	srcClass := src.Class()
+	destClass := dest.Class()
+	if !srcClass.IsArray() || !destClass.IsArray() {
+		return false
+	}
+	if srcClass.ComponentClass().IsPrimitive() ||
+		destClass.ComponentClass().IsPrimitive() {
+		return srcClass == destClass
+	}
+	return true
 }
-if srcClass.ComponentClass().IsPrimitive() ||
-destClass.ComponentClass().IsPrimitive() {
-return srcClass == destClass
-}
-return true
-}
-Class结构体的IsPrimitive()函数判断类是否是基本类型的类，
-代码如下：
+```
+Class结构体的IsPrimitive()函数判断类是否是基本类型的类，代码如下：
+``` go
 func (self *Class) IsPrimitive() bool {
-_, ok := primitiveTypes[self.name]
-return ok
+	_, ok := primitiveTypes[self.name]
+	return ok
 }
-真正的数组拷贝逻辑在ch09\rtda\heap\array_object.go文件中，
-代码如下：
+```
+真正的数组拷贝逻辑在ch09\rtda\heap\array_object.go文件中，代码如下：
+``` go
 func ArrayCopy(src, dst *Object, srcPos, dstPos, length int32) {
-switch src.data.(type) {
-case ...
-case []int32:
-_src := src.data.([]int32)[srcPos : srcPos+length]_dst := dst.data.([]int32)[dstPos : dstPos+length]
-copy(_dst, _src)
-case []*Object:
-_src := src.data.([]*Object)[srcPos : srcPos+length]
-_dst := dst.data.([]*Object)[dstPos : dstPos+length]
-copy(_dst, _src)
+	switch src.data.(type) {
+	case ...
+	case []int32:
+		_src := src.data.([]int32)[srcPos : srcPos+length]_dst := dst.data.([]int32)[dstPos : dstPos+length]
+		copy(_dst, _src)
+	case []*Object:
+		_src := src.data.([]*Object)[srcPos : srcPos+length]
+		_dst := dst.data.([]*Object)[dstPos : dstPos+length]
+		copy(_dst, _src)
+	}
 }
-}
-利用Go的内置函数copy()进行slice拷贝。为了节约篇幅，上面
-的代码只给出了int数组和对象数组的case语句，其他情况代码大同
-小异。9.4.3 Float.floatToRawIntBits()和
-Double.doubleToRawLongBits()方法
-Float.floatToRawIntBits()和Double.doubleToRawLongBits()返
-回浮点数的编码，这两个方法大同小异，以Float为例进行介绍。在
-ch09\native\java\lang目录下创建Float.go文件，在其中注册
-floatToRawIntBits()本地方法，代码如下：
+```
+利用Go的内置函数copy()进行slice拷贝。为了节约篇幅，上面的代码只给出了int数组和对象数组的case语句，其他情况代码大同小异。
+
+#### 9.4.3 Float.floatToRawIntBits()和Double.doubleToRawLongBits()方法
+
+Float.floatToRawIntBits()和Double.doubleToRawLongBits()返回浮点数的编码，这两个方法大同小异，以Float为例进行介绍。在ch09\native\java\lang目录下创建Float.go文件，在其中注册floatToRawIntBits()本地方法，代码如下：
+``` java
 package lang
 import "math"
 import "jvmgo/ch09/native"
 import "jvmgo/ch09/rtda"
 func init() {
-native.Register("java/lang/Float",
-"floatToRawIntBits", "(F)I", floatToRawIntBits)
+	native.Register("java/lang/Float",
+		"floatToRawIntBits", "(F)I", floatToRawIntBits)
 }
-Go语言的math包提供了一个类似函数:Float32bits()，正好可
-以用来实现floatToRaw-IntBits()方法，代码如下：
+```
+Go语言的math包提供了一个类似函数:Float32bits()，正好可以用来实现floatToRaw-IntBits()方法，代码如下：
+``` go
 // public static native int floatToRawIntBits(float value);
 func floatToRawIntBits(frame *rtda.Frame) {
-value := frame.LocalVars().GetFloat(0)
-bits := math.Float32bits(value)
-frame.OperandStack().PushInt(int32(bits))
-}9.4.4 String.intern()方法
-第8章讨论字符串时，实现了字符串池，但它只能在虚拟机内
-部使用。下面实现String类的intern()方法，让Java类库也可以使用
-它。在ch09\native\java\lang目录下创建String.go，在其中注册intern()
-方法，代码如下：
+	value := frame.LocalVars().GetFloat(0)
+	bits := math.Float32bits(value)
+	frame.OperandStack().PushInt(int32(bits))
+}
+```
+
+#### 9.4.4 String.intern()方法
+第8章讨论字符串时，实现了字符串池，但它只能在虚拟机内部使用。下面实现String类的intern()方法，让Java类库也可以使用它。在ch09\native\java\lang目录下创建String.go，在其中注册intern()方法，代码如下：
+``` java
 package lang
 import "jvmgo/ch09/native"
 import "jvmgo/ch09/rtda"
 import "jvmgo/ch09/rtda/heap"
 func init() {
-native.Register("java/lang/String", "intern", "()Ljava/lang/String;", inter
+	native.Register("java/lang/String", "intern", "()Ljava/lang/String;", interger);
 }
+```
 继续编辑String.go文件，实现intern()方法，代码如下：
+``` go
 // public native String intern();
 func intern(frame *rtda.Frame) {
-this := frame.LocalVars().GetThis()
-interned := heap.InternString(this)
-frame.OperandStack().PushRef(interned)
+	this := frame.LocalVars().GetThis()
+	interned := heap.InternString(this)
+	frame.OperandStack().PushRef(interned)
 }
-如果字符串还没有入池，把它放入并返回该字符串，否则找到
-已入池字符串并返回。这个逻辑在InternString()函数中
-(ch09\rtda\heap\string_pool.go)，代码如下：func InternString(jStr *Object) *Object {
-goStr := GoString(jStr)
-if internedStr, ok := internedStrings[goStr]; ok {
-return internedStr
+```
+如果字符串还没有入池，把它放入并返回该字符串，否则找到已入池字符串并返回。这个逻辑在InternString()函数中(ch09\rtda\heap\string_pool.go)，代码如下：
+``` go
+func InternString(jStr *Object) *Object {
+	goStr := GoString(jStr)
+	if internedStr, ok := internedStrings[goStr]; ok {
+		return internedStr
+	}
+	internedStrings[goStr] = jStr
+	return jStr
 }
-internedStrings[goStr] = jStr
-return jStr
-}
-字符串相关的本地方法都实现好了，下面我们进行测试。9.4.5 测试本节代码
+```
+字符串相关的本地方法都实现好了，下面我们进行测试。
+
+#### 9.4.5 测试本节代码
 下面的Java程序对字符串拼接和入池进行了测试。
-package jvmgo.book.ch09;
+``` java
 public class StringTest {
-public static void main(String[]
-String s1 = "abc1";
-String s2 = "abc1";
-System.out.println(s1 == s2);
-int x = 1;
-String s3 = "abc" + x;
-System.out.println(s1 == s3);
-s3 = s3.intern();
-System.out.println(s1 == s3);
+    public static void main(String[] args) {
+        String s1 = "abc1";
+        String s2 = "abc1";
+        System.out.println(s1 == s2);// true
+        int x = 1;
+        String s3 = "abc" + x;
+        System.out.println(s1 == s3);// false
+        s3 = s3.intern();
+        System.out.println(s1 == s3);// true
+    }
 }
-}
-args) {
-// true
-// false
-// true
-重新编译本章代码，然后测试StringTest程序，结果如图9-3所
-示。
-图9-3 StringTest程序执行结果9.5 Object.hashCode()、equals()和toString()
-Object类有3个非常重要的方法：hashCode()返回对象的哈希
-码；equals()用来比较两个对象是否“相同”；toString()返回对象的字
-符串表示。hashCode()是个本地方法，equals()和toString()则是用
-Java写的，它们的代码如下：
+```
+重新编译本章代码，然后测试StringTest程序，结果如图9-3所示。
+
+图9-3 StringTest程序执行结果
+
+### 9.5 Object.hashCode()、equals()和toString()
+
+Object类有3个非常重要的方法：hashCode()返回对象的哈希码；equals()用来比较两个对象是否“相同”；toString()返回对象的字符串表示。hashCode()是个本地方法，equals()和toString()则是用Java写的，它们的代码如下：
+``` java
 package java.lang;
 public class Object {
-... // 其他代码省略
-public native int hashCode();
-public boolean equals(Object obj) {
-return (this == obj);
+    ... // 其他代码省略
+    public native int hashCode();
+    public boolean equals(Object obj) {
+        return (this == obj);
+    }
+    public String toString() {
+        return getClass().getName() + "@" + Integer.toHexString(hashCode());
+    }
 }
-public String toString() {
-return getClass().getName() + "@" + Integer.toHexString(hashCode());
-}
-}
-下面实现hashCode()方法。打开
-ch09\native\java\lang\Object.go，导入unsafe包并注册hashCode()方
-法，代码如下：
+```
+下面实现hashCode()方法。打开ch09\native\java\lang\Object.go，导入unsafe包并注册hashCode()方法，代码如下：
+``` go
 package lang
 import "unsafe"
 import "jvmgo/ch09/native"
 import "jvmgo/ch09/rtda"
 func init() {
-native.Register("java/lang/Object", "getClass", "()Ljava/lang/Class;", getC继续编辑Object.go，实现hashCode()方法，代码如下：
+	native.Register("java/lang/Object", "getClass", "()Ljava/lang/Class;", getClass)
+	native.Register("java/lang/Object", "hashCode", "()I", hashClass)
+}
+```
+继续编辑Object.go，实现hashCode()方法，代码如下：
+``` go
 // public native int hashCode();
 func hashCode(frame *rtda.Frame) {
-this := frame.LocalVars().GetThis()
-hash := int32(uintptr(unsafe.Pointer(this)))
-frame.OperandStack().PushInt(hash)
+	this := frame.LocalVars().GetThis()
+	hash := int32(uintptr(unsafe.Pointer(this)))
+	frame.OperandStack().PushInt(hash)
 }
-把对象引用(Object结构体指针)转换成uintptr类型，然后强制
-转换成int32推入操作数栈顶。
-本节只实现这一个本地方法。重新编译本章代码，然后测试下
-面的Java程序:
+```
+把对象引用(Object结构体指针)转换成uintptr类型，然后强制转换成int32推入操作数栈顶。
+本节只实现这一个本地方法。重新编译本章代码，然后测试下面的Java程序:
+``` java
 package jvmgo.book.ch09;
 public class ObjectTest {
-public static void main(String[] args) {
-Object obj1 = new ObjectTest();
-Object obj2 = new ObjectTest();
-System.out.println(obj1.hashCode());
-System.out.println(obj1.toString());
-System.out.println(obj1.equals(obj2));
-System.out.println(obj1.equals(obj1));
+    public static void main(String[] args) {
+        Object obj1 = new ObjectTest();
+        Object obj2 = new ObjectTest();
+        System.out.println(obj1.hashCode());
+        System.out.println(obj1.toString());
+        System.out.println(obj1.equals(obj2));
+        System.out.println(obj1.equals(obj1));
+    }
 }
-}
-ObjectTest程序执行结果如图9-4所示。图9-4 ObjectTest程序执行结果9.6 Object.clone()
-Object类提供了clone()方法，用来支持对象克隆。这也是一个
-本地方法，代码如下：
+```
+ObjectTest程序执行结果如图9-4所示。
+
+图9-4 ObjectTest程序执行结果
+
+### 9.6 Object.clone()
+Object类提供了clone()方法，用来支持对象克隆。这也是一个本地方法，代码如下：
+``` java
 // java.lang.Object
 protected native Object clone() throws CloneNotSupportedException;
-本节实现这个方法。在ch09\native\java\lang\Object.go文件中注
-册clone()方法，代码如下：
+```
+本节实现这个方法。在ch09\native\java\lang\Object.go文件中注册clone()方法，代码如下：
+``` go
 func init() {
-native.Register(jlObject, "getClass", "()Ljava/lang/Class;", getClass)
-native.Register(jlObject, "hashCode", "()I", hashCode)
-native.Register(jlObject, "clone", "()Ljava/lang/Object;", clone)
+	native.Register(jlObject, "getClass", "()Ljava/lang/Class;", getClass)
+	native.Register(jlObject, "hashCode", "()I", hashCode)
+	native.Register(jlObject, "clone", "()Ljava/lang/Object;", clone)
 }
+```
 继续编辑Object.go，实现clone()方法，代码如下：
+``` go
 func clone(frame *rtda.Frame) {
-this := frame.LocalVars().GetThis()
-cloneable := this.Class().Loader().LoadClass("java/lang/Cloneable")
-if !this.Class().IsImplements(cloneable) {
-panic("java.lang.CloneNotSupportedException")
+	this := frame.LocalVars().GetThis()
+	cloneable := this.Class().Loader().LoadClass("java/lang/Cloneable")
+	if !this.Class().IsImplements(cloneable) {
+		panic("java.lang.CloneNotSupportedException")
+	}
+	frame.OperandStack().PushRef(this.Clone())
 }
-frame.OperandStack().PushRef(this.Clone())
-}
-如果类没有实现Cloneable接口，则抛出CloneNotSupportedException异常，否则调用Object结构体的
-Clone()方法克隆对象，然后把对象副本引用推入操作数栈顶。
-Clone()实现稍微有些长，把它放在ch09\rtda\heap\object_clone.go文
-件中，代码如下：
+```
+如果类没有实现Cloneable接口，则抛出CloneNotSupportedException异常，否则调用Object结构体的Clone()方法克隆对象，然后把对象副本引用推入操作数栈顶。Clone()实现稍微有些长，把它放在ch09\rtda\heap\object_clone.go文件中，代码如下：
+``` go
 func (self *Object) Clone() *Object {
-return &Object{
-class: self.class,
-data: self.cloneData(),
+	return &Object{
+		class: self.class,
+		data: self.cloneData(),
+	}
 }
-}
+```
 数据克隆逻辑在cloneData()函数中，代码如下：
+``` go
 func (self *Object) cloneData() interface{} {
-switch self.data.(type) {
-case []int8: ...
-case []int16: ...
-case []uint16: ...
-case []int32: ...
-case []int64: ...
-case []float32: ...
-case []float64: ...
-case []*Object:
-elements := self.data.([]*Object)
-elements2 := make([]*Object, len(elements))
-copy(elements2, elements)
-return elements2
-default: // []Slot
-slots := self.data.(Slots)
-slots2 := newSlots(uint(len(slots)))
-copy(slots2, slots)
-return slots2
+	switch self.data.(type) {
+	case []int8: ...
+	case []int16: ...
+	case []uint16: ...
+	case []int32: ...
+	case []int64: ...
+	case []float32: ...
+	case []float64: ...
+	case []*Object:
+		elements := self.data.([]*Object)
+		elements2 := make([]*Object, len(elements))
+		copy(elements2, elements)
+		return elements2
+	default: // []Slot
+		slots := self.data.(Slots)
+		slots2 := newSlots(uint(len(slots)))
+		copy(slots2, slots)
+		return slots2
+	}
 }
-}
-注意，数组也实现了Cloneable接口，所以上面代码中的case语句针对各种数组进行处理。因为代码都大同小异，所以只给出了引
-用数组的case语句。default语句对普通对象进行克隆。
+```
+注意，数组也实现了Cloneable接口，所以上面代码中的case语句针对各种数组进行处理。因为代码都大同小异，所以只给出了引用数组的case语句。default语句对普通对象进行克隆。
+
 重新编译本章代码，测试下面的Java程序。
+``` java
 package jvmgo.book.ch09;
 public class CloneTest implements Cloneable {
-private double pi = 3.14;
-@Override
-public CloneTest clone() {
-try {
-return (CloneTest) super.clone();
-} catch (CloneNotSupportedException e) {
-throw new RuntimeException(e);
+    private double pi = 3.14;
+    @Override
+    public CloneTest clone() {
+        try {
+            return (CloneTest) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void main(String[] args) {
+        CloneTest obj1 = new CloneTest();
+        CloneTest obj2 = obj1.clone();
+        obj1.pi = 3.1415926;
+        System.out.println(obj1.pi);
+        System.out.println(obj2.pi);
+    }
 }
-}
-public static void main(String[] args) {
-CloneTest obj1 = new CloneTest();
-CloneTest obj2 = obj1.clone();
-obj1.pi = 3.1415926;
-System.out.println(obj1.pi);
-System.out.println(obj2.pi);
-}
-}
+```
 CloneTest程序执行结果如图9-5所示。
-图9-5 CloneTest程序执行结果9.7 自动装箱和拆箱
-前面讨论过，为了更好地融入Java的对象系统，每种基本类型
-都有一个包装类与之对应。从Java 5开始，Java语法增加了自动装箱
-和拆箱(autoboxing/unboxing)能力，可以在必要时把基本类型转换
-成包装类型或者反之。这个增强完全是由编译器完成的，Java虚拟
-机没有做任何调整。
-以int类型为例，它的包装类是java.lang.Integer。它提供了2个方
-法来帮助编译器在int变量和Integer对象之间转换:静态方法value()
-把int变量包装成Integer对象；实例方法intValue()返回被包装的int变
-量。这两个方法的代码如下：
+
+图9-5 CloneTest程序执行结果
+
+### 9.7 自动装箱和拆箱
+前面讨论过，为了更好地融入Java的对象系统，每种基本类型都有一个包装类与之对应。从Java 5开始，Java语法增加了自动装箱和拆箱(autoboxing/unboxing)能力，可以在必要时把基本类型转换成包装类型或者反之。这个增强完全是由编译器完成的，Java虚拟机没有做任何调整。
+
+以int类型为例，它的包装类是java.lang.Integer。它提供了2个方法来帮助编译器在int变量和Integer对象之间转换:静态方法value()把int变量包装成Integer对象；实例方法intValue()返回被包装的int变量。这两个方法的代码如下：
+``` java
 package java.lang;
 public final class Integer extends Number implements Comparable<Integer> {
-... // 其他代码省略
-private final int value;
-public static Integer valueOf(int i) {
-if (i >= IntegerCache.low && i <= IntegerCache.high)
-return IntegerCache.cache[i + (-IntegerCache.low)];
-return new Integer(i);
+    ... // 其他代码省略
+    private final int value;
+    public static Integer valueOf(int i) {
+        if (i >= IntegerCache.low && i <= IntegerCache.high)
+            return IntegerCache.cache[i + (-IntegerCache.low)];
+        return new Integer(i);
+    }
+    public int intValue() {
+        return value;
+    }
 }
-public int intValue() {
-return value;
-}
-}由上面的代码可知，Integer.valueOf()方法并不是每次都创建
-Integer()对象，而是维护了一个缓存池IntegerCache。对于比较小
-(默认是–128~127)的int变量，在IntegerCache初始化时就预先加载
-到了池中，需要用时直接从池里取即可。IntegerCache是Integer类的
-内部类，为了便于参考，下面给出它的完整代码。
+```
+由上面的代码可知，Integer.valueOf()方法并不是每次都创建Integer()对象，而是维护了一个缓存池IntegerCache。对于比较小(默认是–128~127)的int变量，在IntegerCache初始化时就预先加载到了池中，需要用时直接从池里取即可。IntegerCache是Integer类的内部类，为了便于参考，下面给出它的完整代码。
+``` java
 private static class IntegerCache {
-static final int low = -128;
-static final int high;
-static final Integer cache[];
-static {
-int h = 127; // high value may be configured by property
-String integerCacheHighPropValue =
-sun.misc.VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
-if (integerCacheHighPropValue != null) {
-try {
-int i = parseInt(integerCacheHighPropValue);
-i = Math.max(i, 127);
-// Maximum array size is Integer.MAX_VALUE
-h = Math.min(i, Integer.MAX_VALUE - (-low) -1);
-} catch( NumberFormatException nfe) {
-// If the property cannot be parsed into an int, ignore it.
+    static final int low = -128;
+    static final int high;
+    static final Integer cache[];
+    static {
+        int h = 127; // high value may be configured by property
+        String integerCacheHighPropValue =
+                sun.misc.VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
+        if (integerCacheHighPropValue != null) {
+            try {
+                int i = parseInt(integerCacheHighPropValue);
+                i = Math.max(i, 127);
+                // Maximum array size is Integer.MAX_VALUE
+                h = Math.min(i, Integer.MAX_VALUE - (-low) -1);
+            } catch( NumberFormatException nfe) {
+                // If the property cannot be parsed into an int, ignore it.
+            }
+        }
+        high = h;
+        cache = new Integer[(high - low) + 1];
+        int j = low;
+        for(int k = 0; k < cache.length; k++)
+            cache[k] = new Integer(j++);
+        // range [-128, 127] must be interned (JLS7 5.1.7)
+        assert IntegerCache.high >= 127;
+    }
+    private IntegerCache() {}
 }
-}
-high = h;
-cache = new Integer[(high - low) + 1];
-int j = low;
-for(int k = 0; k < cache.length; k++)
-cache[k] = new Integer(j++);
-// range [-128, 127] must be interned (JLS7 5.1.7)
-assert IntegerCache.high >= 127;
-}
-private IntegerCache() {}
-}
-具体细节就不解释了，需要说明的是IntegerCache在初始化时
-需要确定缓存池中Integer对象的上限值，为此它调用了sun.misc.VM类的getSavedProperty()方法。要想让VM正确初始化需
-要做很多工作，这个工作推迟到第11章进行。这里先用一个hack让
-VM.getSavedProperty()方法返回非null值，以便IntegerCache可以正
-常初始化。
-在ch09\native目录下创建sun\misc子目录，在其中创建VM.go文
-件，然后在VM.go文件中注册initialize()方法，代码如下：
+```
+具体细节就不解释了，需要说明的是IntegerCache在初始化时需要确定缓存池中Integer对象的上限值，为此它调用了sun.misc.VM类的getSavedProperty()方法。要想让VM正确初始化需要做很多工作，这个工作推迟到第11章进行。这里先用一个hack让VM.getSavedProperty()方法返回非null值，以便IntegerCache可以正常初始化。
+
+在ch09\native目录下创建sun\misc子目录，在其中创建VM.go文件，然后在VM.go文件中注册initialize()方法，代码如下：
+``` go
 package misc
 import "jvmgo/ch09/instructions/base"
 import "jvmgo/ch09/native"
 import "jvmgo/ch09/rtda"
 import "jvmgo/ch09/rtda/heap"
 func init() {
-native.Register("sun/misc/VM", "initialize", "()V", initialize)
+	native.Register("sun/misc/VM", "initialize", "()V", initialize)
 }
+```
 initialize()方法的实现如下：
+``` go
 // private static native void initialize();
 func initialize(frame *rtda.Frame) {
-vmClass := frame.Method().Class()
-savedProps := vmClass.GetRefVar("savedProps", "Ljava/util/Properties;")
-key := heap.JString(vmClass.Loader(), "foo")
-val := heap.JString(vmClass.Loader(), "bar")
-frame.OperandStack().PushRef(savedProps)
-frame.OperandStack().PushRef(key)
-frame.OperandStack().PushRef(val)
-propsClass := vmClass.Loader().LoadClass("java/util/Properties")
-setPropMethod := propsClass.GetInstanceMethod("setProperty",
-"(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;")
-base.InvokeMethod(frame, setPropMethod)
-}上面的hack代码可能有些不好理解，但翻译成等价的Java代码
-后只有一句话:
-private static native void initialize() {
-VM.savedProps.setProperty("foo", "bar")
+	vmClass := frame.Method().Class()
+	savedProps := vmClass.GetRefVar("savedProps", "Ljava/util/Properties;")
+	key := heap.JString(vmClass.Loader(), "foo")
+	val := heap.JString(vmClass.Loader(), "bar")
+	frame.OperandStack().PushRef(savedProps)
+	frame.OperandStack().PushRef(key)
+	frame.OperandStack().PushRef(val)
+	propsClass := vmClass.Loader().LoadClass("java/util/Properties")
+	setPropMethod := propsClass.GetInstanceMethod("setProperty",
+		"(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;")
+	base.InvokeMethod(frame, setPropMethod)
 }
+```
+上面的hack代码可能有些不好理解，但翻译成等价的Java代码后只有一句话:
+``` java
+private static native void initialize() {
+	VM.savedProps.setProperty("foo", "bar")
+}
+```
 最后，需要修改invokenative.go，在其中导入misc包，改动如下：
+``` java
 package reserved
 import "jvmgo/ch09/instructions/base"
 import "jvmgo/ch09/rtda"
 import "jvmgo/ch09/native"
 import _ "jvmgo/ch09/native/java/lang"
 import _ "jvmgo/ch09/native/sun/misc"
-重新编译本章代码，然后测试下面的Java程序:
+```
+重新编译本章代码，然后测试下面的Java程序：
+``` java
 package jvmgo.book.ch09;
 import java.util.ArrayList;
 import java.util.List;
 public class BoxTest {
-public static void main(String[] args) {
-List<Integer> list = new ArrayList<>();
-list.add(1);
-list.add(2);
-list.add(3);
-System.out.println(list.toString());
-for (int x : list) {
-System.out.println(x);
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        System.out.println(list.toString());
+        for (int x : list) {
+            System.out.println(x);
+        }
+    }
 }
-}
-}
-BoxTest程序的执行结果如图9-6所示。图9-6 BoxTest程序执行结果9.8 本章小结
-本章主要讨论了本地方法调用，以及Java类库中一些最基本的
-类。前几章基本上都是围绕Java虚拟机本身如何工作而展开讨论。
-通过本章的学习，读者应该对Java虚拟机和Java类库如何配合工作
-有了初步的了解。下一章将讨论异常处理。第10章 异常处理
-异常处理是Java语言非常重要的一个语法，本章从Java虚拟机
-的角度来讨论异常是如何被抛出和处理的。开始本章之前，还是先
-把目录结构准备好。复制ch09目录，改名为ch10。修改main.go等文
-件，把import语句中的ch09全都替换成ch10。本章对目录结构没有
-太大的调整。10.1 异常处理概述
-在Java语言中，异常可以分为两类：Checked异常和Unchecked
-异常。Unchecked异常包括java.lang.RuntimeException、
-java.lang.Error以及它们的子类，其他异常都是Checked异常。所有异
-常都最终继承自java.lang.Throwable。如果一个方法有可能导致
-Checked异常抛出，则该方法要么需要捕获该异常并妥善处理，要
-么必须把该异常列在自己的throws子句中，否则无法通过编译。
-Unchecked异常没有这个限制。请注意，Java虚拟机规范并没有这个
-规定，这只是Java语言的语法规则。
-异常可以由Java虚拟机抛出，也可以由Java代码抛出。当Java虚
-拟机在运行过程中遇到比较严重的问题时，会抛出java.lang.Error的
-某个子类，如StackOverflowError、OutOfMemoryError等。程序一般
-无法从这种异常里恢复，所以在代码中通常也不必关心这类异常。
-一部分指令在执行过程中会导致Java虚拟机抛出
-java.lang.RuntimeException的某个子类，如NullPointerException、
-IndexOutOfBoundsException等。这类异常一般是代码中的bug导致
-的，需要格外注意。在代码中抛出和处理异常是由athrow指令和方法的异常处理表配合完成的，本章将重点讨论这一点。
-在Java 6之前，Oracle的Java编译器使用jsr、jsr_w和ret指令来实
-现finally子句。从Java 6开始，已经不再使用这些指令，本章不讨论
-这三条指令。10.2 异常抛出
-在Java代码中，异常是通过throw关键字抛出的。Java虚拟机规
-范的3.12节给了一个例子，代码如下：
+```
+BoxTest程序的执行结果如图9-6所示。
+
+图9-6 BoxTest程序执行结果
+
+### 9.8 本章小结
+本章主要讨论了本地方法调用，以及Java类库中一些最基本的类。前几章基本上都是围绕Java虚拟机本身如何工作而展开讨论。通过本章的学习，读者应该对Java虚拟机和Java类库如何配合工作有了初步的了解。下一章将讨论异常处理。
+
+## 第10章 异常处理
+异常处理是Java语言非常重要的一个语法，本章从Java虚拟机的角度来讨论异常是如何被抛出和处理的。开始本章之前，还是先把目录结构准备好。复制ch09目录，改名为ch10。修改main.go等文件，把import语句中的ch09全都替换成ch10。本章对目录结构没有太大的调整。
+
+### 10.1 异常处理概述
+在Java语言中，异常可以分为两类：Checked异常和Unchecked异常。Unchecked异常包括java.lang.RuntimeException、java.lang.Error以及它们的子类，其他异常都是Checked异常。所有异常都最终继承自java.lang.Throwable。如果一个方法有可能导致Checked异常抛出，则该方法要么需要捕获该异常并妥善处理，要么必须把该异常列在自己的throws子句中，否则无法通过编译。Unchecked异常没有这个限制。请注意，Java虚拟机规范并没有这个规定，这只是Java语言的语法规则。
+
+异常可以由Java虚拟机抛出，也可以由Java代码抛出。当Java虚拟机在运行过程中遇到比较严重的问题时，会抛出java.lang.Error的某个子类，如StackOverflowError、OutOfMemoryError等。程序一般无法从这种异常里恢复，所以在代码中通常也不必关心这类异常。一部分指令在执行过程中会导致Java虚拟机抛出java.lang.RuntimeException的某个子类，如NullPointerException、IndexOutOfBoundsException等。这类异常一般是代码中的bug导致的，需要格外注意。在代码中抛出和处理异常是由athrow指令和方法的异常处理表配合完成的，本章将重点讨论这一点。
+
+在Java 6之前，Oracle的Java编译器使用jsr、jsr_w和ret指令来实现finally子句。从Java 6开始，已经不再使用这些指令，本章不讨论这三条指令。
+
+### 10.2 异常抛出
+在Java代码中，异常是通过throw关键字抛出的。Java虚拟机规范的3.12节给了一个例子，代码如下：
+``` java
 void cantBeZero(int i) {
-if (i == 0) {
-throw new TestExc();
+    if (i == 0) {
+    	throw new TestExc();
+    }
 }
-}
+```
 上面的方法编译之后，产生下面的字节码：
-0
-// 把参数
-iload_1
-1 (
-i )推入操作数栈顶
-1
-ifne 12
-// 如果
-i 不等于
-0 ，直接执行
-return 指令
-4
-// 创建
-new #2
-TestExc 实例，把引用推入操作数栈顶
-7
-dup
-// 复制
-TestExc 实例引用
-8
-invokespecial #3
-// 调用TestExc 构造函数(栈顶引用已经作为参数弹出)
+```
+0 iload_1 // 把参数1 (i )推入操作数栈顶
+1 ifne 12 // 如果i 不等于0，直接执行return 指令
+4 new #2 // 创建TestExc 实例，把引用推入操作数栈顶
+7 dup // 复制TestExc 实例引用
+8 invokespecial #3// 调用TestExc 构造函数(栈顶引用已经作为参数弹出)
 11 athrow // 抛出异常
 12 return // 方法返回
-唯一陌生的指令是athrow，将在10.4节实现该指令。从字节码
-来看，异常对象似乎也只是普通的对象，通过new指令创建，然后调
-用构造函数进行初始化。这是真的吗？如果查看java.lang.Exception
-或RuntimeException的源代码就可以知道，这并不是真的。它们的
-构造函数都调用了超类java.lang.Throwable的构造函数。Throwable
-的构造函数又调用了fillInStackTrace()方法记录Java虚拟机栈信息，
-这个方法的代码如下：
-// java.lang.Throwable
+```
+唯一陌生的指令是athrow，将在10.4节实现该指令。从字节码来看，异常对象似乎也只是普通的对象，通过new指令创建，然后调用构造函数进行初始化。这是真的吗？如果查看java.lang.Exception或RuntimeException的源代码就可以知道，这并不是真的。它们的构造函数都调用了超类java.lang.Throwable的构造函数。Throwable的构造函数又调用了fillInStackTrace()方法记录Java虚拟机栈信息，这个方法的代码如下：
+``` java
 public synchronized Throwable fillInStackTrace() {
-if (stackTrace != null ||
-backtrace != null /* Out of protocol state */ ) {
-fillInStackTrace(0);
-stackTrace = UNASSIGNED_STACK;
+    if (stackTrace != null ||
+            backtrace != null /* Out of protocol state */) {
+        fillInStackTrace(0);
+        stackTrace = UNASSIGNED_STACK;
+    }
+    return this;
 }
-return this;
-}
-fillInStackTrace()是用Java写的，必须借助另外一个本地方法
-才能访问Java虚拟机栈，这个方法就是重载后的fillInStackTrace(int)方法，代码如下：
+```
+fillInStackTrace()是用Java写的，必须借助另外一个本地方法才能访问Java虚拟机栈，这个方法就是重载后的fillInStackTrace(int)方法，代码如下：
+``` java
 private native Throwable fillInStackTrace(int dummy);
-也就是说，要想抛出异常，Java虚拟机必须实现这个本地方
-法。在10.5节中，我们会真正实现这个方法，这里先给它一个空的
-实现。在ch10\native\java\lang目录下创建Throwable.go文件，在其中
-注册fillInStackTrace(int)方法，代码如下：
+```
+也就是说，要想抛出异常，Java虚拟机必须实现这个本地方法。在10.5节中，我们会真正实现这个方法，这里先给它一个空的实现。在ch10\native\java\lang目录下创建Throwable.go文件，在其中注册fillInStackTrace(int)方法，代码如下：
+``` java
 package lang
 import "jvmgo/ch10/native"
 import "jvmgo/ch10/rtda"
 import "jvmgo/ch10/rtda/heap"
 func init() {
-native.Register("java/lang/Throwable", "fillInStackTrace",
-"(I)Ljava/lang/Throwable;", fillInStackTrace)
+	native.Register("java/lang/Throwable", "fillInStackTrace",
+		"(I)Ljava/lang/Throwable;", fillInStackTrace)
 }
 // private native Throwable fillInStackTrace(int dummy);
 func fillInStackTrace(frame *rtda.Frame) {
-// 在
-10.5 节实现
+	// 在10.5 节实现
 }
-异常抛出暂时先讨论到这里，下面介绍如何处理异常。10.3 异常处理表
-异常处理是通过try-catch句实现的，还是参考Java虚拟机规范
-的3.12节，里面有一个例子，代码如下：
+```
+异常抛出暂时先讨论到这里，下面介绍如何处理异常。
+
+### 10.3 异常处理表
+异常处理是通过try-catch句实现的，还是参考Java虚拟机规范的3.12节，里面有一个例子，代码如下：
+``` java
 void catchOne() {
-try {
-tryItOut();
-} catch (TestExc e) {
-handleExc(e);
+	try {
+		tryItOut();
+	} catch (TestExc e) {
+		handleExc(e);
+	}
 }
-}
+```
 上面的方法编译之后，产生下面的字节码：
-1
-aload_0
-// 把局部变量
-0 (
-this )推入操作数栈顶
-2
-// 调用
-invokevirtual #4
-tryItOut() 方法
-4
-goto 13
-// 如果
-try{} 没有抛出异常，直接执行
-return 指令
-7 astore_1
-8 aload_0
-// 否则，异常对象引用在操作数栈顶，把它弹出，并放入局部变量
-1
-this 推入栈顶(将作为
-// 把handleExc() 方法的参数
-0 )
-9
-aload_1
-// 把异常对象引用推入栈顶(将作为
-handleExc() 方法的参数
-1 )
-10
-invokevirtual #5
-// 调用
-handleExc() 方法
-13
-return
-// 方法返回
+```
+1 aload_0          // 把局部变量0 (this) 推入操作数栈顶
+2 invokevirtual #4 // 调用tryItOut() 方法
+4 goto 13  // 如果try{} 没有抛出异常，直接执行return 指令
+7 astore_1 // 否则，异常对象引用在操作数栈顶，把它弹出，并放入局部变量 1
+8 aload_0  // 把this 推入栈顶(将作为handleExc() 方法的参数0 )
+9 aload_1  // 把异常对象引用推入栈顶(将作为handleExc() 方法的参数1 )
+10 invokevirtual #5 // 调用handleExc() 方法
+13 return           // 方法返回
+```
 从字节码来看，如果没有异常抛出，则会直接goto到return指
 令，方法正常返回。那么如果有异常抛出，goto和return之间的指令
 是如何执行的呢？答案是查找方法的异常处理表。异常处理表是
 Code属性的一部分，它记录了方法是否有能力处理某种异常。回顾
 一下方法的Code属性，它的结构如下：
+``` java
 Code_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 max_stack;
-u2 max_locals;
-u4 code_length;
-u1 code[code_length];
-u2 exception_table_length;
-{
-u2 start_pc;
-u2 end_pc;
-u2 handler_pc;
-u2 catch_type;
-} exception_table[exception_table_length];
-u2 attributes_count;attribute_info attributes[attributes_count];
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u2 max_stack;
+    u2 max_locals;
+    u4 code_length;
+    u1 code[code_length];
+    u2 exception_table_length;
+    {
+        u2 start_pc;
+        u2 end_pc;
+        u2 handler_pc;
+        u2 catch_type;
+    } exception_table[exception_table_length];
+    u2 attributes_count;
+    attribute_info attributes[attributes_count];
 }
-异常处理表的每一项都包含3个信息:处理哪部分代码抛出的
-异常、哪类异常，以及异常处理代码在哪里。具体来说，start_pc和
-end_pc可以锁定一部分字节码，这部分字节码对应某个可能抛出异
-常的try{}代码块。catch_type是个索引，通过它可以从运行时常量池
-中查到一个类符号引用，解析后的类是个异常类，假定这个类是
-X。如果位于start_pc和end_pc之间的指令抛出异常x，且x是X(或者
-X的子类)的实例，handler_pc就指出负责异常处理的catch{}块在哪
-里。
+```
+异常处理表的每一项都包含3个信息:处理哪部分代码抛出的异常、哪类异常，以及异常处理代码在哪里。具体来说，start_pc和end_pc可以锁定一部分字节码，这部分字节码对应某个可能抛出异常的try{}代码块。catch_type是个索引，通过它可以从运行时常量池中查到一个类符号引用，解析后的类是个异常类，假定这个类是X。如果位于start_pc和end_pc之间的指令抛出异常x，且x是X(或者X的子类)的实例，handler_pc就指出负责异常处理的catch{}块在哪里。
+
 回到catchOne()方法，它的异常处理表只有如下一项:
-当tryItOut()方法通过athrow指令抛出TestExc异常时，Java虚拟
-机首先会查找tryItOut()方法的异常处理表，看它能否处理该异常。
-如果能，则跳转到相应的字节码开始异常处理。假设tryItOut()方法
-无法处理异常，Java虚拟机会进一步查看它的调用者，也就是
-catchOne()方法的异常处理表。catchOne()方法刚好可以处理TestExc异常，使catch{}块得以执行。
-假设catchOne()方法也无法处理TestExc异常，Java虚拟机会继
-续查找catchOne()的调用者的异常处理表。这个过程会一直继续下
-去，直到找到某个异常处理项，或者到达Java虚拟机栈的底部。把
-这部分逻辑放在athrow指令中，具体请看10.4小节。下面修改
-Method结构体，在里面增加异常处理表。
-打开ch10\rtda\heap\method.go文件，给Method结构体添加
-exceptionTable字段，代码如下：
+
+| start_pc | end_pc | handler_pc | catch_type |
+| :--:| :--: |  :--: |  :--: | 
+| 0 | 4 | 7 | TestExc |
+
+当tryItOut()方法通过athrow指令抛出TestExc异常时，Java虚拟机首先会查找tryItOut()方法的异常处理表，看它能否处理该异常。如果能，则跳转到相应的字节码开始异常处理。假设tryItOut()方法无法处理异常，Java虚拟机会进一步查看它的调用者，也就是catchOne()方法的异常处理表。catchOne()方法刚好可以处理TestExc异常，使catch{}块得以执行。
+
+假设catchOne()方法也无法处理TestExc异常，Java虚拟机会继续查找catchOne()的调用者的异常处理表。这个过程会一直继续下去，直到找到某个异常处理项，或者到达Java虚拟机栈的底部。把这部分逻辑放在athrow指令中，具体请看10.4小节。下面修改Method结构体，在里面增加异常处理表。
+
+打开ch10\rtda\heap\method.go文件，给Method结构体添加exceptionTable字段，代码如下：
+``` go
 type Method struct {
-... // 其他字段
-exceptionTable ExceptionTable
+	... // 其他字段
+	exceptionTable ExceptionTable
 }
-然后修改copyAttributes()方法，从Code属性中复制异常处理
-表，代码如下：
+```
+然后修改copyAttributes()方法，从Code属性中复制异常处理表，代码如下：
+``` go
 func (self *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
-if codeAttr := cfMethod.CodeAttribute(); codeAttr != nil {
-... // 其他字段
-self.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(),
-self.class.constantPool)
-}}
-稍后再介绍ExceptionTable类型和newExceptionTable()函数。继
-续编辑method.go文件，给Method结构体添加
-FindExceptionHandler()方法，代码如下：
+	if codeAttr := cfMethod.CodeAttribute(); codeAttr != nil {
+		... // 其他字段
+		self.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(),
+			self.class.constantPool)
+	}
+}
+```
+稍后再介绍ExceptionTable类型和newExceptionTable()函数。继续编辑method.go文件，给Method结构体添加FindExceptionHandler()方法，代码如下：
+``` go
 func (self *Method) FindExceptionHandler(exClass *Class, pc int) int {
-handler := self.exceptionTable.findExceptionHandler(exClass, pc)
-if handler != nil {
-return handler.handlerPc
+	handler := self.exceptionTable.findExceptionHandler(exClass, pc)
+	if handler != nil {
+		return handler.handlerPc
+	}
+	return -1
 }
-return -1
-}
-FindExceptionHandler()方法调用
-ExceptionTable.findExceptionHandler()方法搜索异常处理表，如果
-能够找到对应的异常处理项，则返回它的handlerPc字段，否则返
-回–1。Method结构体修改完毕，下面来看ExceptionTable。
-在ch10\rtda\heap目录下创建exception_table.go文件，在其中定
-义ExceptionTable类型，代码如下：
+```
+FindExceptionHandler()方法调用ExceptionTable.findExceptionHandler()方法搜索异常处理表，如果能够找到对应的异常处理项，则返回它的handlerPc字段，否则返回–1。Method结构体修改完毕，下面来看ExceptionTable。
+
+在ch10\rtda\heap目录下创建exception_table.go文件，在其中定义ExceptionTable类型，代码如下：
+``` go
 package heap
 import "jvmgo/ch10/classfile"
 type ExceptionTable []*ExceptionHandler
+```
 ExceptionTable只是[]*ExceptionHandler的别名而已，ExceptionHandler的定义如下：
+``` go
 type ExceptionHandler struct {
-startPc
-int
-endPc
-int
-handlerPc
-int
-catchType
-*ClassRef
+	startPc   int
+	endPc     int
+	handlerPc int
+	catchType *ClassRef
 }
-这4个字段在前面已经介绍过，这里不多解释。继续编辑
-exception_table.go文件，在其中实现newExceptionTable()函数，代码
-如下：
+```
+这4个字段在前面已经介绍过，这里不多解释。继续编辑exception_table.go文件，在其中实现newExceptionTable()函数，代码如下：
+``` go
 func newExceptionTable(entries []*classfile.ExceptionTableEntry,
-cp *ConstantPool) ExceptionTable {
-table := make([]*ExceptionHandler, len(entries))
-for i, entry := range entries {
-table[i] = &ExceptionHandler{
-startPc:
-int(entry.StartPc()),
-endPc:
-int(entry.EndPc()),
-handlerPc:
-int(entry.HandlerPc()),
-catchType:
-getCatchType(uint(entry.CatchType()), cp),
+	cp *ConstantPool) ExceptionTable {
+	table := make([]*ExceptionHandler, len(entries))
+	for i, entry := range entries {
+		table[i] = &ExceptionHandler{
+			startPc:   int(entry.StartPc()),
+			endPc:     int(entry.EndPc()),
+			handlerPc: int(entry.HandlerPc()),
+			catchType: getCatchType(uint(entry.CatchType()), cp),
+		}
+	}
+	return table
 }
-}
-return table
-}
-newExceptionTable()函数把class文件中的异常处理表转换成
-ExceptionTable类型。有一点需要特别说明:异常处理项的catchType
-有可能是0。我们知道0是无效的常量池索引，但是在这里0并非表
-示catch-none，而是表示catch-all，它的用法马上就会看到。getCatchType()函数从运行时常量池中查找类符号引用，代码如下：
+```
+newExceptionTable()函数把class文件中的异常处理表转换成ExceptionTable类型。有一点需要特别说明:异常处理项的catchType有可能是0。我们知道0是无效的常量池索引，但是在这里0并非表示catch-none，而是表示catch-all，它的用法马上就会看到。
+
+getCatchType()函数从运行时常量池中查找类符号引用，代码如下：
+``` go
 func getCatchType(index uint, cp *ConstantPool) *ClassRef {
-if index == 0 {
-return nil
+	if index == 0 {
+		return nil
+	}
+	return cp.GetConstant(index).(*ClassRef)
 }
-return cp.GetConstant(index).(*ClassRef)
-}
-继续编辑exception_table.go文件，实现findExceptionHandler()
-方法，代码如下：
+```
+继续编辑exception_table.go文件，实现findExceptionHandler()方法，代码如下：
+``` go
 func (self ExceptionTable) findExceptionHandler(exClass *Class,
-pc int) *ExceptionHandler {
-for _, handler := range self {
-if pc >= handler.startPc && pc < handler.endPc {
-if handler.catchType == nil {
-return handler // catch-all
+	pc int) *ExceptionHandler {
+	for _, handler := range self {
+		if pc >= handler.startPc && pc < handler.endPc {
+			if handler.catchType == nil {
+				return handler // catch-all
+			}
+			catchClass := handler.catchType.ResolvedClass()
+			if catchClass == exClass || catchClass.IsSuperClassOf(exClass) {
+				return handler
+			}
+		}
+	}
+	return nil
 }
-catchClass := handler.catchType.ResolvedClass()
-if catchClass == exClass || catchClass.IsSuperClassOf(exClass) {
-return handler
-}
-}
-}
-return nil
-}
-异常处理表查找逻辑前面已经描述过，此处不再赘述。这里注
-意两点。第一，startPc给出的是try{}语句块的第一条指令，endPc给
-出的则是try{}语句块的下一条指令。第二，如果catchType是nil(在
-class文件中是0)，表示可以处理所有异常，这是用来实现finally子
-句的。为了节约篇幅，本章就不再讨论多个catch块、嵌套try-catch，以
-及finally子句等对应的字节码实现了，读者可以阅读Java虚拟机规
-范的3.12节。下一节将实现athrow指令。10.4 实现athrow指令
-athrow属于引用类指令，在ch10\instructions\references目录下创
-建athrow.go文件，在其中定义athrow指令，代码如下：
+```
+异常处理表查找逻辑前面已经描述过，此处不再赘述。这里注意两点。第一，startPc给出的是try{}语句块的第一条指令，endPc给出的则是try{}语句块的下一条指令。第二，如果catchType是nil(在class文件中是0)，表示可以处理所有异常，这是用来实现finally子句的。
+
+为了节约篇幅，本章就不再讨论多个catch块、嵌套try-catch，以及finally子句等对应的字节码实现了，读者可以阅读Java虚拟机规范的3.12节。下一节将实现athrow指令。
+
+### 10.4 实现athrow指令
+athrow属于引用类指令，在ch10\instructions\references目录下创建athrow.go文件，在其中定义athrow指令，代码如下：
+``` go
 package references
 import "reflect"
 import "jvmgo/ch10/instructions/base"
@@ -8043,347 +7984,348 @@ import "jvmgo/ch10/rtda"
 import "jvmgo/ch10/rtda/heap"
 // Throw exception or error
 type ATHROW struct{ base.NoOperandsInstruction }
-athrow指令的操作数是一个异常对象引用，从操作数栈弹出。
-Execute()方法的代码如下：
+```
+athrow指令的操作数是一个异常对象引用，从操作数栈弹出。Execute()方法的代码如下：
+``` go
 func (self *ATHROW) Execute(frame *rtda.Frame) {
-ex := frame.OperandStack().PopRef()
-if ex == nil {
-panic("java.lang.NullPointerException")
+	ex := frame.OperandStack().PopRef()
+	if ex == nil {
+		panic("java.lang.NullPointerException")
+	}
+	thread := frame.Thread()
+	if !findAndGotoExceptionHandler(thread, ex) {
+		handleUncaughtException(thread, ex)
+	}
 }
-thread := frame.Thread()
-if !findAndGotoExceptionHandler(thread, ex) {
-handleUncaughtException(thread, ex)
+```
+先从操作数栈中弹出异常对象引用，如果该引用是null，则抛出NullPointerException异常，否则看是否可以找到并跳转到异常处理代码。findAndGotoExceptionHandler()函数的代码如下：
+``` go
+func findAndGotoExceptionHandler(thread *rtda.Thread, ex *heap.Object) bool {
+	for {
+		frame := thread.CurrentFrame()
+		pc := frame.NextPC() - 1
+		handlerPC := frame.Method().FindExceptionHandler(ex.Class(), pc)
+		if handlerPC > 0 {
+			stack := frame.OperandStack()
+			stack.Clear()
+			stack.PushRef(ex)
+			frame.SetNextPC(handlerPC)
+			return true
+		}
+		thread.PopFrame()
+		if thread.IsStackEmpty() {
+			break
+		}
+	}
+	return false
 }
-}
-先从操作数栈中弹出异常对象引用，如果该引用是null，则抛
-出NullPointerException异常，否则看是否可以找到并跳转到异常处
-理代码。findAndGotoExceptionHandler()函数的代码如下：func findAndGotoExceptionHandler(thread *rtda.Thread, ex *heap.Object) bool {
-for {
-frame := thread.CurrentFrame()
-pc := frame.NextPC() - 1
-handlerPC := frame.Method().FindExceptionHandler(ex.Class(), pc)
-if handlerPC > 0 {
-stack := frame.OperandStack()
-stack.Clear()
-stack.PushRef(ex)
-frame.SetNextPC(handlerPC)
-return true
-}
-thread.PopFrame()
-if thread.IsStackEmpty() {
-break
-}
-}
-return false
-}
-从当前帧开始，遍历Java虚拟机栈，查找方法的异常处理表。
-假设遍历到帧F，如果在F对应的方法中找不到异常处理项，则把F
-弹出，继续遍历。反之如果找到了异常处理项，在跳转到异常处理
-代码之前，要先把F的操作数栈清空，然后把异常对象引用推入栈
-顶。OperandStack结构体的Clear()方法是新增加的，后面给出它的
-代码。
-如果遍历完Java虚拟机栈还是找不到异常处理代码，则
-handleUncaughtException()函数打印出Java虚拟机栈信息，代码如
-下：
+```
+从当前帧开始，遍历Java虚拟机栈，查找方法的异常处理表。假设遍历到帧F，如果在F对应的方法中找不到异常处理项，则把F弹出，继续遍历。反之如果找到了异常处理项，在跳转到异常处理代码之前，要先把F的操作数栈清空，然后把异常对象引用推入栈顶。OperandStack结构体的Clear()方法是新增加的，后面给出它的代码。
+
+如果遍历完Java虚拟机栈还是找不到异常处理代码，则handleUncaughtException()函数打印出Java虚拟机栈信息，代码如下：
+``` go
 func handleUncaughtException(thread *rtda.Thread, ex *heap.Object) {thread.ClearStack()
-jMsg := ex.GetRefVar("detailMessage", "Ljava/lang/String;")
-goMsg := heap.GoString(jMsg)
-println(ex.Class().JavaName() + ": " + goMsg)
-stes := reflect.ValueOf(ex.Extra())
-for i := 0; i < stes.Len(); i++ {
-ste := stes.Index(i).Interface().(interface {
-String() string
-})
-println("\tat " + ste.String())
+	jMsg := ex.GetRefVar("detailMessage", "Ljava/lang/String;")
+	goMsg := heap.GoString(jMsg)
+	println(ex.Class().JavaName() + ": " + goMsg)
+	stes := reflect.ValueOf(ex.Extra())
+	for i := 0; i < stes.Len(); i++ {
+		ste := stes.Index(i).Interface().(interface {
+			String() string
+		})
+		println("\tat " + ste.String())
+	}
 }
-}
-handleUncaughtException()函数把Java虚拟机栈清空，然后打
-印出异常信息。由于Java虚拟机栈已经空了，所以解释器也就终止
-执行了。上面的代码使用Go语言的reflect包打印Java虚拟机栈信
-息。可以猜到，异常对象的extra字段中存放的就是Java虚拟机栈信
-息，那么这个extra字段是什么时候设置的呢？10.5节会揭晓答案。
-前面的代码中还有几个方法没有介绍，现在依次给出它们的代码。
+```
+handleUncaughtException()函数把Java虚拟机栈清空，然后打印出异常信息。由于Java虚拟机栈已经空了，所以解释器也就终止执行了。上面的代码使用Go语言的reflect包打印Java虚拟机栈信息。可以猜到，异常对象的extra字段中存放的就是Java虚拟机栈信息，那么这个extra字段是什么时候设置的呢？10.5节会揭晓答案。前面的代码中还有几个方法没有介绍，现在依次给出它们的代码。
+
 OperandStack结构体的Clear()方法如下：
+``` go
 func (self *OperandStack) Clear() {
-self.size = 0
-for i := range self.slots {
-self.slots[i].ref = nil
+	self.size = 0
+	for i := range self.slots {
+		self.slots[i].ref = nil
+	}
 }
-}
+```
 Thread结构体的ClearStack()方法如下：
-func (self *Thread) ClearStack() {self.stack.clear()
+``` go
+func (self *Thread) ClearStack() {
+	self.stack.clear()
 }
+```
 它调用了Stack结构体的clear()方法，代码如下：
+``` go
 func (self *Stack) clear() {
-for !self.isEmpty() {
-self.pop()
+	for !self.isEmpty() {
+		self.pop()
+	}
 }
-}
-athrow指令实现后，还需要修改ch10\instructions\factory.go文
-件，在NewInstruction()函数中增加athrow指令的case语句，为了节
-约篇幅这里就不给出代码了。10.5 Java虚拟机栈信息
-回到ch10\native\java\lang\Throwable.go文件，在其中定义
-StackTraceElement结构体，代码如下：
+```
+athrow指令实现后，还需要修改ch10\instructions\factory.go文件，在NewInstruction()函数中增加athrow指令的case语句，为了节约篇幅这里就不给出代码了。
+
+### 10.5 Java虚拟机栈信息
+回到ch10\native\java\lang\Throwable.go文件，在其中定义StackTraceElement结构体，代码如下：
+``` go
 type StackTraceElement struct {
-fileName
-string
-className
-string
-methodName
-string
-lineNumber
-int
+	fileName   string
+	className  string
+	methodName string
+	lineNumber int
 }
-StackTraceElement结构体用来记录Java虚拟机栈帧信息:
-lineNumber字段给出帧正在执行哪行代码；methodName字段给出方
-法名；className字段给出声明方法的类名；fileName字段给出类所
-在的文件名。下面实现java.lang.Throwable的fillInStackTrace()本地
-方法，代码如下：
+```
+StackTraceElement结构体用来记录Java虚拟机栈帧信息：lineNumber字段给出帧正在执行哪行代码；methodName字段给出方法名；className字段给出声明方法的类名；fileName字段给出类所在的文件名。下面实现java.lang.Throwable的fillInStackTrace()本地方法，代码如下：
+``` go
 // private native Throwable fillInStackTrace(int dummy);
 func fillInStackTrace(frame *rtda.Frame) {
-this := frame.LocalVars().GetThis()
-frame.OperandStack().PushRef(this)
-stes := createStackTraceElements(this, frame.Thread())
-this.SetExtra(stes)
+	this := frame.LocalVars().GetThis()
+	frame.OperandStack().PushRef(this)
+	stes := createStackTraceElements(this, frame.Thread())
+	this.SetExtra(stes)
 }
-重点在createStackTraceElements()函数里，代码如下：func createStackTraceElements(tObj *heap.Object, thread *rtda.Thread)
-[]*StackTraceElement {
-skip := distanceToObject(tObj.Class()) + 2
-frames := thread.GetFrames()[skip:]
-stes := make([]*StackTraceElement, len(frames))
-for i, frame := range frames {
-stes[i] = createStackTraceElement(frame)
+```
+重点在createStackTraceElements()函数里，代码如下：
+``` go
+func createStackTraceElements(tObj *heap.Object, thread *rtda.Thread) []*StackTraceElement {
+	skip := distanceToObject(tObj.Class()) + 2
+	frames := thread.GetFrames()[skip:]
+	stes := make([]*StackTraceElement, len(frames))
+	for i, frame := range frames {
+		stes[i] = createStackTraceElement(frame)
+	}
+	return stes
 }
-return stes
-}
-这个函数需要解释一下。由于栈顶两帧正在执行
-fillInStackTrace(int)和fillInStackTrace()方法，所以需要跳过这两
-帧。这两帧下面的几帧正在执行异常类的构造函数，所以也要跳
-过，具体要跳过多少帧数则要看异常类的继承层次。
-distanceToObject()函数计算所需跳过的帧数，代码如下：
+```
+这个函数需要解释一下。由于栈顶两帧正在执行fillInStackTrace(int)和fillInStackTrace()方法，所以需要跳过这两帧。这两帧下面的几帧正在执行异常类的构造函数，所以也要跳过，具体要跳过多少帧数则要看异常类的继承层次。distanceToObject()函数计算所需跳过的帧数，代码如下：
+``` go
 func distanceToObject(class *heap.Class) int {
-distance := 0
-for c := class.SuperClass(); c != nil; c = c.SuperClass() {
-distance++
+	distance := 0
+	for c := class.SuperClass(); c != nil; c = c.SuperClass() {
+		distance++
+	}
+	return distance
 }
-return distance
+```
+计算好需要跳过的帧之后，调用Thread结构体的GetFrames()方法拿到完整的Java虚拟机栈，然后reslice一下就是真正需要的帧。GetFrames()方法只是调用了Stack结构体的getFrames()方法，代码如下：
+``` go
+func (self *Thread) GetFrames() []*Frame {
+	return self.stack.getFrames()
 }
-计算好需要跳过的帧之后，调用Thread结构体的GetFrames()
-方法拿到完整的Java虚拟机栈，然后reslice一下就是真正需要的帧。
-GetFrames()方法只是调用了Stack结构体的getFrames()方法，代码
-如下：
-func (self *Thread) GetFrames() []*Frame {return self.stack.getFrames()
-}
+```
 下面是getFrames()方法的代码。
+``` go
 func (self *Stack) getFrames() []*Frame {
-frames := make([]*Frame, 0, self.size)
-for frame := self._top; frame != nil; frame = frame.lower {
-frames = append(frames, frame)
+	frames := make([]*Frame, 0, self.size)
+	for frame := self._top; frame != nil; frame = frame.lower {
+		frames = append(frames, frame)
+	}
+	return frames
 }
-return frames
-}
-createStackTraceElement()函数根据帧创建StackTraceElement实
-例，代码如下：
+```
+createStackTraceElement()函数根据帧创建StackTraceElement实例，代码如下：
+``` go
 func createStackTraceElement(frame *rtda.Frame) *StackTraceElement {
-method := frame.Method()
-class := method.Class()
-return &StackTraceElement{
-fileName:
-class.SourceFile(),
-className: class.JavaName(),
-methodName: method.Name(),
-lineNumber: method.GetLineNumber(frame.NextPC() - 1),
+	method := frame.Method()
+	class := method.Class()
+	return &StackTraceElement{
+		fileName:
+		class.SourceFile(),
+		className: class.JavaName(),
+		methodName: method.Name(),
+		lineNumber: method.GetLineNumber(frame.NextPC() - 1),
+	}
 }
-}
-最后实现Class结构体的SourceFile()方法和Method结构体的
-GetLineNumber()方法。打开class.go，给Class结构体添加sourceFile
-字段，代码如下：
+```
+最后实现Class结构体的SourceFile()方法和Method结构体的GetLineNumber()方法。打开class.go，给Class结构体添加sourceFile字段，代码如下：
+``` go
 type Class struct {
-... // 其他字段sourceFile string
+	... // 其他字段sourceFile string
 }
-SourceFile()是getter方法，这里就不给出代码了。接下来需要
-修改newClass()函数，从class文件中读取源文件名，改动如下：
+```
+SourceFile()是getter方法，这里就不给出代码了。接下来需要修改newClass()函数，从class文件中读取源文件名，改动如下：
+``` go
 func newClass(cf *classfile.ClassFile) *Class {
-class := &Class{}
-... // 其他代码
-class.sourceFile = getSourceFile(cf)
-return class
+	class := &Class{}
+	... // 其他代码
+	class.sourceFile = getSourceFile(cf)
+	return class
 }
-在3.4.3节讨论过，源文件名在ClassFile结构的属性表中，
-getSourceFile()函数提取这个信息，代码如下：
+```
+在3.4.3节讨论过，源文件名在ClassFile结构的属性表中，getSourceFile()函数提取这个信息，代码如下：
+``` go
 func getSourceFile(cf *classfile.ClassFile) string {
-if sfAttr := cf.SourceFileAttribute(); sfAttr != nil {
-return sfAttr.FileName()
+	if sfAttr := cf.SourceFileAttribute(); sfAttr != nil {
+		return sfAttr.FileName()
+	}
+	return "Unknown"
 }
-return "Unknown"
+```
+注意，并不是每个class文件中都有源文件信息，这个因编译时的编译器选项而异。Class结构体改完了，下面修改Method结构体。打开method.go，给Method结构体添加lineNumberTable字段，改动如下：
+``` go
+type Method struct {
+	... // 其他字段
+	lineNumberTable *classfile.LineNumberTableAttribute
 }
-注意，并不是每个class文件中都有源文件信息，这个因编译时
-的编译器选项而异。Class结构体改完了，下面修改Method结构体。
-打开method.go，给Method结构体添加lineNumberTable字段，改动如
-下：type Method struct {
-... // 其他字段
-lineNumberTable *classfile.LineNumberTableAttribute
-}
-然后修改copyAttributes()方法，从class文件中提取行号表，代
-码如下：
+```
+然后修改copyAttributes()方法，从class文件中提取行号表，代码如下：
+``` go
 func (self *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
-if codeAttr := cfMethod.CodeAttribute(); codeAttr != nil {
-self.maxStack = codeAttr.MaxStack()
-self.maxLocals = codeAttr.MaxLocals()
-self.code = codeAttr.Code()
-self.lineNumberTable = codeAttr.LineNumberTableAttribute()
-self.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(),
-self.class.constantPool)
+	if codeAttr := cfMethod.CodeAttribute(); codeAttr != nil {
+		self.maxStack = codeAttr.MaxStack()
+		self.maxLocals = codeAttr.MaxLocals()
+		self.code = codeAttr.Code()
+		self.lineNumberTable = codeAttr.LineNumberTableAttribute()
+		self.exceptionTable = newExceptionTable(codeAttr.ExceptionTable(),
+			self.class.constantPool)
+	}
 }
-}
+```
 最后添加GetLineNumber()方法，代码如下：
+``` go
 func (self *Method) GetLineNumber(pc int) int {
-if self.IsNative() {
-return -2
+	if self.IsNative() {
+		return -2
+	}
+	if self.lineNumberTable == nil {
+		return -1
+	}
+	return self.lineNumberTable.GetLineNumber(pc)
 }
-if self.lineNumberTable == nil {
-return -1
-}
-return self.lineNumberTable.GetLineNumber(pc)
-}
-和源文件名一样，并不是每个方法都有行号表。如果方法没有
-行号表，自然也就查不到pc对应的行号，这种情况下返回–1。本地方法没有字节码，这种情况下返回–2。剩下的情况调用
-LineNumberTableAttribute结构体的GetLineNumber()方法查找行
-号，代码如下：
+```
+和源文件名一样，并不是每个方法都有行号表。如果方法没有行号表，自然也就查不到pc对应的行号，这种情况下返回–1。本地方法没有字节码，这种情况下返回–2。剩下的情况调用LineNumberTableAttribute结构体的GetLineNumber()方法查找行号，代码如下：
+``` go
 func (self *LineNumberTableAttribute) GetLineNumber(pc int) int {
-for i := len(self.lineNumberTable) - 1; i >= 0; i-- {
-entry := self.lineNumberTable[i]
-if pc >= int(entry.startPc) {
-return int(entry.lineNumber)
+	for i := len(self.lineNumberTable) - 1; i >= 0; i-- {
+		entry := self.lineNumberTable[i]
+		if pc >= int(entry.startPc) {
+			return int(entry.lineNumber)
+		}
+	}
+	return -1
 }
-}
-return -1
-}
-上面的代码在classfile\attr_line_number_table.go文件中，行号表
-的更多信息请参考3.4.7节。10.6 测试本章代码
+```
+上面的代码在classfile\attr_line_number_table.go文件中，行号表的更多信息请参考3.4.7节。
+
+### 10.6 测试本章代码
 打开命令行窗口，执行下面的命令编译本章代码。
+```
 go install jvmgo\ch10
-命令执行完毕后，在D:\go\workspace\bin目录下出现ch10.exe文
-件。运行ch10.exe，测试下面的Java程序。
+```
+命令执行完毕后，在D:\go\workspace\bin目录下出现ch10.exe文件。运行ch10.exe，测试下面的Java程序。
+``` java
 package jvmgo.book.ch10;
 public class ParseIntTest {
-public static void main(String[] args) {
-foo(args);
+    public static void main(String[] args) {
+        foo(args);
+    }
+    private static void foo(String[] args) {
+        try {
+            bar(args);
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    private static void bar(String[] args) {
+        if (args.length == 0) {
+            throw new IndexOutOfBoundsException("no args!");
+        }
+        int x = Integer.parseInt(args[0]);
+        System.out.println(x);
+    }
 }
-private static void foo(String[] args) {
-try {
-bar(args);
-} catch (NumberFormatException e) {
-System.out.println(e.getMessage());
-}
-}
-private static void bar(String[] args) {
-if (args.length == 0) {
-throw new IndexOutOfBoundsException("no args!");
-}
-int x = Integer.parseInt(args[0]);
-System.out.println(x);
-}
-}
-笔者使用不同的参数进行测试，结果如图10-1所示。图10-1 ParseIntTest程序测试结果10.7 本章小结
-本章讨论了异常抛出和处理、异常处理表、athrow指令等，下
-一章将讨论类加载器。第11章 结束
-在第7章讨论了方法调用和返回，在第8章讨论了数组和字符
-串。经过整整8章的努力之后，“Hello, World!”终于出现在了控制
-台上。不过比较遗憾的是，由于java.lang.System类还没有被正确初
-始化，直接调用System.out.println()方法会导致
-NullPointerException异常抛出。为此修改了invokevirtual指令，对
-println()方法做了特殊处理。本章将弥补这个遗憾，把这个hack从
-代码中删除，让Java虚拟机可以真正在控制台上打印数字和字符
-串。
-本章也是本书的最后一章，在结尾会对全书内容进行简要回
-顾。开始本章之前，还是先把目录结构准备好。复制ch10目录，改名
-为ch11。修改main.go等文件，把import语句中的ch10全都替换成
-ch11。本章对目录结构没有太大的调整。11.1 System类是如何被初始化的
-大家都知道，System类有3个公开的静态常量:out、err和in。其
-中out和err用于向标准输出流和标准错误流中写入信息，in用于从
-标准输入流中读取信息。那么这3个常量是在哪里被赋值的呢？看
-一下System类的源代码：
+```
+笔者使用不同的参数进行测试，结果如图10-1所示。
+
+图10-1 ParseIntTest程序测试结果
+
+### 10.7 本章小结
+本章讨论了异常抛出和处理、异常处理表、athrow指令等，下一章将讨论类加载器。
+
+## 第11章 结束
+在第7章讨论了方法调用和返回，在第8章讨论了数组和字符串。经过整整8章的努力之后，“Hello, World!”终于出现在了控制台上。不过比较遗憾的是，由于java.lang.System类还没有被正确初始化，直接调用System.out.println()方法会导致NullPointerException异常抛出。为此修改了invokevirtual指令，对println()方法做了特殊处理。本章将弥补这个遗憾，把这个hack从代码中删除，让Java虚拟机可以真正在控制台上打印数字和字符串。
+
+本章也是本书的最后一章，在结尾会对全书内容进行简要回顾。开始本章之前，还是先把目录结构准备好。复制ch10目录，改名为ch11。修改main.go等文件，把import语句中的ch10全都替换成ch11。本章对目录结构没有太大的调整。
+
+### 11.1 System类是如何被初始化的
+大家都知道，System类有3个公开的静态常量:out、err和in。其中out和err用于向标准输出流和标准错误流中写入信息，in用于从标准输入流中读取信息。那么这3个常量是在哪里被赋值的呢？看一下System类的源代码：
+``` java
 // java.lang.System
 public final class System {
-public final static InputStream in = null;
-public final static PrintStream out = null;
-public final static PrintStream err = null;
-/* register the natives via the static initializer.
-*
-* VM will invoke the initializeSystemClass method to complete
-* the initialization for this class separated from clinit.
-* Note that to use properties set by the VM, see the constraints
-* described in the initializeSystemClass method.
-*/
-private static native void registerNatives();
-static {
-registerNatives();
+    public final static InputStream in = null;
+    public final static PrintStream out = null;
+    public final static PrintStream err = null;
+    /* register the natives via the static initializer.
+     *
+     * VM will invoke the initializeSystemClass method to complete
+     * the initialization for this class separated from clinit.
+     * Note that to use properties set by the VM, see the constraints
+     * described in the initializeSystemClass method.
+     */
+    private static native void registerNatives();
+    static {
+        registerNatives();
+    }
+    ... // 其他代码
 }
-... // 其他代码
-}
-从注释可知，System类的初始化过程分为两个阶段。第一个阶
-段由类初始化方法完成，在这个方法中registerNatives()方法会注册
-其他本地方法。第二个阶段由VM完成，在这个阶段VM会调用
-System.initializeSystemClass()方法。那么initializeSystemClass()方法究竟干了些什么呢？这个方法很长，而且有很详细的注释。去掉
-与本节讨论无关的代码和注释之后，它的代码如下：
+```
+从注释可知，System类的初始化过程分为两个阶段。第一个阶段由类初始化方法完成，在这个方法中registerNatives()方法会注册其他本地方法。第二个阶段由VM完成，在这个阶段VM会调用System.initializeSystemClass()方法。那么initializeSystemClass()方法究竟干了些什么呢？这个方法很长，而且有很详细的注释。去掉与本节讨论无关的代码和注释之后，它的代码如下：
+``` java
 /**
-* Initialize the system class. Called after thread initialization.
-*/
+ * Initialize the system class. Called after thread initialization.
+ */
 private static void initializeSystemClass() {
-... // 其他代码
-FileInputStream fdIn = new FileInputStream(FileDescriptor.in);
-FileOutputStream fdOut = new FileOutputStream(FileDescriptor.out);
-FileOutputStream fdErr = new FileOutputStream(FileDescriptor.err);
-setIn0(new BufferedInputStream(fdIn));
-setOut0(newPrintStream(fdOut, props.getProperty("sun.stdout.encoding")));
-setErr0(newPrintStream(fdErr, props.getProperty("sun.stderr.encoding")));
-... // 其他代码
+    ... // 其他代码
+    FileInputStream fdIn = new FileInputStream(FileDescriptor.in);
+    FileOutputStream fdOut = new FileOutputStream(FileDescriptor.out);
+    FileOutputStream fdErr = new FileOutputStream(FileDescriptor.err);
+    setIn0(new BufferedInputStream(fdIn));
+    setOut0(newPrintStream(fdOut, props.getProperty("sun.stdout.encoding")));
+    setErr0(newPrintStream(fdErr, props.getProperty("sun.stderr.encoding")));
+    ... // 其他代码
 }
-可见in、out和err正是在这里设置的。再来看sun.misc.VM类的
-源代码(VM类属于Oracle私有代码，并没有开源，下面是反编译后
-的Java代码)：
+```
+可见in、out和err正是在这里设置的。再来看sun.misc.VM类的源代码(VM类属于Oracle私有代码，并没有开源，下面是反编译后的Java代码)：
+``` java
 // sun.misc.VM
 public class VM {
-... // 其他代码
-static {
-... // 其他代码
-initialize();
+	... // 其他代码
+	static {
+		... // 其他代码
+		initialize();
+	}
+	private static native void initialize();
 }
-private static native void initialize();
-}VM类在初始化时调用了initialize()方法。虽然initialize()是本
-地方法，但是可以推测正是这个方法调用了
-System.initializeSystemClass()方法。是否真的是这样笔者就不做考
-证了，下面修改解释器，让System类可以正确初始化。11.2 初始化System类
-先打开ch11\instructions\references\invokevirtual.go文件，修改
-invokevirtual指令的Execute()方法，把其中的hack代码删掉。由于只
-是删除代码，这里就不做详细说明了。
-接下来打开ch11\native\sun\misc\VM.go文件，删除heap包的导
-入语句。原来的initialize()方法也是用hack方式实现的，需要重写，
-代码如下：
+```
+VM类在初始化时调用了initialize()方法。虽然initialize()是本地方法，但是可以推测正是这个方法调用了System.initializeSystemClass()方法。是否真的是这样笔者就不做考证了，下面修改解释器，让System类可以正确初始化。
+
+### 11.2 初始化System类
+先打开ch11\instructions\references\invokevirtual.go文件，修改invokevirtual指令的Execute()方法，把其中的hack代码删掉。由于只是删除代码，这里就不做详细说明了。
+
+接下来打开ch11\native\sun\misc\VM.go文件，删除heap包的导入语句。原来的initialize()方法也是用hack方式实现的，需要重写，代码如下：
+```go
 // private static native void initialize();
 func initialize(frame *rtda.Frame) {
-classLoader := frame.Method().Class().Loader()
-jlSysClass := classLoader.LoadClass("java/lang/System")
-initSysClass := jlSysClass.GetStaticMethod("initializeSystemClass", "()V")
-base.InvokeMethod(frame, initSysClass)
+	classLoader := frame.Method().Class().Loader()
+	jlSysClass := classLoader.LoadClass("java/lang/System")
+	initSysClass := jlSysClass.GetStaticMethod("initializeSystemClass", "()V")
+	base.InvokeMethod(frame, initSysClass)
 }
-新的实现只是调用了System.initializeSystemClass()方法而已。
-下面修改解释器，让它在执行主类的main()方法之前先调用
-VM.initialize()方法。为了让代码的可读性更好，将对main.go文件
-进行比较大的调整。打开ch11\main.go，把下面的代码复制进去：
+```
+新的实现只是调用了System.initializeSystemClass()方法而已。下面修改解释器，让它在执行主类的main()方法之前先调用VM.initialize()方法。为了让代码的可读性更好，将对main.go文件进行比较大的调整。打开ch11\main.go，把下面的代码复制进去：
+``` go
 package main
 func main() {
-cmd := parseCmd()if cmd.versionFlag {
-println("version 0.0.1")
-} else if cmd.helpFlag || cmd.class == "" {
-printUsage()
-} else {
-newJVM(cmd).start()
+	cmd := parseCmd()if cmd.versionFlag {
+		println("version 0.0.1")
+	} else if cmd.helpFlag || cmd.class == "" {
+		printUsage()
+	} else {
+		newJVM(cmd).start()
+	}
 }
-}
-主要逻辑都被挪到了(新增加的)ch11\jvm.go文件中，代码如
-下：
+```
+主要逻辑都被挪到了(新增加的)ch11\jvm.go文件中，代码如下：
+``` go
 package main
 import "fmt"
 import "strings"
@@ -8392,86 +8334,82 @@ import "jvmgo/ch11/instructions/base"
 import "jvmgo/ch11/rtda"
 import "jvmgo/ch11/rtda/heap"
 type JVM struct {
-cmd
-*Cmd
-classLoader
-*heap.ClassLoader
-mainThread
-*rtda.Thread
+	cmd         *Cmd
+	classLoader *heap.ClassLoader
+	mainThread  *rtda.Thread
 }
-func newJVM(cmd *Cmd) *JVM {...}
-func (self *JVM) start() {...}
+
+func newJVM(cmd *Cmd) *JVM { ... }
+func (self *JVM) start()   { ... }
+```
 newJVM()函数创建JVM结构体实例，代码如下：
+``` go
 func newJVM(cmd *Cmd) *JVM {
-cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
-classLoader := heap.NewClassLoader(cp, cmd.verboseClassFlag)
-return &JVM{
-cmd:
-cmd,
-classLoader: classLoader,
-mainThread: rtda.NewThread(),
+	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
+	classLoader := heap.NewClassLoader(cp, cmd.verboseClassFlag)
+	return &JVM{
+		cmd:
+		cmd,
+		classLoader: classLoader,
+		mainThread: rtda.NewThread(),
+	}
 }
-}start()方法先初始化VM类，然后执行主类的main()方法，代码
-如下：
+```
+start()方法先初始化VM类，然后执行主类的main()方法，代码如下：
+``` go
 func (self *JVM) start() {
-self.initVM()
-self.execMain()
+	self.initVM()
+	self.execMain()
 }
-initVM()先加载sun.mis.VM类，然后执行其类初始化方法，代
-码如下：
+```
+initVM()先加载sun.mis.VM类，然后执行其类初始化方法，代码如下：
+``` go
 func (self *JVM) initVM() {
-vmClass := self.classLoader.LoadClass("sun/misc/VM")
-base.InitClass(self.mainThread, vmClass)
-interpret(self.mainThread, self.cmd.verboseInstFlag)
+	vmClass := self.classLoader.LoadClass("sun/misc/VM")
+	base.InitClass(self.mainThread, vmClass)
+	interpret(self.mainThread, self.cmd.verboseInstFlag)
 }
-execMain()方法先加载主类，然后执行其main()方法，代码如
-下：
+```
+execMain()方法先加载主类，然后执行其main()方法，代码如下：
+``` go
 func (self *JVM) execMain() {
-className := strings.Replace(self.cmd.class, ".", "/", -1)
-mainClass := self.classLoader.LoadClass(className)
-mainMethod := mainClass.GetMainMethod()
-if mainMethod == nil {
-fmt.Printf("Main method not found in class %s\n", self.cmd.class)
-return
+	className := strings.Replace(self.cmd.class, ".", "/", -1)
+	mainClass := self.classLoader.LoadClass(className)
+	mainMethod := mainClass.GetMainMethod()
+	if mainMethod == nil {
+		fmt.Printf("Main method not found in class %s\n", self.cmd.class)
+		return
+	}
+	argsArr := self.createArgsArray()
+	frame := self.mainThread.NewFrame(mainMethod)
+	frame.LocalVars().SetRef(0, argsArr) // 给 main() 方法传递 args 参数
+	self.mainThread.PushFrame(frame)
+	interpret(self.mainThread, self.cmd.verboseInstFlag)
 }
-argsArr := self.createArgsArray()
-frame := self.mainThread.NewFrame(mainMethod)
-frame.LocalVars().SetRef(0, argsArr) // 给
-main() 方法传递
-args 参数self.mainThread.PushFrame(frame)
-interpret(self.mainThread, self.cmd.verboseInstFlag)
-}
-execMain()方法的前半部分代码是从main.go文件中拷贝过来
-的，我们已经比较熟悉了。后半部分代码需要解释的一点是：在调
-用main()方法之前，需要给它传递args参数，这是通过直接操作局
-部变量表实现的。createArgsArray()方法把Go的[]string变量转换成
-Java的字符串数组，代码是从interpreter.go文件中拷贝过来的，如下
-所示：
+```
+execMain()方法的前半部分代码是从main.go文件中拷贝过来的，我们已经比较熟悉了。后半部分代码需要解释的一点是：在调用main()方法之前，需要给它传递args参数，这是通过直接操作局部变量表实现的。createArgsArray()方法把Go的[]string变量转换成Java的字符串数组，代码是从interpreter.go文件中拷贝过来的，如下所示：
+``` go
 func (self *JVM) createArgsArray() *heap.Object {
-stringClass := self.classLoader.LoadClass("java/lang/String")
-argsLen := uint(len(self.cmd.args))
-argsArr := stringClass.ArrayClass().NewArray(argsLen)
-jArgs := argsArr.Refs()
-for i, arg := range self.cmd.args {
-jArgs[i] = heap.JString(self.classLoader, arg)
+	stringClass := self.classLoader.LoadClass("java/lang/String")
+	argsLen := uint(len(self.cmd.args))
+	argsArr := stringClass.ArrayClass().NewArray(argsLen)
+	jArgs := argsArr.Refs()
+	for i, arg := range self.cmd.args {
+		jArgs[i] = heap.JString(self.classLoader, arg)
+	}
+	return argsArr
 }
-return argsArr
-}
-jvm.go文件改好了，下面修改interpret()函数。打开
-ch11\interpreter.go，删除heap包的导入语句和createArgsArray()函
-数，然后修改interpret()函数，代码如下：
+```
+jvm.go文件改好了，下面修改interpret()函数。打开ch11\interpreter.go，删除heap包的导入语句和createArgsArray()函数，然后修改interpret()函数，代码如下：
+``` go
 func interpret(thread *rtda.Thread, logInst bool) {
 defer catchErr(thread)
 loop(thread, logInst)}
-修改之后interpret()函数简单了许多，直接调用loop()函数进
-入循环即可。至此，解释器修改完毕。这就是本章要写的全部代码
-吗？并不是。为了正常执行System.initializeSystemClass()以及
-System.out.println()等方法，还需要实现很多Java类库中的本地方
-法。为了节约篇幅，这里就不一一列举了，请读者阅读随书源代
-码。下面以System.out.println(String)为例解释字符串是如何被打印
-到控制台的，其他类型变量的打印原理同字符串类似。11.3 System.out.println()是如何工作的
-回到System.initializeSystemClass()方法，进一步省略之后，其
-代码如下：
+```
+修改之后interpret()函数简单了许多，直接调用loop()函数进入循环即可。至此，解释器修改完毕。这就是本章要写的全部代码吗？并不是。为了正常执行System.initializeSystemClass()以及System.out.println()等方法，还需要实现很多Java类库中的本地方法。为了节约篇幅，这里就不一一列举了，请读者阅读随书源代码。下面以System.out.println(String)为例解释字符串是如何被打印到控制台的，其他类型变量的打印原理同字符串类似。
+
+### 11.3 System.out.println()是如何工作的
+回到System.initializeSystemClass()方法，进一步省略之后，其代码如下：
 ``` java
 // java.lang.System
 public final static PrintStream out = null;
