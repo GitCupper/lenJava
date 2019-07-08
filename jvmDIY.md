@@ -49,9 +49,9 @@ Go是Google公司于2012年推出的系统编程语言。从到硬件的距离�
 - 《Java虚拟机规范》第8版
 - 《Java语言规范》第8版
 - 《深入Java虚拟机》(原书第2版) [8]
-其中《Java虚拟机规范》主要参考了第8版，但同时也参考了第7版和更老的版本。《Java语言规范》则主要参考了第8版。读者可以从http://docs.oracle.com/javase/specs/index.html 获取各个版本的《Java虚拟机规范》和《Java语言规范》。
+其中《Java虚拟机规范》主要参考了第8版，但同时也参考了第7版和更老的版本。《Java语言规范》则主要参考了第8版。读者可以从[http://docs.oracle.com/javase/specs/index.html](http://docs.oracle.com/javase/specs/index.html) 获取各个版本的《Java虚拟机规范》和《Java语言规范》。
 
-笔者早在十年前还在上学时就读过由Bill Venners著，曹晓钢等翻译的《深入Java虚拟机(原书第2版)》。但是由于当时水平有限，理解得并不是很深入。时隔十年，重读此书还是颇有收获。较之《Java虚拟机规范》的严谨和刻板，该书更加通俗易懂。原书作者已经将部分章节放于网上，网址是http://www.artima.com/insidejvm/ed2/ ，读者可以免费阅读。
+笔者早在十年前还在上学时就读过由Bill Venners著，曹晓钢等翻译的《深入Java虚拟机(原书第2版)》。但是由于当时水平有限，理解得并不是很深入。时隔十年，重读此书还是颇有收获。较之《Java虚拟机规范》的严谨和刻板，该书更加通俗易懂。原书作者已经将部分章节放于网上，网址是[http://www.artima.com/insidejvm/ed2/](http://www.artima.com/insidejvm/ed2/) ，读者可以免费阅读。
 
 以上是Java方面的资料。Go语言方面主要参考了Go官网上的各种资料，包括《如何编写Go程序》 [9] 《Effective Go》 [10] 《Go语言规范》 [11] 以及Go标准库文档 [12] 等。另外，在本书的写作过程中，笔者还通过搜索引擎查阅了遍布于网络上(特别是StackOverflow [13]和Wikipedia [14] )的各种资料，这里就不一一罗列了。
 
@@ -59,7 +59,7 @@ Go是Google公司于2012年推出的系统编程语言。从到硬件的距离�
 
 本书源代码可以从[https://github.com/zxh0/jvmgo-book](https://github.com/zxh0/jvmgo-book)获取。代码分为Go和Java两部分，目录结构如下：
 ```
- https://github.com/zxh0/jvmgo-book/v1/code/
+ [https://github.com/zxh0/jvmgo-book/v1/code/](http://www.artima.com/insidejvm/ed2/)
    |-go
      |-src
        |-jvmgo
@@ -72,7 +72,7 @@ Go语言部分是Java虚拟机代码，每章为一个子目录，可以独立�
 
 《Java虚拟机规范》对Java虚拟机的工作机制有十分严谨的描述。但是由于笔者水平和表达能力有限，本书一定存在表述不精确、不准确，甚至不正确的地方。另外，由于时间有限，书中也难免会有一些疏漏之处，还请读者谅解。
 
-本书的勘误将通过https://github.com/zxh0/jvmgo-book/blob/master/v1/errata.md 发布和更新。如果读者发现书中的错误、有改进意见，或者有任何问题需要讨论，都可以在本书的Github项目上创建Issue。此外也可以加入QQ群(470333113)与读者交流。
+本书的勘误将通过[https://github.com/zxh0/jvmgo-book/blob/master/v1/errata.md](https://github.com/zxh0/jvmgo-book/blob/master/v1/errata.md) 发布和更新。如果读者发现书中的错误、有改进意见，或者有任何问题需要讨论，都可以在本书的Github项目上创建Issue。此外也可以加入QQ群(470333113)与读者交流。
 
 ## 3 致谢
 
@@ -80,26 +80,26 @@ Go语言部分是Java虚拟机代码，每章为一个子目录，可以独立�
 
 其次感谢我所在的公司乐元素 [16] ，它为我提供了舒适和愉悦的工作环境，使我在工作之余可以全心投入本书的写作之中。
 
-代码被我放到了Github上，地址是https://github.com/zxh0/jvm.go 。不过由于能力和时间有限，这个虚拟机离完整实现《Java虚拟机规范》还相距甚远。2015年4月份，我停止了jvm.go的编写，同时开始改造代码，酝酿本书。感谢所有关注过jvm.go项目的人，没有你们的帮助就没有jvm.go，也就没有本书。
+代码被我放到了Github上，地址是[https://github.com/zxh0/jvm.go](https://github.com/zxh0/jvm.go) 。不过由于能力和时间有限，这个虚拟机离完整实现《Java虚拟机规范》还相距甚远。2015年4月份，我停止了jvm.go的编写，同时开始改造代码，酝酿本书。感谢所有关注过jvm.go项目的人，没有你们的帮助就没有jvm.go，也就没有本书。
 
 最后，感谢机械工业出版社华章分社的编辑，本书能够顺利出版离不开他们的敬业精神和一丝不苟的工作态度。
 
-- [1] http://www.tiobe.com/。
-- [2] Java曾被TIOBE选为2005年度编程语言。
-- [3] http://www.groovy-lang.org/。
-- [4] http://www.scala-lang.org/。
-- [5] http://clojure.org/。
-- [6] http://www.jython.org/。
-- [7] http://jruby.org/。
-- [8] 原书名为《Inside the Java Virtual Machine, Second Edition》。
-- [9] https://golang.org/doc/code.html。
-- [10] https://golang.org/doc/effective_go.html。
-- [11] https://golang.org/ref/spec。
-- [12] https://golang.org/pkg/。
-- [13] http://stackoverflow.com/。
-- [14] https://en.wikipedia.org/。
-- [15] http://gradle.org/。
-- [16] http://www.happyelements.cn/。
+- [01] [http://www.tiobe.com/](http://www.tiobe.com/)。
+- [02] Java曾被TIOBE选为2005年度编程语言。
+- [03] [http://www.groovy-lang.org/](http://www.groovy-lang.org/)。
+- [04] [http://www.scala-lang.org/](http://www.scala-lang.org/)。
+- [05] [http://clojure.org/](http://clojure.org/)。
+- [06] [http://www.jython.org/](http://www.jython.org/)。
+- [07] [http://jruby.org/](http://jruby.org/)。
+- [08] 原书名为《Inside the Java Virtual Machine, Second Edition》。
+- [09] [https://golang.org/doc/code.html](https://golang.org/doc/code.html)。
+- [10] [https://golang.org/doc/effective_go.html](https://golang.org/doc/effective_go.html)。
+- [11] [https://golang.org/ref/spec](https://golang.org/ref/spec)。
+- [12] [https://golang.org/pkg/](https://golang.org/pkg/)。
+- [13] [http://stackoverflow.com/](http://stackoverflow.com/)。
+- [14] [https://en.wikipedia.org/](https://en.wikipedia.org/)。
+- [15] [http://gradle.org/](http://gradle.org/)。
+- [16] [http://www.happyelements.cn/](http://www.happyelements.cn/)。
 
 ## 第1章 命令行工具
 
@@ -107,7 +107,7 @@ Java虚拟机非常复杂，要想真正理解它的工作原理，最好的方�
 
 本书假定读者使用的是Windows操作系统，因此书中出现的命令和路径等都是Windows形式的。如果读者使用的是其他操作系统(如Mac OS X、Linux等)，需要根据自己的情况做出相应调整。由于Go和Java都是跨平台语言，所以本书代码在常见的操作系统中都可以正常编译和运行。
 
-[1]如无特殊说明，本书中出现的“Java虚拟机规范”均指《Java虚拟机规范第8版》，网址为http://docs.oracle.com/javase/specs/jvms/se8/html/index.html。
+[1]如无特殊说明，本书中出现的“Java虚拟机规范”均指《Java虚拟机规范第8版》，网址为[http://docs.oracle.com/javase/specs/jvms/se8/html/index.html](http://docs.oracle.com/javase/specs/jvms/se8/html/index.html)。
 
 [2] 后文中，首字母小写的java特指java命令行工具。
 
@@ -117,7 +117,7 @@ Java虚拟机非常复杂，要想真正理解它的工作原理，最好的方�
 
 ![图1-1](https://i.loli.net/2019/07/07/5d2171ad8e89979217.png)
 图1-1 java-version命令输出
-[1]http://www.oracle.com/technetwork/java/javase/downloads/index.html。
+[1][http://www.oracle.com/technetwork/java/javase/downloads/index.html](http://www.oracle.com/technetwork/java/javase/downloads/index.html)。
 
 #### 1.1.2 安装Go
 从Go语言官网 [1] 下载最新版本(写作本章时是1.5.1)的Go安装文件，双击运行即可。安装完毕之后，打开命令行窗口执行go version命令，如果看到类似图1-2所示的输出，就证明安装成功了。
