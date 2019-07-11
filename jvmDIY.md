@@ -120,33 +120,33 @@ Java虚拟机非常复杂，要想真正理解它的工作原理，最好的方�
 [1][http://www.oracle.com/technetwork/java/javase/downloads/index.html](http://www.oracle.com/technetwork/java/javase/downloads/index.html)。
 
 #### 1.1.2 安装Go
-从Go语言官网 [1] 下载最新版本(写作本章时是1.5.1)的Go安装文件，双击运行即可。安装完毕之后，打开命令行窗口执行go version命令，如果看到类似图1-2所示的输出，就证明安装成功了。
+从Go语言官网 [1] 下载最新版本(写作本章时是1.5.1)的Go安装文件，双击运行即可。安装完毕之后，打开命令行窗口执行`go version`命令，如果看到类似图1-2所示的输出，就证明安装成功了。
 
 ![图1-2](https://i.loli.net/2019/07/07/5d21720e37bc884394.png)
-图1-2 go version命令输出
-go [2] 命令是Go语言提供的命令行工具，用来管理Go源代码。go命令就像瑞士军刀，里面包含了各种小工具。用Go语言编写程序，基本上只需要go命令就可以了。go命令里的小工具是各种子命令，version是其中之一。其他常用的子命令包括help、fmt、install和test等。
+图1-2 `go version`命令输出
+`go` [2] 命令是Go语言提供的命令行工具，用来管理Go源代码。`go`命令就像瑞士军刀，里面包含了各种小工具。用Go语言编写程序，基本上只需要`go`命令就可以了。`go`命令里的小工具是各种子命令，`version`是其中之一。其他常用的子命令包括`help`、`fmt`、`install`和`test`等。
 
-go命令行工具希望所有的Go源代码被都放在一个工作空间中。所谓工作空间，实际上就是一个目录结构，这个目录结构包含三个子目录。
+`go`命令行工具希望所有的Go源代码被都放在一个工作空间中。所谓工作空间，实际上就是一个目录结构，这个目录结构包含三个子目录。
 - src目录中是Go语言源代码。
 - pkg目录中是编译好的包对象文件。
 - bin目录中是链接好的可执行文件。
 
-实际上只有src目录是必须要有的，go会自动创建pkg和bin目录。工作空间可以位于任何地方，本书使用D:\go\workspace作为工作空间。那么go如何知道工作空间在哪里呢？答案是通过GOPATH环境变量。在桌面上右键单击“我的电脑”图标，在弹出的菜单中单击“属性”，然后单击“高级系统设置”；在“系统属性”对话框中单击“环境变量”按钮，然后添加GOPATH变量即可，如图1-3所示。
+实际上只有src目录是必须要有的，`go`会自动创建pkg和bin目录。工作空间可以位于任何地方，本书使用D:\go\workspace作为工作空间。那么`go`如何知道工作空间在哪里呢？答案是通过GOPATH环境变量。在桌面上右键单击“我的电脑”图标，在弹出的菜单中单击“属性”，然后单击“高级系统设置”；在“系统属性”对话框中单击“环境变量”按钮，然后添加GOPATH变量即可，如图1-3所示。
 
 ![图1-3](https://i.loli.net/2019/07/07/5d2172599182949216.png)
 图1-3 设置GOPATH环境变量
 
-打开命令行窗口，执行go env命令，如果看到类似图1-4所示的输出，GOPATH环境变量就设置成功了。
+打开命令行窗口，执行`go env`命令，如果看到类似图1-4所示的输出，GOPATH环境变量就设置成功了。
 
 ![图1-4](https://i.loli.net/2019/07/07/5d2172bf0618078423.png)
-图1-4 使用go env命令查看GOPATH环境变量
+图1-4 使用`go env`命令查看GOPATH环境变量
 - [1][https://golang.org/dl/](https://golang.org/dl/)(如果Go官网无法访问，可以从[http://golangtc.com/download](http://golangtc.com/download))下载。
 - [2] 后文中，首字母小写的go特指go命令行工具。
 
 #### 1.1.3 创建目录结构
 Go语言以包为单位组织源代码，包可以嵌套，形成层次关系。本书编写的Go源文件全部放在jvmgo包中，其中每一章的源文件又分别放在自己的子包中。包层次和目录结构有一个简单的对应关系，比如，第1章的代码在jvmgo\ch01目录下。除第1章以外，每一章都是先复制前一章代码，然后进行修改和完善。每一章的代码都是独立的，可以单独编译为一个可执行文件。下面创建第1章的目录结构。
 
-在D:\go\workspace\src(也就是%GOPATH%\src)目录下创建jvmgo目录，在jvmgo目录下创建ch01目录。现在，工作空间的目录结构如下：
+在D:\go\workspace\src(也就是`%GOPATH%\src`)目录下创建jvmgo目录，在jvmgo目录下创建ch01目录。现在，工作空间的目录结构如下：
 ```
 D:\go\workspace\src
   |-jvmgo
@@ -154,7 +154,7 @@ D:\go\workspace\src
 ```
 
 ### 1.2 java命令
-Java虚拟机的工作是运行Java应用程序。和其他类型的应用程序一样，Java应用程序也需要一个入口点，这个入口点就是我们熟知的main()方法。如果一个类包含main()方法，这个类就可以用来启动Java应用程序，我们把这个类叫作主类。最简单的Java程序是只有一个main()方法的类，如著名的HelloWorld程序。
+Java虚拟机的工作是运行Java应用程序。和其他类型的应用程序一样，Java应用程序也需要一个入口点，这个入口点就是我们熟知的`main()`方法。如果一个类包含`main()`方法，这个类就可以用来启动Java应用程序，我们把这个类叫作主类。最简单的Java程序是只有一个`main()`方法的类，如著名的HelloWorld程序。
 ``` java
 public class HelloWorld {
   public static void main(String[] args) {
@@ -169,7 +169,7 @@ java [-options] -jar jarfile [args]
 javaw [-options] class [args]
 javaw [-options] -jar jarfile [args]
 ```
-可以向java命令传递三组参数：选项、主类名(或者JAR文件名)和main()方法参数。选项由减号(–)开头。通常，第一个非选项参数给出主类的完全限定名(fully qualified class name)。但是如果用户提供了–jar选项，则第一个非选项参数表示JAR文件名，java命令必须从这个JAR文件中寻找主类。javaw命令和java命令几乎一样，唯一的差别在于，javaw命令不显示命令行窗口，因此特别适合用于启动GUI(图形用户界面)应用程序。
+可以向java命令传递三组参数：选项、主类名(或者JAR文件名)和`main()`方法参数。选项由减号(–)开头。通常，第一个非选项参数给出主类的完全限定名(fully qualified class name)。但是如果用户提供了–jar选项，则第一个非选项参数表示JAR文件名，java命令必须从这个JAR文件中寻找主类。javaw命令和java命令几乎一样，唯一的差别在于，javaw命令不显示命令行窗口，因此特别适合用于启动GUI(图形用户界面)应用程序。
 
 选项可以分为两类：标准选项和非标准选项。标准选项比较稳定，不会轻易变动。非标准选项以-X开头，很有可能会在未来的版本中变化。非标准选项中有一部分是高级选项，以-XX开头。表1-1列出了java命令常用的选项及其用途。 [1]
 
@@ -204,9 +204,9 @@ type Cmd struct {
 	args        [] string
 }
 ```
-在Java语言中，API一般以类库的形式提供。在Go语言中，API则是以包(package)的形式提供。包可以向用户提供常量、变量、结构体以及函数等。Java内置了丰富的类库，Go也同样内置了功能强大的包。本章将用到fmt、os和flag包。
+在Java语言中，API一般以类库的形式提供。在Go语言中，API则是以包(package)的形式提供。包可以向用户提供常量、变量、结构体以及函数等。Java内置了丰富的类库，Go也同样内置了功能强大的包。本章将用到`fmt`、`os`和`flag`包。
 
-os包定义了一个Args变量，其中存放传递给命令行的全部参数。如果直接处理os.Args变量，需要写很多代码。还好Go语言内置了flag包，这个包可以帮助我们处理命令行选项。有了flag包，我们的工作就简单了很多。继续编辑cmd.go文件，在其中定义parseCmd()函数 [3] ，代码如下：
+`os`包定义了一个`Args`变量，其中存放传递给命令行的全部参数。如果直接处理`os.Args`变量，需要写很多代码。还好Go语言内置了`flag`包，这个包可以帮助我们处理命令行选项。有了`flag`包，我们的工作就简单了很多。继续编辑`cmd.go`文件，在其中定义parseCmd()函数 [3] ，代码如下：
 ``` go
 func parseCmd() *Cmd {
 	cmd := &Cmd{}
@@ -225,7 +225,7 @@ func parseCmd() *Cmd {
 	return cmd
 }
 ```
-首先设置flag.Usage变量，把printUsage()函数赋值给它；然后调用flag包提供的各种Var()函数设置需要解析的选项；接着调用Parse()函数解析选项。如果Parse()函数解析失败，它就调用printUsage()函数把命令的用法打印到控制台。printUsage()函数的代码如下：
+首先设置`flag.Usage`变量，把`printUsage()`函数赋值给它；然后调用`flag`包提供的各种`Var()`函数设置需要解析的选项；接着调用`Parse()`函数解析选项。如果`Parse()`函数解析失败，它就调用`printUsage()`函数把命令的用法打印到控制台。`printUsage()`函数的代码如下：
 ``` go
 func printUsage() {
 	fmt.Printf("Usage: %s [-options] class [args...]\n", os.Args[0])
@@ -253,9 +253,9 @@ func main() {
 	}
 }
 ```
-注意，与cmd.go文件一样，main.go文件的包名也是main。在Go语言中，main是一个特殊的包，这个包所在的目录(可以叫作任何名字)会被编译为可执行文件。Go程序的入口也是main()函数，但是不接收任何参数，也不能有返回值。
+注意，与cmd.go文件一样，main.go文件的包名也是main。在Go语言中，main是一个特殊的包，这个包所在的目录(可以叫作任何名字)会被编译为可执行文件。Go程序的入口也是`main()`函数，但是不接收任何参数，也不能有返回值。
 
-main()函数先调用ParseCommand()函数解析命令行参数，如果一切正常，则调用startJVM()函数启动Java虚拟机。如果解析出现错误，或者用户输入了-help选项，则调用PrintUsage()函数打印出帮助信息。如果用户输入了-version选项，则输出(一个滥竽充数的)版本信息。因为我们还没有真正开始编写Java虚拟机，所以startJVM()函数暂时只是打印一些信息而已，代码如下：
+`main()`函数先调用`ParseCommand()`函数解析命令行参数，如果一切正常，则调用`startJVM()`函数启动Java虚拟机。如果解析出现错误，或者用户输入了-help选项，则调用`PrintUsage()`函数打印出帮助信息。如果用户输入了`-version`选项，则输出(一个滥竽充数的)版本信息。因为我们还没有真正开始编写Java虚拟机，所以`startJVM()`函数暂时只是打印一些信息而已，代码如下：
 ``` go
 func startJVM(cmd *Cmd) {
 	fmt.Printf("classpath:%s class:%s args:%v\n", 
@@ -275,7 +275,7 @@ go install jvmgo\ch01
 本章准备好了开发环境，学习了java命令的基本用法，并且编写了一个简化版的命令行工具。虽然还没有正式开始编写Java虚拟机，但是已经打好了坚实的基础。下一章将深入了解-classpath选项，探讨Java虚拟机从哪里寻找class文件，并实现class文件加载功能。
 
 ## 第2章 搜索class文件
-第1章介绍了java命令的用法以及它如何启动Java应用程序：首先启动Java虚拟机，然后加载主类，最后调用主类的main()方法。但是我们知道，即使是最简单的“Hello, World”程序，也是无法独自运行的，该程序的代码如下：
+第1章介绍了java命令的用法以及它如何启动Java应用程序：首先启动Java虚拟机，然后加载主类，最后调用主类的`main()`方法。但是我们知道，即使是最简单的“Hello, World”程序，也是无法独自运行的，该程序的代码如下：
 ``` java
 public class HelloWorld {
 	public static void main(String[] args) {
@@ -283,7 +283,7 @@ public class HelloWorld {
 	}
 }
 ```
-加载HelloWorld类之前，首先要加载它的超类，也就是java.lang.Object。在调用main()方法之前，因为虚拟机需要准备好参数数组，所以需要加载java.lang.String和java.lang.String[]类。把字符串打印到控制台还需要加载java.lang.System类，等等。那么，Java虚拟机从哪里寻找这些类呢？本章将详细讨论这个问题。
+加载HelloWorld类之前，首先要加载它的超类，也就是java.lang.Object。在调用`main()`方法之前，因为虚拟机需要准备好参数数组，所以需要加载java.lang.String和java.lang.String[]类。把字符串打印到控制台还需要加载java.lang.System类，等等。那么，Java虚拟机从哪里寻找这些类呢？本章将详细讨论这个问题。
 
 ### 2.1 类路径
 Java虚拟机规范并没有规定虚拟机应该从哪里寻找类，因此不同的虚拟机实现可以采用不同的方法。Oracle的Java虚拟机实现根据类路径(class path)来搜索类。按照搜索的先后顺序，类路径可以分为以下3个部分：
@@ -666,7 +666,7 @@ import "jvmgo/ch02/classpath"
 func main() {...}
 func startJVM(cmd *Cmd) {...}
 ```
-main()函数不用变，重写startJVM()函数，代码如下：
+`main()`函数不用变，重写startJVM()函数，代码如下：
 ``` go
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
@@ -1407,7 +1407,7 @@ func (self *ConstantStringInfo) String() string {
 	return self.cp.getUtf8(self.stringIndex)
 }
 ```
-ClassFileTest的main()方法使用了字符串字面量“Hello, World!”，对应的CONSTANT_String_info常量如图3-14所示。
+ClassFileTest的`main()`方法使用了字符串字面量“Hello, World!”，对应的CONSTANT_String_info常量如图3-14所示。
 
 ![图3-14](https://i.loli.net/2019/07/10/5d25f3b5b8b3695936.png)
 图3-14 用classpy观察CONSTANT_String_info常量
@@ -1534,7 +1534,7 @@ type ConstantFieldrefInfo struct{ ConstantMemberrefInfo }
 type ConstantMethodrefInfo struct{ ConstantMemberrefInfo }
 type ConstantInterfaceMethodrefInfo struct{ ConstantMemberrefInfo }
 ```
-ClassFileTest类的main()方法使用了java.lang.System类的out字段，该字段由常量池第2项指出，如图3-18所示。
+ClassFileTest类的`main()`方法使用了java.lang.System类的out字段，该字段由常量池第2项指出，如图3-18所示。
 
 可以看到，class_index是50(0x32)，name_and_type_index是51(0x33)。我们找到第50和第51个常量，可以看到，确实是CONSTANT_Class_info和CONSTANT_Name-AndType_info，如图3-19所示。
 
@@ -1831,7 +1831,7 @@ func (self *CodeAttribute) readInfo(reader *ClassReader) {
 	self.attributes = readAttributes(reader, self.cp)
 }
 ```
-readExceptionTable()函数的代码如下：
+`readExceptionTable()`函数的代码如下：
 ``` go
 func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
 	exceptionTableLength := reader.readUint16()
@@ -1847,7 +1847,7 @@ func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
 	return exceptionTable
 }
 ```
-ClassFileTest.main()方法的Code属性如图3-25所示。
+`ClassFileTest.main()`方法的Code属性如图3-25所示。
 
 ![图3-25](https://i.loli.net/2019/07/10/5d25f6ff8276f40903.png)
 图3-25 用classpy观察Code属性
@@ -1875,7 +1875,7 @@ func (self *ExceptionsAttribute) ExceptionIndexTable() []uint16 {
 	return self.exceptionIndexTable
 }
 ```
-代码比较简单，就不多解释了。ClassFileTest.main()方法的Exceptions属性如图3-26所示。
+代码比较简单，就不多解释了。`ClassFileTest.main()`方法的Exceptions属性如图3-26所示。
 
 ![图3-26](https://i.loli.net/2019/07/10/5d25f74b55bf197471.png)
 图3-26 用classpy观察Code属性
@@ -1935,7 +1935,7 @@ import "jvmgo/ch03/classpath"
 func main() {...}
 func startJVM(options *cmdline.Options, class string, args []string) {...}
 ```
-main()函数不用变，修改startJVM()函数，代码如下：
+`main()`函数不用变，修改startJVM()函数，代码如下：
 ``` go
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
@@ -2450,7 +2450,7 @@ import "jvmgo/ch04/rtda"
 func main() {...}
 func startJVM(cmd *Cmd) {...}
 ```
-main()方法不变，修改startJVM方法，代码如下：
+`main()`方法不变，修改startJVM方法，代码如下：
 ``` go
 func startJVM(cmd *Cmd) {
 	frame := rtda.NewFrame(100, 100)
@@ -2525,14 +2525,16 @@ D:\go\workspace\src
 ```
 
 ### 5.1 字节码和指令集
-Java虚拟机顾名思义，就是一台虚拟的机器，而字节码(bytecode)就是运行在这台虚拟机器上的机器码。我们已经知道，每一个类或者接口都会被Java编译器编译成一个class文件，类或接口的方法信息就放在class文件的method_info结构中 [1] 。如果方法不是抽象的，也不是本地方法，方法的Java代码就会被编译器编译成字节码(即使方法是空的，编译器也会生成一条return语句)，存放在method_info结构的Code属性中。仍以第3章的ClassFileTest类为例，其main()方法如图5-1所示。
+Java虚拟机顾名思义，就是一台虚拟的机器，而字节码(bytecode)就是运行在这台虚拟机器上的机器码。我们已经知道，每一个类或者接口都会被Java编译器编译成一个class文件，类或接口的方法信息就放在class文件的method_info结构中 [1] 。如果方法不是抽象的，也不是本地方法，方法的Java代码就会被编译器编译成字节码(即使方法是空的，编译器也会生成一条return语句)，存放在method_info结构的Code属性中。仍以第3章的ClassFileTest类为例，其`main()`方法如图5-1所示。
 
+![图5-1](https://i.loli.net/2019/07/11/5d26dbac5192063516.png)
 图5-1 用classpy观察方法字节码
 
 字节码中存放编码后的Java虚拟机指令。每条指令都以一个单字节的操作码(opcode)开头，这就是字节码名称的由来。由于只使用一字节表示操作码，显而易见，Java虚拟机最多只能支持256(2^8)条指令。到第八版为止，Java虚拟机规范已经定义了205条指令，操作码分别是0(0x00)到202(0xCA)、254(0xFE)和255(0xFF)。这205条指令构成了Java虚拟机的指令集(instruction set)。和汇编语言类似，为了便于记忆，Java虚拟机规范给每个操作码都指定了一个助记符(mnemonic)。比如操作码是0x00这条指令，因为它什么也不做，所以它的助记符是nop(no operation)。
 
-Java虚拟机使用的是变长指令，操作码后面可以跟零字节或多字节的操作数(operand)。如果把指令想象成函数的话，操作数就是它的参数。为了让编码后的字节码更加紧凑，很多操作码本身就隐含了操作数，比如把常数0推入操作数栈的指令是iconst_0。下面通过具体的例子来观察Java虚拟机指令。图5-2为ClassFileTest.main()方法的第一条指令。
+Java虚拟机使用的是变长指令，操作码后面可以跟零字节或多字节的操作数(operand)。如果把指令想象成函数的话，操作数就是它的参数。为了让编码后的字节码更加紧凑，很多操作码本身就隐含了操作数，比如把常数0推入操作数栈的指令是iconst_0。下面通过具体的例子来观察Java虚拟机指令。图5-2为`ClassFileTest.main()`方法的第一条指令。
 
+![图5-2](https://i.loli.net/2019/07/11/5d26dbf6a48c610489.png)
 图5-2 用classpy观察getstatic指令
 
 可以看到，该指令的操作码是0xB2，助记符是getstatic。它的操作数是0x0002，代表常量池里的第二个常量。
@@ -3707,7 +3709,7 @@ import "fmt"
 import "strings"import "jvmgo/ch05/classfile"
 import "jvmgo/ch05/classpath"
 ```
-main()函数不变，修改startJVM()函数，改动如下：
+`main()`函数不变，修改startJVM()函数，改动如下：
 ``` go
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
@@ -3721,7 +3723,7 @@ func startJVM(cmd *Cmd) {
 	}
 }
 ```
-startJVM()首先调用loadClass()方法读取并解析class文件，然后调用getMainMethod()函数查找类的main()方法，最后调用interpret()函数解释执行main()方法。loadClass()函数的代码如下：
+startJVM()首先调用loadClass()方法读取并解析class文件，然后调用getMainMethod()函数查找类的`main()`方法，最后调用interpret()函数解释执行`main()`方法。loadClass()函数的代码如下：
 ``` go
 func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
 	classData, _, err := cp.ReadClass(className)
@@ -3752,10 +3754,12 @@ go install jvmgo\ch05
 ```
 编译成功后，在D:\go\workspace\bin目录下会出现ch05.exe文件。用javac编译GaussTest类，然后用ch05.exe执行GaussTest程序，结果如图5-3所示。注意一定要保证可以在当前目录下找到GaussTest.class文件，否则应该用-cp选项指定用户类路径。
 
+![图5-3](https://i.loli.net/2019/07/11/5d26dcae7279432271.png)
 图5-3 GaussTest程序执行结果(1)
 
 方法执行，并打印出了执行过的指令。在我们预料之中，方法执行的最后出现了错误，局部变量表和操作数栈的状态也打印了出来，如图5-4所示。仔细观察局部变量表可以看到5050这个数字，这正是我们的计算结果！
 
+![图5-4](https://i.loli.net/2019/07/11/5d26dcd40510988144.png)
 图5-4 GaussTest程序执行结果(2)
 
 ### 5.14 本章小结
@@ -3949,6 +3953,7 @@ func (self *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 ```
 到此为止，除了ConstantPool还没有介绍以外，已经定义了4个结构体，这些结构体之间的关系如图6-1所示。
 
+![图6-1](https://i.loli.net/2019/07/11/5d26dd1a041f557793.png)
 图6-1 Class结构体关系图
 
 #### 6.1.4 其他信息
@@ -4159,6 +4164,7 @@ func newInterfaceMethodRef(cp *ConstantPool,
 ```
 代码和前面差不多，也不多解释了。接口方法符号引用的解析同样会在第7章详细介绍。到此为止，所有的符号引用都已经定义好了，它们的继承结构如图6-2所示。
 
+![图6-2](https://i.loli.net/2019/07/11/5d26dd97e105c16200.png)
 图6-2 符号引用结构体继承关系图
 
 ### 6.3 类加载器
@@ -5011,7 +5017,7 @@ import "strings"
 import "jvmgo/ch06/classpath"
 import "jvmgo/ch06/rtda/heap"
 ```
-main()函数不变，删掉其他函数，然后修改startJVM()函数，代码如下：
+`main()`函数不变，删掉其他函数，然后修改startJVM()函数，代码如下：
 ``` go
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
@@ -5026,7 +5032,7 @@ func startJVM(cmd *Cmd) {
 	}
 }
 ```
-先创建ClassLoader实例，然后用它来加载主类，最后执行主类的main()方法。Class结构体的GetMainMethod()方法如下(在ch06\rtda\heap\class.go文件中)：
+先创建ClassLoader实例，然后用它来加载主类，最后执行主类的`main()`方法。Class结构体的GetMainMethod()方法如下(在ch06\rtda\heap\class.go文件中)：
 ``` go
 func (self *Class) GetMainMethod() *Method {
 	return self.getStaticMethod("main", "([Ljava/lang/String;)V")
@@ -5136,8 +5142,10 @@ go install jvmgo\ch06
 ```
 命令执行完毕后，D:\go\workspace\bin目录会出现ch06.exe文件。用javac编译MyObject类，然后用ch06.exe执行MyObject程序，结果如图6-3和图6-4所示。
 
+![图6-3](https://i.loli.net/2019/07/11/5d26de3bc0c5537663.png)
 图6-3 MyObject程序执行结果(1)
 
+![图6-4](https://i.loli.net/2019/07/11/5d26de85a6bb743610.png)
 图6-4 MyObject程序执行结果(2)
 
 ### 6.8 本章小结
@@ -5316,10 +5324,12 @@ func (self LocalVars) SetSlot(index uint, slot Slot) {
 ```
 如果忽略long和double类型参数，则静态方法的参数传递过程如图7-1所示。
 
+![图7-1](https://i.loli.net/2019/07/11/5d26dec8a627672089.png)
 图7-1 静态方法参数传递示意图
 
 实例方法的参数传递过程如图7-2所示。
 
+![图7-2](https://i.loli.net/2019/07/11/5d26df1d9e47a73594.png)
 图7-2 实例方法参数传递示意图
 
 那么那个ArgSlotCount()方法返回了什么呢？打开ch07\rtda\heap\method.go文件，修改Method结构体，给它添加argSlotCount字段，代码如下：
@@ -5822,6 +5832,7 @@ public class InvokeDemo implements Runnable {
 ```
 用javac编译InvokeDemo类，然后用ch07.exe执行InvokeDemo程序，可以看到程序正常执行(没有任何输出)，如图7-3所示。
 
+![图7-3](https://i.loli.net/2019/07/11/5d26df65a179497407.png)
 图7-3 InvokeDemo执行结果
 
 InvokeDemo只是演示，下面看一个稍微复杂一些的例子。
@@ -5840,6 +5851,7 @@ public class FibonacciTest {
 ```
 FibonacciTest类演示了斐波那契数列的计算，用javac编译它，然后用ch07.exe执行，结果如图7-4所示。
 
+![图7-4](https://i.loli.net/2019/07/11/5d26dfa5a680e22890.png)
 图7-4 FibonacciTest执行结果
 
 几秒钟停顿之后，控制台上打印出了832040。我们的Java虚拟机终于可以执行复杂计算了。方法调用指令就测试到这里，下面在本章的最后，讨论类的初始化。
@@ -6612,6 +6624,7 @@ go install jvmgo\ch08
 ```
 命令执行完毕后，在D:\go\workspace\bin目录下出现ch08.exe文件。用javac编译，然后用ch08.exe执行BubbleSortTest类，结果如图8-1所示。
 
+![图8-1](https://i.loli.net/2019/07/11/5d26e04290a2e67127.png)
 图8-1 BubbleSortTest程序执行结果
 
 ### 8.5 字符串
@@ -6828,6 +6841,7 @@ public class HelloWorld {
 ```
 久违的“Hello，world!”终于出现在控制台上了，如图8-2所示。
 
+![图8-2](https://i.loli.net/2019/07/11/5d26e08486cd936224.png)
 图8-2 HelloWorld程序执行结果
 
 再执行一个稍微复杂一些的程序:
@@ -6843,6 +6857,7 @@ public class PrintArgs {
 ```
 执行结果如图8-3所示。
 
+![图8-3](https://i.loli.net/2019/07/11/5d26e0ecf2a2479229.png)
 图8-3 PrintArgs程序执行结果
 
 ### 8.7 本章小结
@@ -7026,6 +7041,7 @@ extra字段用来记录Object结构体实例的额外信息。同样给它定义
 
 如果读者读到这里感觉有些吃力，请不要怀疑自己的理解能力，一定是笔者表达得不够好。另外，笔者在写这一节时，自己也是犯了很多次迷糊的。为了帮助大家更好地理解类和对象之间的关系，让我们想象这样一个极简化的Java虚拟机运行时状态:方法区中只加载了两个类，java.lang.Object和java.lang.Class;堆中只通过new指令分配了一个对象。此时Java虚拟机的内存状态如图9-1所示。
 
+![图9-1](https://i.loli.net/2019/07/11/5d26e1b06486d38384.png)
 图9-1 类和对象关系图
 
 图9-1只画出了Class和Object结构体的必要字段，并且刻意分开了堆和方法区。在方法区中，class1和class2分别是java.lang.Object和java.lang.Class类的数据。在堆中，object1和object2分别是java.lang.Object和java.lang.Class的类对象。object3是单独的java.lang.Object实例。虽然已经简化到了极点，但仍然有8条箭头，希望有密集恐惧症的读者不要被吓倒。
@@ -7253,7 +7269,10 @@ import _ "jvmgo/ch09/native/java/lang"
 ```
 如果没有任何包依赖lang包，它就不会被编译进可执行文件，上面的本地方法也就不会被注册。所以需要一个地方导入lang包，把它放在invokenative.go文件中。由于没有显示使用lang中的变量或函数，所以必须在包名前面加上下划线，否则无法通过编译。这个技术在Go语言中叫作“import for side effect”。 [1]
 
-[1] https://golang.org/doc/effective_go.html#blank_import9.3.6 测试本节代码打开命令行窗口，执行下面的命令编译本章代码：
+[1] https://golang.org/doc/effective_go.html#blank_import
+
+#### 9.3.6 测试本节代码
+打开命令行窗口，执行下面的命令编译本章代码：
 ```
 go install jvmgo\ch09
 ```
@@ -7287,6 +7306,7 @@ package jvmgo.book.ch09;
 ```
 运行结果如图9-2所示。
 
+![图9-2](https://i.loli.net/2019/07/11/5d26e21f9d5b934814.png)
 图9-2 GetClassTest程序执行结果
 
 ### 9.4 字符串拼接和String.intern()方法
@@ -7538,6 +7558,7 @@ public class StringTest {
 ```
 重新编译本章代码，然后测试StringTest程序，结果如图9-3所示。
 
+![图9-3](https://i.loli.net/2019/07/11/5d26e2cadc35980342.png)
 图9-3 StringTest程序执行结果
 
 ### 9.5 Object.hashCode()、equals()和toString()
@@ -7593,6 +7614,7 @@ public class ObjectTest {
 ```
 ObjectTest程序执行结果如图9-4所示。
 
+![图9-4](https://i.loli.net/2019/07/11/5d26e3061418779319.png)
 图9-4 ObjectTest程序执行结果
 
 ### 9.6 Object.clone()
@@ -7679,6 +7701,7 @@ public class CloneTest implements Cloneable {
 ```
 CloneTest程序执行结果如图9-5所示。
 
+![图9-5](https://i.loli.net/2019/07/11/5d26e36ad161a35459.png)
 图9-5 CloneTest程序执行结果
 
 ### 9.7 自动装箱和拆箱
@@ -7796,6 +7819,7 @@ public class BoxTest {
 ```
 BoxTest程序的执行结果如图9-6所示。
 
+![图9-6](https://i.loli.net/2019/07/11/5d26e3b3a07a659018.png)
 图9-6 BoxTest程序执行结果
 
 ### 9.8 本章小结
@@ -8275,6 +8299,7 @@ public class ParseIntTest {
 ```
 笔者使用不同的参数进行测试，结果如图10-1所示。
 
+![图10-1](https://i.loli.net/2019/07/11/5d26e40da481710867.png)
 图10-1 ParseIntTest程序测试结果
 
 ### 10.7 本章小结
@@ -8350,7 +8375,7 @@ func initialize(frame *rtda.Frame) {
 	base.InvokeMethod(frame, initSysClass)
 }
 ```
-新的实现只是调用了System.initializeSystemClass()方法而已。下面修改解释器，让它在执行主类的main()方法之前先调用VM.initialize()方法。为了让代码的可读性更好，将对main.go文件进行比较大的调整。打开ch11\main.go，把下面的代码复制进去：
+新的实现只是调用了System.initializeSystemClass()方法而已。下面修改解释器，让它在执行主类的`main()`方法之前先调用VM.initialize()方法。为了让代码的可读性更好，将对main.go文件进行比较大的调整。打开ch11\main.go，把下面的代码复制进去：
 ``` go
 package main
 func main() {
@@ -8394,7 +8419,7 @@ func newJVM(cmd *Cmd) *JVM {
 	}
 }
 ```
-start()方法先初始化VM类，然后执行主类的main()方法，代码如下：
+start()方法先初始化VM类，然后执行主类的`main()`方法，代码如下：
 ``` go
 func (self *JVM) start() {
 	self.initVM()
@@ -8409,7 +8434,7 @@ func (self *JVM) initVM() {
 	interpret(self.mainThread, self.cmd.verboseInstFlag)
 }
 ```
-execMain()方法先加载主类，然后执行其main()方法，代码如下：
+execMain()方法先加载主类，然后执行其`main()`方法，代码如下：
 ``` go
 func (self *JVM) execMain() {
 	className := strings.Replace(self.cmd.class, ".", "/", -1)
@@ -8426,7 +8451,7 @@ func (self *JVM) execMain() {
 	interpret(self.mainThread, self.cmd.verboseInstFlag)
 }
 ```
-execMain()方法的前半部分代码是从main.go文件中拷贝过来的，我们已经比较熟悉了。后半部分代码需要解释的一点是：在调用main()方法之前，需要给它传递args参数，这是通过直接操作局部变量表实现的。createArgsArray()方法把Go的[]string变量转换成Java的字符串数组，代码是从interpreter.go文件中拷贝过来的，如下所示：
+execMain()方法的前半部分代码是从main.go文件中拷贝过来的，我们已经比较熟悉了。后半部分代码需要解释的一点是：在调用`main()`方法之前，需要给它传递args参数，这是通过直接操作局部变量表实现的。createArgsArray()方法把Go的[]string变量转换成Java的字符串数组，代码是从interpreter.go文件中拷贝过来的，如下所示：
 ``` go
 func (self *JVM) createArgsArray() *heap.Object {
 	stringClass := self.classLoader.LoadClass("java/lang/String")
@@ -8525,6 +8550,8 @@ return
 go install jvmgo\ch11
 ```
 命令执行完毕后，在D:\go\workspace\bin目录下出现ch11.exe文件。用ch11.exe测试HelloWorld程序，结果如图11-1所示。
+
+![图11-1](https://i.loli.net/2019/07/11/5d26e4c7b295985310.png)
 图11-1 HelloWorld程序执行结果
 
 #### 11.5 总结
@@ -8559,10 +8586,153 @@ go install jvmgo\ch11
 | 0x09 | lconst_0 | 5.3.2 | 0x14 | ldc2_w | 9.3.4 |
 | 0x0a | lconst_1 | 5.3.2 |   |   |   |
 
-### LoadsStores
+### Loads
 
-### StackMath
-### ConversionsComparisons
-### ControlReferences
+| 操作码 | 助记符 | 章节 | 操作码 | 助记符 | 章节 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| 0x15 | iload | 5.4 | 0x26 | dload_0 | 5.4 |
+| 0x16 | lload | 5.4 | 0x27 | dload_1 | 5.4 |
+| 0x17 | fload | 5.4 | 0x28 | dload_2 | 5.4 |
+| 0x18 | dload | 5.4 | 0x29 | dload_3 | 5.4 |
+| 0x19 | aload | 5.4 | 0x2a | aload_0 | 5.4 |
+| 0x1a | iload_0 | 5.4 | 0x2b | aload_1 | 5.4 |
+| 0x1b | iload_1 | 5.4 | 0x2c | aload_2 | 5.4 |
+| 0x1c | iload_2 | 5.4 | 0x2d | aload_3 | 5.4 |
+| 0x1d | iload_3 | 5.4 | 0x2e | iaload | 8.3.4 |
+| 0x1e | lload_0 | 5.4 | 0x2f | laload | 8.3.4 |
+| 0x1f | lload_1 | 5.4 | 0x30 | faload | 8.3.4 |
+| 0x20 | lload_2 | 5.4 | 0x31 | laload | 8.3.4 |
+| 0x21 | lload_3 | 5.4 | 0x32 | aaload | 8.3.4 |
+| 0x22 | fload_0 | 5.4 | 0x33 | baload | 8.3.4 |
+| 0x23 | fload_1 | 5.4 | 0x34 | caload | 8.3.4 |
+| 0x24 | fload_2 | 5.4 | 0x35 | saload | 8.3.4 |
+| 0x25 | fload_3 | 5.4 |  |  |  |
+
+### Stores
+
+| 操作码 | 助记符 | 章节 | 操作码 | 助记符 | 章节 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| 0x36 | istore | 5.5 | 0x47 | dstore_0 | 5.5 |
+| 0x37 | lstore | 5.5 | 0x48 | dstore_1 | 5.5 |
+| 0x38 | fstore | 5.5 | 0x49 | dstore_2 | 5.5 |
+| 0x39 | dstore | 5.5 | 0x4a | dstore_3 | 5.5 |
+| 0x3a | astore | 5.5 | 0x4b | astore_0 | 5.5 |
+| 0x3b | istore_0 | 5.5 | 0x4c | astore_1 | 5.5 |
+| 0x3c | istore_1 | 5.5 | 0x4d | astore_2 | 5.5 |
+| 0x3d | istore_2 | 5.5 | 0x4e | astore_3 | 5.5 |
+| 0x3e | istore_3 | 5.5 | 0x4f | iastore | 8.3.5 |
+| 0x3f | lstore_0 | 5.5 | 0x50 | lastore | 8.3.5 |
+| 0x40 | lstore_1 | 5.5 | 0x51 | fastore | 8.3.5 |
+| 0x41 | lstore_2 | 5.5 | 0x52 | dastore | 8.3.5 |
+| 0x42 | lstore_3 | 5.5 | 0x53 | aastore | 8.3.5 |
+| 0x43 | fstore_0 | 5.5 | 0x54 | bastore | 8.3.5 |
+| 0x44 | fstore_1 | 5.5 | 0x55 | castore | 8.3.5 |
+| 0x45 | fstore_2 | 5.5 | 0x56 | sastore | 8.3.5 |
+| 0x46 | fstore_3 | 5.5 |  |  |  |
+
+### Stack
+
+| 操作码 | 助记符 | 章节 | 操作码 | 助记符 | 章节 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| 0x5 | pop | 5.6.1 | 0x5 | dup2 | 5.6.2 |
+| 0x5 | pop2 | 5.6.1 | 0x5 | dup2_x1 | 5.6.2 |
+| 0x5 | dup | 5.6.2 | 0x5 | dup2_x2 | 5.6.2 |
+| 0x5 | dup_x1 | 5.6.2 | 0x5 | swap | 5.6.3 |
+| 0x5 | dup_x2 | 5.6.2 |  |  |  |
+
+### Math
+
+| 操作码 | 助记符 | 章节 | 操作码 | 助记符 | 章节 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| 0x60 | iadd | 5.7.1 | 0x74 | ineg | 5.7.1 |
+| 0x61 | ladd | 5.7.1 | 0x75 | lneg | 5.7.1 |
+| 0x62 | fadd | 5.7.1 | 0x76 | fnge | 5.7.1 |
+| 0x63 | dadd | 5.7.1 | 0x77 | dneg | 5.7.1 |
+| 0x64 | isub | 5.7.1 | 0x78 | ishl | 5.7.2 |
+| 0x65 | lsub | 5.7.1 | 0x79 | lshl | 5.7.2 |
+| 0x66 | fsub | 5.7.1 | 0x7a | ishr | 5.7.2 |
+| 0x67 | dsub | 5.7.1 | 0x7b | lshr | 5.7.2 |
+| 0x68 | imul | 5.7.1 | 0x7c | iushr | 5.7.2 |
+| 0x69 | lmul | 5.7.1 | 0x7d | lushr | 5.7.2 |
+| 0x6a | fmul | 5.7.1 | 0x7e | iand | 5.7.3 |
+| 0x6b | dmul | 5.7.1 | 0x7f | land | 5.7.3 |
+| 0x6c | idiv | 5.7.1 | 0x80 | ior | 5.7.3 |
+| 0x6d | ldiv | 5.7.1 | 0x81 | lor | 5.7.3 |
+| 0x6e | fdiv | 5.7.1 | 0x82 | ixor | 5.7.3 |
+| 0x6f | ddiv | 5.7.1 | 0x83 | lxor | 5.7.3 |
+| 0x70 | irem | 5.7.1 | 0x84 | iinc | 5.7.4 |
+| 0x71 | lrem | 5.7.1 |  |  |  |
+| 0x72 | frem | 5.7.1 |  |  |  |
+| 0x73 | drem | 5.7.1 |  |  |  |
+
+### Conversions
+
+| 操作码 | 助记符 | 章节 | 操作码 | 助记符 | 章节 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| 0x85 | i2l | 5.8 | 0x8e | d2i | 5.8 |
+| 0x86 | i2f | 5.8 | 0x8f | d2l | 5.8 |
+| 0x87 | i2d | 5.8 | 0x90 | d2f | 5.8 |
+| 0x88 | l2i | 5.8 | 0x91 | i2b | 5.8 |
+| 0x89 | l2f | 5.8 | 0x92 | i2c | 5.8 |
+| 0x8a | l2d | 5.8 | 0x93 | i2s | 5.8 |
+| 0x8b | f2i | 5.8 |  |  |  |
+| 0x8c | f2l | 5.8 |  |  |  |
+| 0x8d | f2d | 5.8 |  |  |  |
+
+###Comparisons
+
+| 操作码 | 助记符 | 章节 | 操作码 | 助记符 | 章节 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| 0x94 | lcmp | 5.9.1 | 0x9f | if_icmpeq | 5.9.4 |
+| 0x95 | fcmpl | 5.9.2 | 0xa0 | if_icmpne | 5.9.4 |
+| 0x96 | fcmpg | 5.9.2 | 0xa1 | if_icmplt | 5.9.4 |
+| 0x97 | dcmpl | 5.9.2 | 0xa2 | if_icmpge | 5.9.4 |
+| 0x98 | dcmpg | 5.9.2 | 0xa3 | if_icmpgt | 5.9.4 |
+| 0x99 | ifeq | 5.9.3 | 0xa4 | if_icmple | 5.9.4 |
+| 0x9a | ifne | 5.9.3 | 0xa5 | if_acmpeq | 5.9.5 |
+| 0x9b | iflt | 5.9.3 | 0xa6 | if_acmpne | 5.9.5 |
+| 0x9c | ifge | 5.9.3 |  |  |  |
+| 0x9d | ifgt | 5.9.3 |  |  |  |
+| 0x9e | ifle | 5.9.3 |  |  |  |
+
+### Control
+
+| 操作码 | 助记符 | 章节 | 操作码 | 助记符 | 章节 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| 0xa7 | goto | 5.10.1 | 0xac | ireturn | 7.4 |
+| 0xa8 | jsr |  | 0xad | lreturn | 7.4 |
+| 0xa9 | ret |  | 0xae | fretum | 7.4 |
+| 0xaa | tableswitch | 5.10.2 | 0xaf | dreturn | 7.4 |
+| 0xab | lookupswitch | 5.10.3 | 0xb0 | areturn | 7.4 |
+|  |  |  | 0xb1 | return | 7.4 |
+
+### References
+
+| 操作码 | 助记符 | 章节 | 操作码 | 助记符 | 章节 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| 0xb2 | getstatic | 6.6.2 | 0xbb | new | 6.6.1 |
+| 0xb3 | putstatic | 6.6.2 | 0xbc | newarray | 8.3.1 |
+| 0xb4 | getfield | 6.6.3 | 0xbd | anewarray | 8.3.2 |
+| 0xb5 | putfield | 6.6.3 | 0xbe | arraylength | 8.3.3 |
+| 0xb6 | invokevirtual | 7.5.3 | 0xbf | athrow | 10.4 |
+| 0xb7 | invokespecial | 7.5.2 | 0xc0 | checkcast | 6.6.4 |
+| 0xb8 | invokestatic | 7.5.1 | 0xc1 | instanceof | 8.3.7 |
+| 0xb9 | invokeinterface | 7.5.4 | 0xc2 | monitorenter |  |
+| 0xba | invokedynamic |  | 0xc3 | monitorexit |  |
+
 ### Extended
+
+| 操作码 | 助记符 | 章节 | 操作码 | 助记符 | 章节 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| 0xc4 | wide | 5.11.1 | 0xc8 | goto_w | 5.11.3 |
+| 0xc5 | multianewarry | 8.3.6 | 0xc9 | jsr_w |  |
+| 0xc6 | ifnull | 5.11.2 |  |  |  |
+| 0xc7 | ifnonnull | 5.11.2 |  |  |  |
+|  |  |  |  |  |  |
+
 ### Reserved
+
+| 操作码 | 助记符 | 章节 | 操作码 | 助记符 | 章节 |
+| :--: | :--: | :--: | :--: | :--: | :--: |
+| 0xca | breakpoint |  | 0xfe | impdep1 | 9.2 |
+|  |  |  | 0xff | impdep2 |  |
