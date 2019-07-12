@@ -31,17 +31,17 @@ Go是Google公司于2012年推出的系统编程语言。从到硬件的距离�
 - 第06章：讨论类、对象以及线程共享的运行时数据区，实现类加载器、方法区以及部分引用类指令。
 - 第07章：讨论方法调用和返回，实现方法调用和返回指令。
 - 第08章：讨论数组和字符串，实现数组相关指令和字符串池。
-- 第09章：讨论本地方法调用，实现Object.hashCode()等本地方法。
+- 第09章：讨论本地方法调用，实现`Object.hashCode()`等本地方法。
 - 第10章：讨论异常处理机制，实现athrow指令。
-- 第11章：讨论System类的初始化过程和System.out.println()的工作原理等，并对全书进行总结。
+- 第11章：讨论System类的初始化过程和`System.out.println()`的工作原理等，并对全书进行总结。
 
 ### 本书面向读者
 
-本书主要面向有一定经验的Java程序员，但任何对Java虚拟机工作原理感兴趣的读者都可以从本书获益。如前所述，本书将使用Go语言实现Java虚拟机。书中会简要介绍Go语言的部分语法以及与Java语言的区别，但不会深入讨论。由于Go语言相对比较简单，相信任何有C系列语言(如C、C++、C#、Objective-C、Java等)经验的读者都可以轻松读懂书中的源代码。
+本书主要面向有一定经验的Java程序员，但任何对Java虚拟机工作原理感兴趣的读者都可以从本书获益。如前所述，本书将使用Go语言实现Java虚拟机。书中会简要介绍Go语言的部分语法以及与Java语言的区别，但不会深入讨论。由于Go语言相对比较简单，相信任何有C系列语言（如C、C++、C#、Objective-C、Java等）经验的读者都可以轻松读懂书中的源代码。
 
 ### 如何阅读本书
 
-本书代码经过精心调整，每一章(第1章除外)都建立在前一章的基础上，但每一章又都可以单独编译和运行。本书内容主要围绕代码对Java虚拟机展开讨论。读者可以从第1章开始，按顺序阅读本书并运行每一章的源代码，也可以直接跳到感兴趣的章节阅读，必要时再阅读其他章节。
+本书代码经过精心调整，每一章（第1章除外）都建立在前一章的基础上，但每一章又都可以单独编译和运行。本书内容主要围绕代码对Java虚拟机展开讨论。读者可以从第1章开始，按顺序阅读本书并运行每一章的源代码，也可以直接跳到感兴趣的章节阅读，必要时再阅读其他章节。
 
 ### 参考资料
 
@@ -51,9 +51,9 @@ Go是Google公司于2012年推出的系统编程语言。从到硬件的距离�
 - 《深入Java虚拟机》(原书第2版) [8]
 其中《Java虚拟机规范》主要参考了第8版，但同时也参考了第7版和更老的版本。《Java语言规范》则主要参考了第8版。读者可以从[http://docs.oracle.com/javase/specs/index.html](http://docs.oracle.com/javase/specs/index.html) 获取各个版本的《Java虚拟机规范》和《Java语言规范》。
 
-笔者早在十年前还在上学时就读过由Bill Venners著，曹晓钢等翻译的《深入Java虚拟机(原书第2版)》。但是由于当时水平有限，理解得并不是很深入。时隔十年，重读此书还是颇有收获。较之《Java虚拟机规范》的严谨和刻板，该书更加通俗易懂。原书作者已经将部分章节放于网上，网址是[http://www.artima.com/insidejvm/ed2/](http://www.artima.com/insidejvm/ed2/) ，读者可以免费阅读。
+笔者早在十年前还在上学时就读过由Bill Venners著，曹晓钢等翻译的《深入Java虚拟机（原书第2版）》。但是由于当时水平有限，理解得并不是很深入。时隔十年，重读此书还是颇有收获。较之《Java虚拟机规范》的严谨和刻板，该书更加通俗易懂。原书作者已经将部分章节放于网上，网址是[http://www.artima.com/insidejvm/ed2/](http://www.artima.com/insidejvm/ed2/) ，读者可以免费阅读。
 
-以上是Java方面的资料。Go语言方面主要参考了Go官网上的各种资料，包括《如何编写Go程序》 [9] 《Effective Go》 [10] 《Go语言规范》 [11] 以及Go标准库文档 [12] 等。另外，在本书的写作过程中，笔者还通过搜索引擎查阅了遍布于网络上(特别是StackOverflow [13]和Wikipedia [14] )的各种资料，这里就不一一罗列了。
+以上是Java方面的资料。Go语言方面主要参考了Go官网上的各种资料，包括《如何编写Go程序》 [9] 《Effective Go》 [10] 《Go语言规范》 [11] 以及Go标准库文档 [12] 等。另外，在本书的写作过程中，笔者还通过搜索引擎查阅了遍布于网络上（特别是StackOverflow [13]和Wikipedia [14] ）的各种资料，这里就不一一罗列了。
 
 ### 下载本书源代码
 
@@ -72,7 +72,7 @@ Go语言部分是Java虚拟机代码，每章为一个子目录，可以独立�
 
 《Java虚拟机规范》对Java虚拟机的工作机制有十分严谨的描述。但是由于笔者水平和表达能力有限，本书一定存在表述不精确、不准确，甚至不正确的地方。另外，由于时间有限，书中也难免会有一些疏漏之处，还请读者谅解。
 
-本书的勘误将通过[https://github.com/zxh0/jvmgo-book/blob/master/v1/errata.md](https://github.com/zxh0/jvmgo-book/blob/master/v1/errata.md) 发布和更新。如果读者发现书中的错误、有改进意见，或者有任何问题需要讨论，都可以在本书的Github项目上创建Issue。此外也可以加入QQ群(470333113)与读者交流。
+本书的勘误将通过[https://github.com/zxh0/jvmgo-book/blob/master/v1/errata.md](https://github.com/zxh0/jvmgo-book/blob/master/v1/errata.md) 发布和更新。如果读者发现书中的错误、有改进意见，或者有任何问题需要讨论，都可以在本书的Github项目上创建Issue。此外也可以加入QQ群（470333113）与读者交流。
 
 ## 3 致谢
 
@@ -105,7 +105,7 @@ Go语言部分是Java虚拟机代码，每章为一个子目录，可以独立�
 
 Java虚拟机非常复杂，要想真正理解它的工作原理，最好的方式就是自己动手写一个。本书的目的就是带领读者按照Java虚拟机规范 [1] ，从零开始，一步一步用Go语言实现一个功能逐步增强的Java虚拟机。第1章将编写一个类似java [2] 的命令行工具，用它来启动我们自己的虚拟机。在开始编写代码之前，需要先准备好开发环境。
 
-本书假定读者使用的是Windows操作系统，因此书中出现的命令和路径等都是Windows形式的。如果读者使用的是其他操作系统(如Mac OS X、Linux等)，需要根据自己的情况做出相应调整。由于Go和Java都是跨平台语言，所以本书代码在常见的操作系统中都可以正常编译和运行。
+本书假定读者使用的是Windows操作系统，因此书中出现的命令和路径等都是Windows形式的。如果读者使用的是其他操作系统（如Mac OS X、Linux等），需要根据自己的情况做出相应调整。由于Go和Java都是跨平台语言，所以本书代码在常见的操作系统中都可以正常编译和运行。
 
 [1]如无特殊说明，本书中出现的“Java虚拟机规范”均指《Java虚拟机规范第8版》，网址为[http://docs.oracle.com/javase/specs/jvms/se8/html/index.html](http://docs.oracle.com/javase/specs/jvms/se8/html/index.html)。
 
@@ -113,17 +113,17 @@ Java虚拟机非常复杂，要想真正理解它的工作原理，最好的方�
 
 ### 1.1 准备工作
 #### 1.1.1 安装JDK
-我们都知道，要想运行Java程序，只有Java虚拟机是不够的，还需要有Java类库。Java虚拟机和Java类库一起，构成了Java运行时环境。本书编写的Java虚拟机依赖于JDK类库，另外，编译本书中的Java示例代码也需要JDK。从Oracle网站 [1] 上下载最新版本(写作本章时是8u66)的JDK安装文件，双击运行即可。安装完毕之后，打开命令行窗口执行java-version命令，如果看到类似图1-1所示的输出，就证明安装成功了。
+我们都知道，要想运行Java程序，只有Java虚拟机是不够的，还需要有Java类库。Java虚拟机和Java类库一起，构成了Java运行时环境。本书编写的Java虚拟机依赖于JDK类库，另外，编译本书中的Java示例代码也需要JDK。从Oracle网站 [1] 上下载最新版本（写作本章时是8u66）的JDK安装文件，双击运行即可。安装完毕之后，打开命令行窗口执行`java-version`命令，如果看到类似图1-1所示的输出，就证明安装成功了。
 
 ![图1-1](https://i.loli.net/2019/07/07/5d2171ad8e89979217.png)
 图1-1 java-version命令输出
 [1][http://www.oracle.com/technetwork/java/javase/downloads/index.html](http://www.oracle.com/technetwork/java/javase/downloads/index.html)。
 
 #### 1.1.2 安装Go
-从Go语言官网 [1] 下载最新版本(写作本章时是1.5.1)的Go安装文件，双击运行即可。安装完毕之后，打开命令行窗口执行`go version`命令，如果看到类似图1-2所示的输出，就证明安装成功了。
+从Go语言官网 [1] 下载最新版本（写作本章时是1.5.1）的Go安装文件，双击运行即可。安装完毕之后，打开命令行窗口执行`go version`命令，如果看到类似图1-2所示的输出，就证明安装成功了。
 
 ![图1-2](https://i.loli.net/2019/07/07/5d21720e37bc884394.png)
-图1-2 `go version`命令输出
+图1-2 go version命令输出
 `go` [2] 命令是Go语言提供的命令行工具，用来管理Go源代码。`go`命令就像瑞士军刀，里面包含了各种小工具。用Go语言编写程序，基本上只需要`go`命令就可以了。`go`命令里的小工具是各种子命令，`version`是其中之一。其他常用的子命令包括`help`、`fmt`、`install`和`test`等。
 
 `go`命令行工具希望所有的Go源代码被都放在一个工作空间中。所谓工作空间，实际上就是一个目录结构，这个目录结构包含三个子目录。
@@ -139,14 +139,14 @@ Java虚拟机非常复杂，要想真正理解它的工作原理，最好的方�
 打开命令行窗口，执行`go env`命令，如果看到类似图1-4所示的输出，GOPATH环境变量就设置成功了。
 
 ![图1-4](https://i.loli.net/2019/07/07/5d2172bf0618078423.png)
-图1-4 使用`go env`命令查看GOPATH环境变量
-- [1][https://golang.org/dl/](https://golang.org/dl/)(如果Go官网无法访问，可以从[http://golangtc.com/download](http://golangtc.com/download))下载。
+图1-4 使用go env命令查看GOPATH环境变量
+- [1][https://golang.org/dl/](https://golang.org/dl/)（如果Go官网无法访问，可以从[http://golangtc.com/download](http://golangtc.com/download)）下载。
 - [2] 后文中，首字母小写的go特指go命令行工具。
 
 #### 1.1.3 创建目录结构
 Go语言以包为单位组织源代码，包可以嵌套，形成层次关系。本书编写的Go源文件全部放在jvmgo包中，其中每一章的源文件又分别放在自己的子包中。包层次和目录结构有一个简单的对应关系，比如，第1章的代码在jvmgo\ch01目录下。除第1章以外，每一章都是先复制前一章代码，然后进行修改和完善。每一章的代码都是独立的，可以单独编译为一个可执行文件。下面创建第1章的目录结构。
 
-在D:\go\workspace\src(也就是`%GOPATH%\src`)目录下创建jvmgo目录，在jvmgo目录下创建ch01目录。现在，工作空间的目录结构如下：
+在D:\go\workspace\src（也就是`%GOPATH%\src`）目录下创建jvmgo目录，在jvmgo目录下创建ch01目录。现在，工作空间的目录结构如下：
 ```
 D:\go\workspace\src
   |-jvmgo
@@ -169,7 +169,7 @@ java [-options] -jar jarfile [args]
 javaw [-options] class [args]
 javaw [-options] -jar jarfile [args]
 ```
-可以向java命令传递三组参数：选项、主类名(或者JAR文件名)和`main()`方法参数。选项由减号(–)开头。通常，第一个非选项参数给出主类的完全限定名(fully qualified class name)。但是如果用户提供了–jar选项，则第一个非选项参数表示JAR文件名，java命令必须从这个JAR文件中寻找主类。javaw命令和java命令几乎一样，唯一的差别在于，javaw命令不显示命令行窗口，因此特别适合用于启动GUI(图形用户界面)应用程序。
+可以向java命令传递三组参数：选项、主类名（或者JAR文件名）和`main()`方法参数。选项由减号（–）开头。通常，第一个非选项参数给出主类的完全限定名（fully qualified class name）。但是如果用户提供了–jar选项，则第一个非选项参数表示JAR文件名，java命令必须从这个JAR文件中寻找主类。javaw命令和java命令几乎一样，唯一的差别在于，javaw命令不显示命令行窗口，因此特别适合用于启动GUI（图形用户界面）应用程序。
 
 选项可以分为两类：标准选项和非标准选项。标准选项比较稳定，不会轻易变动。非标准选项以-X开头，很有可能会在未来的版本中变化。非标准选项中有一部分是高级选项，以-XX开头。表1-1列出了java命令常用的选项及其用途。 [1]
 
@@ -204,7 +204,7 @@ type Cmd struct {
 	args        [] string
 }
 ```
-在Java语言中，API一般以类库的形式提供。在Go语言中，API则是以包(package)的形式提供。包可以向用户提供常量、变量、结构体以及函数等。Java内置了丰富的类库，Go也同样内置了功能强大的包。本章将用到`fmt`、`os`和`flag`包。
+在Java语言中，API一般以类库的形式提供。在Go语言中，API则是以包（package）的形式提供。包可以向用户提供常量、变量、结构体以及函数等。Java内置了丰富的类库，Go也同样内置了功能强大的包。本章将用到`fmt`、`os`和`flag`包。
 
 `os`包定义了一个`Args`变量，其中存放传递给命令行的全部参数。如果直接处理`os.Args`变量，需要写很多代码。还好Go语言内置了`flag`包，这个包可以帮助我们处理命令行选项。有了`flag`包，我们的工作就简单了很多。继续编辑`cmd.go`文件，在其中定义parseCmd()函数 [3] ，代码如下：
 ``` go
@@ -235,7 +235,7 @@ func printUsage() {
 
 - [1] Go源文件一般以.go作为后缀，文件名全部小写，多个单词之间用下划线分隔。Go语言规范要求Go源文件必须使用UTF-8编码，详见[https://golang.org/ref/spec](https://golang.org/ref/spec)。
 - [2] 笔者推荐Sublime2，主页为[http://www.sublimetext.com/](http://www.sublimetext.com/)。
-- [3] Go语言有函数(Function)和方法(Method)之分，方法调用需要receiver，函数调用则不需要。
+- [3] Go语言有函数（Function）和方法（Method）之分，方法调用需要receiver，函数调用则不需要。
 
 ### 1.4 测试本章代码
 在ch01目录下创建main.go文件，然后输入下面的代码。
@@ -253,9 +253,9 @@ func main() {
 	}
 }
 ```
-注意，与cmd.go文件一样，main.go文件的包名也是main。在Go语言中，main是一个特殊的包，这个包所在的目录(可以叫作任何名字)会被编译为可执行文件。Go程序的入口也是`main()`函数，但是不接收任何参数，也不能有返回值。
+注意，与cmd.go文件一样，main.go文件的包名也是main。在Go语言中，main是一个特殊的包，这个包所在的目录（可以叫作任何名字）会被编译为可执行文件。Go程序的入口也是`main()`函数，但是不接收任何参数，也不能有返回值。
 
-`main()`函数先调用`ParseCommand()`函数解析命令行参数，如果一切正常，则调用`startJVM()`函数启动Java虚拟机。如果解析出现错误，或者用户输入了-help选项，则调用`PrintUsage()`函数打印出帮助信息。如果用户输入了`-version`选项，则输出(一个滥竽充数的)版本信息。因为我们还没有真正开始编写Java虚拟机，所以`startJVM()`函数暂时只是打印一些信息而已，代码如下：
+`main()`函数先调用`ParseCommand()`函数解析命令行参数，如果一切正常，则调用`startJVM()`函数启动Java虚拟机。如果解析出现错误，或者用户输入了-help选项，则调用`PrintUsage()`函数打印出帮助信息。如果用户输入了`-version`选项，则输出（一个滥竽充数的）版本信息。因为我们还没有真正开始编写Java虚拟机，所以`startJVM()`函数暂时只是打印一些信息而已，代码如下：
 ``` go
 func startJVM(cmd *Cmd) {
 	fmt.Printf("classpath:%s class:%s args:%v\n", 
@@ -272,7 +272,7 @@ go install jvmgo\ch01
 图1-5 ch01.exe测试结果
 
 ### 1.5 本章小结
-本章准备好了开发环境，学习了java命令的基本用法，并且编写了一个简化版的命令行工具。虽然还没有正式开始编写Java虚拟机，但是已经打好了坚实的基础。下一章将深入了解-classpath选项，探讨Java虚拟机从哪里寻找class文件，并实现class文件加载功能。
+本章准备好了开发环境，学习了java命令的基本用法，并且编写了一个简化版的命令行工具。虽然还没有正式开始编写Java虚拟机，但是已经打好了坚实的基础。下一章将深入了解`-classpath`选项，探讨Java虚拟机从哪里寻找class文件，并实现class文件加载功能。
 
 ## 第2章 搜索class文件
 第1章介绍了java命令的用法以及它如何启动Java应用程序：首先启动Java虚拟机，然后加载主类，最后调用主类的`main()`方法。但是我们知道，即使是最简单的“Hello, World”程序，也是无法独自运行的，该程序的代码如下：
@@ -283,29 +283,29 @@ public class HelloWorld {
 	}
 }
 ```
-加载HelloWorld类之前，首先要加载它的超类，也就是java.lang.Object。在调用`main()`方法之前，因为虚拟机需要准备好参数数组，所以需要加载java.lang.String和java.lang.String[]类。把字符串打印到控制台还需要加载java.lang.System类，等等。那么，Java虚拟机从哪里寻找这些类呢？本章将详细讨论这个问题。
+加载HelloWorld类之前，首先要加载它的超类，也就是`java.lang.Object`。在调用`main()`方法之前，因为虚拟机需要准备好参数数组，所以需要加载`java.lang.String`和`java.lang.String[]`类。把字符串打印到控制台还需要加载`java.lang.System`类，等等。那么，Java虚拟机从哪里寻找这些类呢？本章将详细讨论这个问题。
 
 ### 2.1 类路径
-Java虚拟机规范并没有规定虚拟机应该从哪里寻找类，因此不同的虚拟机实现可以采用不同的方法。Oracle的Java虚拟机实现根据类路径(class path)来搜索类。按照搜索的先后顺序，类路径可以分为以下3个部分：
-- 启动类路径(bootstrap classpath)
-- 扩展类路径(extension classpath)
-- 用户类路径(user classpath)
+Java虚拟机规范并没有规定虚拟机应该从哪里寻找类，因此不同的虚拟机实现可以采用不同的方法。Oracle的Java虚拟机实现根据类路径（class path）来搜索类。按照搜索的先后顺序，类路径可以分为以下3个部分：
+- 启动类路径（bootstrap classpath）
+- 扩展类路径（extension classpath）
+- 用户类路径（user classpath）
 
-启动类路径默认对应jre\lib目录，Java标准库(大部分在rt.jar里)位于该路径。扩展类路径默认对应jre\lib\ext目录，使用Java扩展机制的类位于这个路径。我们自己实现的类，以及第三方类库则位于用户类路径。可以通过-Xbootclasspath选项修改启动类路径，不过通常并不需要这样做，所以这里就不详细介绍了。
+启动类路径默认对应jre\lib目录，Java标准库（大部分在rt.jar里）位于该路径。扩展类路径默认对应jre\lib\ext目录，使用Java扩展机制的类位于这个路径。我们自己实现的类，以及第三方类库则位于用户类路径。可以通过`-Xbootclasspath`选项修改启动类路径，不过通常并不需要这样做，所以这里就不详细介绍了。
 
-用户类路径的默认值是当前目录，也就是“.”。可以设置CLASSPATH环境变量来修改用户类路径，但是这样做不够灵活，所以不推荐使用。更好的办法是给java命令传递-classpath(或简写为-cp)选项。-classpath/-cp选项的优先级更高，可以覆盖CLASSPATH环境变量设置。第1章简单介绍过这个选项，这里再详细解释一下。
+用户类路径的默认值是当前目录，也就是“`.`”。可以设置CLASSPATH环境变量来修改用户类路径，但是这样做不够灵活，所以不推荐使用。更好的办法是给`java`命令传递`-classpath`（或简写为`-cp`）选项。`-classpath/-cp`选项的优先级更高，可以覆盖CLASSPATH环境变量设置。第1章简单介绍过这个选项，这里再详细解释一下。
 
--classpath/-cp选项既可以指定目录，也可以指定JAR文件或者ZIP文件，如下：
+`-classpath/-cp`选项既可以指定目录，也可以指定JAR文件或者ZIP文件，如下：
 ```
 java -cp path\to\classes ...
 java -cp path\to\lib1.jar ...
 java -cp path\to\lib2.zip ...
 ```
-还可以同时指定多个目录或文件，用分隔符分开即可。分隔符因操作系统而异。在Windows系统下是分号，在类UNIX(包括Linux、Mac OS X等)系统下是冒号。例如在Windows下：
+还可以同时指定多个目录或文件，用分隔符分开即可。分隔符因操作系统而异。在Windows系统下是分号，在类UNIX（包括Linux、Mac OS X等）系统下是冒号。例如在Windows下：
 ```
 java -cp path\to\classes;lib\a.jar;lib\b.jar;lib\c.zip ...
 ```
-从Java 6开始，还可以使用通配符(*)指定某个目录下的所有JAR文件，格式如下：
+从Java 6开始，还可以使用通配符（`*`）指定某个目录下的所有JAR文件，格式如下：
 ```
 java -cp classes;lib\* ...
 ```
@@ -321,7 +321,7 @@ D:\go\workspace\src
       |-cmd.go
       |-main.go
 ```
-我们的Java虚拟机将使用JDK的启动类路径来寻找和加载Java标准库中的类，因此需要某种方式指定jre目录的位置。命令行选项是个不错的选择，所以增加一个非标准选项-Xjre。打开ch02\cmd.go，修改Cmd结构体，添加XjreOption字段，代码如下：
+我们的Java虚拟机将使用JDK的启动类路径来寻找和加载Java标准库中的类，因此需要某种方式指定jre目录的位置。命令行选项是个不错的选择，所以增加一个非标准选项`-Xjre`。打开ch02\cmd.go，修改Cmd结构体，添加`XjreOption`字段，代码如下：
 ``` go
 type Cmd struct {
 	helpFlag    bool
@@ -332,7 +332,7 @@ type Cmd struct {
 	args        []string
 }
 ```
-parseCmd()函数也要相应修改，代码如下：
+`parseCmd()`函数也要相应修改，代码如下：
 ``` go
 func parseCmd() *Cmd {
 	cmd := &Cmd{}
@@ -348,10 +348,10 @@ func parseCmd() *Cmd {
 }
 ```
 ### 2.3 实现类路径
-可以把类路径想象成一个大的整体，它由启动类路径、扩展类路径和用户类路径三个小路径构成。三个小路径又分别由更小的路径构成。是不是很像组合模式(composite pattern)？没错，本节就套用组合模式来设计和实现类路径。
+可以把类路径想象成一个大的整体，它由启动类路径、扩展类路径和用户类路径三个小路径构成。三个小路径又分别由更小的路径构成。是不是很像组合模式（composite pattern）？没错，本节就套用组合模式来设计和实现类路径。
 
 #### 2.3.1 Entry接口
-先定义一个接口来表示类路径项。在ch02\classpath目录下创建entry.go文件，在其中定义Entry接口，代码如下：
+先定义一个接口来表示类路径项。在ch02\classpath目录下创建entry.go文件，在其中定义`Entry`接口，代码如下：
 ``` go
 package classpath
 import "os"
@@ -365,11 +365,11 @@ type Entry interface {
 
 func newEntry(path string) Entry { ... }
 ```
-常量pathListSeparator是string类型，存放路径分隔符，后面会用到。Entry接口中有两个方法。readClass()方法负责寻找和加载class文件；String()方法的作用相当于Java中的toString()，用于返回变量的字符串表示。
+常量`pathListSeparator`是`string`类型，存放路径分隔符，后面会用到。`Entry`接口中有两个方法。`readClass()`方法负责寻找和加载class文件；`String()`方法的作用相当于Java中的`toString()`，用于返回变量的字符串表示。
 
-readClass()方法的参数是class文件的相对路径，路径之间用斜线(/)分隔，文件名有.class后缀。比如要读取java.lang.Object类，传入的参数应该是java/lang/Object.class。返回值是读取到的字节数据、最终定位到class文件的Entry，以及错误信息。Go的函数或方法允许返回多个值，按照惯例，可以使用最后一个返回值作为错误信息。
+`readClass()`方法的参数是class文件的相对路径，路径之间用斜线（`/`）分隔，文件名有.class后缀。比如要读取java.lang.Object类，传入的参数应该是java/lang/Object.class。返回值是读取到的字节数据、最终定位到class文件的`Entry`，以及错误信息。Go的函数或方法允许返回多个值，按照惯例，可以使用最后一个返回值作为错误信息。
 
-newEntry()函数根据参数创建不同类型的Entry实例，代码如下：
+`newEntry()`函数根据参数创建不同类型的Entry实例，代码如下：
 ``` go
 func newEntry(path string) Entry {
 	if strings.Contains(path, pathListSeparator) {
@@ -410,9 +410,9 @@ func newDirEntry(path string) *DirEntry {
 	return &DirEntry{absDir}
 }
 ```
-newDirEntry()先把参数转换成绝对路径，如果转换过程出现错误，则调用panic()函数终止程序执行，否则创建DirEntry实例并返回。
+`newDirEntry()`先把参数转换成绝对路径，如果转换过程出现错误，则调用`panic()`函数终止程序执行，否则创建`DirEntry`实例并返回。
 
-下面介绍readClass()方法：
+下面介绍`readClass()`方法：
 ``` go
 func (self *DirEntry) readClass(className string) ([]byte, Entry, error) {
 	fileName := filepath.Join(self.absDir, className)
@@ -420,14 +420,14 @@ func (self *DirEntry) readClass(className string) ([]byte, Entry, error) {
 	return data, self, err
 }
 ```
-readClass()先把目录和class文件名拼成一个完整的路径，然后调用ioutil包提供的ReadFile()函数读取class文件内容，最后返回。String()方法很简单，直接返回目录，代码如下：
+`readClass()`先把目录和class文件名拼成一个完整的路径，然后调用ioutil包提供的`ReadFile()`函数读取class文件内容，最后返回。`String()`方法很简单，直接返回目录，代码如下：
 ```
 func (self *DirEntry) String() string {
 	return self.absDir
 }
 ```
 #### 2.3.3 ZipEntry
-ZipEntry表示ZIP或JAR文件形式的类路径。在ch02\classpath目录下创建entry_zip.go文件，在其中定义ZipEntry结构体，代码如下：
+`ZipEntry`表示ZIP或JAR文件形式的类路径。在ch02\classpath目录下创建entry_zip.go文件，在其中定义`ZipEntry`结构体，代码如下：
 ``` go
 package classpath
 import "archive/zip"
@@ -441,7 +441,7 @@ func newZipEntry(path string) *ZipEntry {...}
 func (self *ZipEntry) readClass(className string) ([]byte, Entry, error) {...}
 func (self *ZipEntry) String() string {...}
 ```
-absPath字段存放ZIP或JAR文件的绝对路径。构造函数和String()与DirEntry大同小异，就不多解释了，代码如下：
+absPath字段存放ZIP或JAR文件的绝对路径。构造函数和`String()`与`DirEntry`大同小异，就不多解释了，代码如下：
 ``` go
 func newZipEntry(path string) *ZipEntry {
 	absPath, err := filepath.Abs(path)
@@ -479,7 +479,7 @@ func (self *ZipEntry) readClass(className string) ([]byte, Entry, error) {
 	return nil, nil, errors.New("class not found: " + className)
 }
 ```
-首先打开ZIP文件，如果这一步出错的话，直接返回。然后遍历ZIP压缩包里的文件，看能否找到class文件。如果能找到，则打开class文件，把内容读取出来，并返回。如果找不到，或者出现其他错误，则返回错误信息。有两处使用了defer语句来确保打开的文件得以关闭。readClass()方法每次都要打开和关闭ZIP文件，因此效率不是很高。笔者进行了优化，但鉴于篇幅有限，就不展示具体代码了。感兴趣的读者可以阅读ch02\classpath\entry_zip2.go文件。
+首先打开ZIP文件，如果这一步出错的话，直接返回。然后遍历ZIP压缩包里的文件，看能否找到class文件。如果能找到，则打开class文件，把内容读取出来，并返回。如果找不到，或者出现其他错误，则返回错误信息。有两处使用了`defer`语句来确保打开的文件得以关闭。`readClass()`方法每次都要打开和关闭ZIP文件，因此效率不是很高。笔者进行了优化，但鉴于篇幅有限，就不展示具体代码了。感兴趣的读者可以阅读ch02\classpath\entry_zip2.go文件。
 
 #### 2.3.4 CompositeEntry
 在ch02\classpath目录下创建entry_composite.go文件，在其中定义CompositeEntry结构体，代码如下：
@@ -492,7 +492,7 @@ func newCompositeEntry(pathList string) CompositeEntry {...}
 func (self CompositeEntry) readClass(className string) ([]byte, Entry, error)
 func (self CompositeEntry) String() string {...}
 ```
-如前所述，CompositeEntry由更小的Entry组成，正好可以表示成[]Entry。在Go语言中，数组属于比较低层的数据结构，很少直接使用。大部分情况下，使用更便利的slice类型。构造函数把参数(路径列表)按分隔符分成小路径，然后把每个小路径都转换成具体的Entry实例，代码如下：
+如前所述，`CompositeEntry`由更小的`Entry`组成，正好可以表示成`[]Entry`。在Go语言中，数组属于比较低层的数据结构，很少直接使用。大部分情况下，使用更便利的`slice`类型。构造函数把参数（路径列表）按分隔符分成小路径，然后把每个小路径都转换成具体的`Entry`实例，代码如下：
 ``` go
 func newCompositeEntry(pathList string) CompositeEntry {
 	compositeEntry := []Entry{}
@@ -503,7 +503,7 @@ func newCompositeEntry(pathList string) CompositeEntry {
 	return compositeEntry
 }
 ```
-相信读者已经想到readClass()方法的代码了：依次调用每一个子路径的readClass()方法，如果成功读取到class数据，返回数据即可；如果收到错误信息，则继续；如果遍历完所有的子路径还没有找到class文件，则返回错误。readClass()方法的代码如下：
+相信读者已经想到`readClass()`方法的代码了：依次调用每一个子路径的`readClass()`方法，如果成功读取到class数据，返回数据即可；如果收到错误信息，则继续；如果遍历完所有的子路径还没有找到class文件，则返回错误。`readClass()`方法的代码如下：
 ``` go
 func (self CompositeEntry) readClass(className string) ([]byte, Entry, error)
 	for _, entry := range self {
@@ -515,7 +515,7 @@ func (self CompositeEntry) readClass(className string) ([]byte, Entry, error)
 	return nil, nil, errors.New("class not found: " + className)
 }
 ```
-String()方法也不复杂。调用每一个子路径的String()方法，然后把得到的字符串用路径分隔符拼接起来即可，代码如下：
+`String()`方法也不复杂。调用每一个子路径的`String()`方法，然后把得到的字符串用路径分隔符拼接起来即可，代码如下：
 ``` go
 func (self CompositeEntry) String() string {
 	strs := make([]string, len(self))
@@ -527,7 +527,7 @@ func (self CompositeEntry) String() string {
 ```
 
 #### 2.3.5 WildcardEntry
-WildcardEntry实际上也是CompositeEntry，所以就不再定义新的类型了。在ch02\classpath目录下创建entry_wildcard.go文件，在其中定义newWildcardEntry()函数，代码如下：
+`WildcardEntry`实际上也是`CompositeEntry`，所以就不再定义新的类型了。在ch02\classpath目录下创建entry_wildcard.go文件，在其中定义`newWildcardEntry()`函数，代码如下：
 ``` go
 package classpath
 import "os"
@@ -541,8 +541,7 @@ func newWildcardEntry(path string) CompositeEntry {
 	return compositeEntry
 }
 ```
-首先把路径末尾的星号去掉，得到baseDir，然后调用filepath包的Walk()函数遍历baseDir创建ZipEntry。Walk()函数的第二个参数
-也是一个函数，了解函数式编程的读者应该一眼就可以认出这种用法(即函数可作为参数)。walkFn变量的定义如下：
+首先把路径末尾的星号去掉，得到`baseDir`，然后调用`filepath`包的`Walk()`函数遍历`baseDir`创建`ZipEntry`。`Walk()`函数的第二个参数也是一个函数，了解函数式编程的读者应该一眼就可以认出这种用法（即函数可作为参数）。walkFn变量的定义如下：
 ``` go
 walkFn := func(path string, info os.FileInfo, err error) error {
 	if err != nil {
@@ -558,11 +557,11 @@ walkFn := func(path string, info os.FileInfo, err error) error {
 	return nil
 }
 ```
-在walkFn中，根据后缀名选出JAR文件，并且返回SkipDir跳过子目录(通配符类路径不能递归匹配子目录下的JAR文件)。
+在`walkFn`中，根据后缀名选出JAR文件，并且返回SkipDir跳过子目录（通配符类路径不能递归匹配子目录下的JAR文件）。
 
 #### 2.3.6 Classpath
 
-Entry接口和4个实现介绍完了，接下来实现Classpath结构体。还是在ch02\classpath目录下创建classpath.go文件，把下面的代码输
+Entry接口和4个实现介绍完了，接下来实现`Classpath`结构体。还是在ch02\classpath目录下创建classpath.go文件，把下面的代码输
 入进去。
 ``` go
 package classpath
@@ -577,8 +576,7 @@ func Parse(jreOption, cpOption string) *Classpath {...}
 func (self *Classpath) ReadClass(className string) ([]byte, Entry, error) {...
 func (self *Classpath) String() string {...}
 ```
-Classpath结构体有三个字段，分别存放三种类路径。Parse()函数使用-Xjre选项解析启动类路径和扩展类路径，使用-classpath/-cp
-选项解析用户类路径，代码如下：
+`Classpath`结构体有三个字段，分别存放三种类路径。`Parse()`函数使用`-Xjre`选项解析启动类路径和扩展类路径，使用`-classpath/-cp`选项解析用户类路径，代码如下：
 ``` go
 func Parse(jreOption, cpOption string) *Classpath {
 cp := &Classpath{}
@@ -587,7 +585,7 @@ cp.parseUserClasspath(cpOption)
 return cp
 }
 ```
-parseBootAndExtClasspath()方法的代码如下：
+`parseBootAndExtClasspath()`方法的代码如下：
 ``` go
 func (self *Classpath) parseBootAndExtClasspath(jreOption string) {
 	jreDir := getJreDir(jreOption)
@@ -599,8 +597,7 @@ func (self *Classpath) parseBootAndExtClasspath(jreOption string) {
 	self.extClasspath = newWildcardEntry(jreExtPath)
 }
 ```
-优先使用用户输入的-Xjre选项作为jre目录。如果没有输入该选项，则在当前目录下寻找jre目录。如果找不到，尝试使用
-JAVA_HOME环境变量。getJreDir()函数的代码如下：
+优先使用用户输入的`-Xjre`选项作为jre目录。如果没有输入该选项，则在当前目录下寻找jre目录。如果找不到，尝试使用`JAVA_HOME`环境变量。`getJreDir()`函数的代码如下：
 ``` go
 func getJreDir(jreOption string) string {
 	if jreOption != "" && exists(jreOption) {
@@ -615,7 +612,7 @@ func getJreDir(jreOption string) string {
 	panic("Can not find jre folder!")
 }
 ```
-exists()函数用于判断目录是否存在，代码如下：
+`exists()`函数用于判断目录是否存在，代码如下：
 ``` go
 func exists(path string) bool {
 	if _, err := os.Stat(path); err != nil {
@@ -626,7 +623,7 @@ func exists(path string) bool {
 	return true
 }
 ```
-parseUserClasspath()方法的代码相对简单一些，如下：
+`parseUserClasspath()`方法的代码相对简单一些，如下：
 ``` go
 func (self *Classpath) parseUserClasspath(cpOption string) {
 	if cpOption == "" {
@@ -635,7 +632,7 @@ func (self *Classpath) parseUserClasspath(cpOption string) {
 	self.userClasspath = newEntry(cpOption)
 }
 ```
-如果用户没有提供-classpath/-cp选项，则使用当前目录作为用户类路径。ReadClass()方法依次从启动类路径、扩展类路径和用户类路径中搜索class文件，代码如下：
+如果用户没有提供`-classpath/-cp`选项，则使用当前目录作为用户类路径。`ReadClass()`方法依次从启动类路径、扩展类路径和用户类路径中搜索class文件，代码如下：
 ``` go
 func (self *Classpath) ReadClass(className string) ([]byte, Entry, error) {
 	className = className + ".class"
@@ -648,7 +645,7 @@ func (self *Classpath) ReadClass(className string) ([]byte, Entry, error) {
 	return self.userClasspath.readClass(className)
 }
 ```
-注意，传递给ReadClass()方法的类名不包含“.class”后缀。最后，String()方法返回用户类路径的字符串表示，代码如下：
+注意，传递给`ReadClass()`方法的类名不包含“.class”后缀。最后，`String()`方法返回用户类路径的字符串表示，代码如下：
 ``` go
 func (self *Classpath) String() string {
 	return self.userClasspath.String()
@@ -666,7 +663,7 @@ import "jvmgo/ch02/classpath"
 func main() {...}
 func startJVM(cmd *Cmd) {...}
 ```
-`main()`函数不用变，重写startJVM()函数，代码如下：
+`main()`函数不用变，重写`startJVM()`函数，代码如下：
 ``` go
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
@@ -680,22 +677,22 @@ func startJVM(cmd *Cmd) {
 	fmt.Printf("class data:%v\n", classData)
 }
 ```
-startJVM()先打印出命令行参数，然后读取主类数据，并打印到控制台。虽然还是无法真正启动Java虚拟机，不过相比第1章，已经有了很大的进步。打开命令行窗口，执行下面的命令编译本章代码。
+`startJVM()`先打印出命令行参数，然后读取主类数据，并打印到控制台。虽然还是无法真正启动Java虚拟机，不过相比第1章，已经有了很大的进步。打开命令行窗口，执行下面的命令编译本章代码。
 ```
 go install jvmgo\ch02
 ```
-编译成功后，在D:\go\workspace\bin目录下出现ch02.exe文件。执行ch02.exe，指定好-Xjre选项和类名，就可以把class文件的内容打印出来。虽然只是一堆看似杂乱无章的数字，但成就感还是会油然而生。笔者的测试结果如图2-1所示。
+编译成功后，在D:\go\workspace\bin目录下出现ch02.exe文件。执行ch02.exe，指定好`-Xjre`选项和类名，就可以把class文件的内容打印出来。虽然只是一堆看似杂乱无章的数字，但成就感还是会油然而生。笔者的测试结果如图2-1所示。
 ![图2-1](https://i.loli.net/2019/07/10/5d25f0423fb6d94323.png)
 图2-1 ch02.exe的测试结果
 
 ### 2.5 本章小结
 
-本章讨论了Java虚拟机从哪里寻找class文件，对类路径和-classpath命令行选项有了较为深入的了解，并且把抽象的类路径概念转变成了具体的代码。下一章将研究class文件格式，实现class文件解析。
+本章讨论了Java虚拟机从哪里寻找class文件，对类路径和`-classpath`命令行选项有了较为深入的了解，并且把抽象的类路径概念转变成了具体的代码。下一章将研究class文件格式，实现class文件解析。
 
 ## 第3章 解析class文件
 第2章介绍了Java虚拟机从哪里搜索class文件，并且实现了类路径功能，已经可以把class文件读取到内存中。本章将详细讨论class文件格式，编写代码解析class文件，为下一步真正实现Java虚拟机做好准备。
 
-在开始阅读本章之前，先把目录结构准备好。复制ch02目录，并改名为ch03，然后编辑ch03\main.go等文件，把import语句中的ch02都改成ch03 [1] ，最后在ch03目录中创建classfile子目录。现在的目录结构看起来应该如下所示：
+在开始阅读本章之前，先把目录结构准备好。复制ch02目录，并改名为ch03，然后编辑ch03\main.go等文件，把`import`语句中的ch02都改成ch03 [1] ，最后在ch03目录中创建classfile子目录。现在的目录结构看起来应该如下所示：
 ```
 D:\go\workspace\src
   |-jvmgo
@@ -709,9 +706,9 @@ D:\go\workspace\src
 ```
 [1] 这个过程比较无趣，也容易出错。可以使用编辑器提供的“搜索和替换”功能来完成这项工作。
 ### 3.1 class文件
-作为类(或者接口) [1] 信息的载体，每个class文件都完整地定义了一个类。为了使Java程序可以“编写一次，处处运行”，Java虚拟机规范对class文件格式进行了严格的规定。但是另一方面，对于从哪里加载class文件，给了足够多的自由。由第2章可知，Java虚拟机实现可以从文件系统读取和从JAR(或ZIP)压缩包中提取class文件。除此之外，也可以通过网络下载、从数据库加载，甚至是在运行中直接生成class文件。Java虚拟机规范(和本书)中所指的class文件，并非特指位于磁盘中的.class文件，而是泛指任何格式符合规范的class数据。
+作为类（或者接口） [1] 信息的载体，每个class文件都完整地定义了一个类。为了使Java程序可以“编写一次，处处运行”，Java虚拟机规范对class文件格式进行了严格的规定。但是另一方面，对于从哪里加载class文件，给了足够多的自由。由第2章可知，Java虚拟机实现可以从文件系统读取和从JAR（或ZIP）压缩包中提取class文件。除此之外，也可以通过网络下载、从数据库加载，甚至是在运行中直接生成class文件。Java虚拟机规范（和本书）中所指的class文件，并非特指位于磁盘中的.class文件，而是泛指任何格式符合规范的class数据。
 
-构成class文件的基本数据单位是字节，可以把整个class文件当成一个字节流来处理。稍大一些的数据由连续多个字节构成，这些数据在class文件中以大端(big-endian)方式存储。为了描述class文件格式，Java虚拟机规范定义了u1、u2和u4三种数据类型来表示1、2和4字节无符号整数，分别对应Go语言的uint8、uint16和uint32类型。相同类型的多条数据一般按表(table)的形式存储在class文件中。表由表头和表项(item)构成，表头是u2或u4整数。假设表头是n，后面就紧跟着n个表项数据。
+构成class文件的基本数据单位是字节，可以把整个class文件当成一个字节流来处理。稍大一些的数据由连续多个字节构成，这些数据在class文件中以大端（big-endian）方式存储。为了描述class文件格式，Java虚拟机规范定义了u1、u2和u4三种数据类型来表示1、2和4字节无符号整数，分别对应Go语言的`uint8`、`uint16`和`uint32`类型。相同类型的多条数据一般按表（table）的形式存储在class文件中。表由表头和表项（item）构成，表头是u2或u4整数。假设表头是n，后面就紧跟着n个表项数据。
 
 Java虚拟机规范使用一种类似C语言的结构体语法来描述class文件格式。整个class文件被描述为一个ClassFile结构，代码如下：
 ``` go
@@ -734,7 +731,7 @@ ClassFile {
 	attribute_info  attributes[attributes_count]
 }
 ```
-JDK提供了一个功能强大的命令行工具javap，可以用它反编译class文件。不过从控制台观察javap的输出并不是很直观，因此笔者用JavaFX编写了一个图形化的工具，叫作classpy。有兴趣的读者可以去GitHub网站 [2] 下载classpy的源代码或者打包好的JAR可执行文件。后面的小节中将以ClassFileTest类为例，使用classpy程序分析class文件格式。ClassFileTest的代码如下：
+JDK提供了一个功能强大的命令行工具javap，可以用它反编译class文件。不过从控制台观察javap的输出并不是很直观，因此笔者用JavaFX编写了一个图形化的工具，叫作classpy。有兴趣的读者可以去GitHub网站 [2] 下载classpy的源代码或者打包好的JAR可执行文件。后面的小节中将以`ClassFileTest`类为例，使用classpy程序分析class文件格式。`ClassFileTest`的代码如下：
 ``` java
 package jvmgo.book.ch03;
 public class ClassFileTest {
@@ -762,9 +759,9 @@ public class ClassFileTest {
 | Go语言类型 | Java语言类型 | 说  明 |
 |:--:|:--:|:--:|
 | int8 | byte | 8比特有符号整数 |
-| uint8（别名byte) | N/A | 8比特无符号整数 |
+| uint8（别名byte） | N/A | 8比特无符号整数 |
 | int16 | short | 16比特有符号整数 |
-| int32(别名rune) | int | 32比特有符号整数 |
+| int32（别名rune） | int | 32比特有符号整数 |
 | uint32 | N/A | 32比特无符号整数 |
 | int64 | long | 64比特有符号整数 |
 | uint64 | N/A | 64比特无符号整数 |
@@ -772,7 +769,7 @@ public class ClassFileTest {
 | float64 | double | 64比特IEEE-754浮点数 |
 
 #### 3.2.1 读取数据
-解析class文件的第一步是从里面读取数据。虽然可以把class文件当成字节流来处理，但是直接操作字节很不方便，所以先定义一个结构体来帮助读取数据。在ch03\classfile目录下创建class_reader.go文件，在其中定义ClassReader结构体和数据读取方法，代码如下：
+解析class文件的第一步是从里面读取数据。虽然可以把class文件当成字节流来处理，但是直接操作字节很不方便，所以先定义一个结构体来帮助读取数据。在ch03\classfile目录下创建class_reader.go文件，在其中定义`ClassReader`结构体和数据读取方法，代码如下：
 ``` go
 package classfile
 import "encoding/binary"
@@ -787,7 +784,7 @@ func (self *ClassReader) readUint64() uint64             { ... }
 func (self *ClassReader) readUint16s() []uint16          { ... }
 func (self *ClassReader) readBytes(length uint32) []byte { ... }
 ```
-ClassReader只是[]byte类型的包装而已。readUint8()读取u1类型数据，代码如下：
+ClassReader只是`[]byte`类型的包装而已。`readUint8()`读取u1类型数据，代码如下：
 ``` go
 func (self *ClassReader) readUint8() uint8 {
 	val := self.data[0]
@@ -795,7 +792,7 @@ func (self *ClassReader) readUint8() uint8 {
 	return val
 }
 ```
-注意，ClassReader并没有使用索引记录数据位置，而是使用Go语言的reslice语法跳过已经读取的数据。readUint16()读取u2类型数据，代码如下：
+注意，`ClassReader`并没有使用索引记录数据位置，而是使用Go语言的reslice语法跳过已经读取的数据。`readUint16()`读取u2类型数据，代码如下：
 ``` go
 func (self *ClassReader) readUint16() uint16 {
 	val := binary.BigEndian.Uint16(self.data)
@@ -803,7 +800,7 @@ func (self *ClassReader) readUint16() uint16 {
 	return val
 }
 ```
-Go标准库encoding/binary包中定义了一个变量BigEndian，正好可以从[]byte中解码多字节数据。readUint32()读取u4类型数据，代码如下：
+Go标准库encoding/binary包中定义了一个变量`BigEndian`，正好可以从`[]byte`中解码多字节数据。`readUint32()`读取u4类型数据，代码如下：
 ``` go
 func (self *ClassReader) readUint32() uint32 {
 	val := binary.BigEndian.Uint32(self.data)
@@ -811,7 +808,7 @@ func (self *ClassReader) readUint32() uint32 {
 	return val
 }
 ```
-readUint64()读取uint64(Java虚拟机规范并没有定义u8)类型数据，代码如下：
+`readUint64()`读取uint64（Java虚拟机规范并没有定义u8）类型数据，代码如下：
 ``` go
 func (self *ClassReader) readUint64() uint64 {
 	val := binary.BigEndian.Uint64(self.data)
@@ -819,7 +816,7 @@ func (self *ClassReader) readUint64() uint64 {
 	return val
 }
 ```
-readUint16s()读取uint16表，表的大小由开头的uint16数据指出，代码如下：
+`readUint16s()`读取uint16表，表的大小由开头的uint16数据指出，代码如下：
 ``` go
 func (self *ClassReader) readUint16s() []uint16 {
 	n := self.readUint16()
@@ -830,7 +827,7 @@ func (self *ClassReader) readUint16s() []uint16 {
 	return s
 }
 ```
-最后一个方法是readBytes()，用于读取指定数量的字节，代码如下：
+最后一个方法是`readBytes()`，用于读取指定数量的字节，代码如下：
 ``` go
 func (self *ClassReader) readBytes(n uint32) []byte {
 	bytes := self.data[:n]
@@ -840,7 +837,7 @@ func (self *ClassReader) readBytes(n uint32) []byte {
 ```
 
 #### 3.2.2 整体结构
-有了ClassReader，可以开始解析class文件了。在ch03\classfile目录下创建class_file.go文件，在其中定义ClassFile结构体，代码如下：
+有了`ClassReader`，可以开始解析class文件了。在ch03\classfile目录下创建class_file.go文件，在其中定义`ClassFile`结构体，代码如下：
 ``` go
 package classfile
 import "fmt"
@@ -858,7 +855,7 @@ type ClassFile struct {
 	attributes   []AttributeInfo
 }
 ```
-ClassFile结构体如实反映了Java虚拟机规范定义的class文件格式。还会在class_file.go文件中实现一系列函数和方法，列举如下：
+`ClassFile`结构体如实反映了Java虚拟机规范定义的class文件格式。还会在class_file.go文件中实现一系列函数和方法，列举如下：
 ``` go
 func Parse(classData []byte) (cf *ClassFile, err error)         { ... }
 func (self *ClassFile) read(reader *ClassReader)                { ... }
@@ -876,7 +873,7 @@ func (self *ClassFile) InterfaceNames() []string                { ... }
 ```
 相比Java语言，Go的访问控制非常简单：只有公开和私有两种。所有首字母大写的类型、结构体、字段、变量、函数、方法等都是公开的，可供其他包使用。首字母小写则是私有的，只能在包内部使用。在本书的代码中，尽量只公开必要的变量、字段、函数和方法等。但是为了提高代码可读性，所有的结构体都是公开的，也就是首字母是大写的。
 
-Parse()函数把[]byte解析成ClassFile结构体，代码如下：
+`Parse()`函数把`[]byte`解析成ClassFile结构体，代码如下：
 ``` go
 func Parse(classData []byte) (cf *ClassFile, err error) {
 	defer func() {
@@ -894,7 +891,7 @@ func Parse(classData []byte) (cf *ClassFile, err error) {
 	return
 }
 ```
-Go语言没有异常处理机制，只有一个panic-recover机制。read()方法依次调用其他方法解析class文件，代码如下：
+Go语言没有异常处理机制，只有一个panic-recover机制。`read()`方法依次调用其他方法解析class文件，代码如下：
 ``` go
 func (self *ClassFile) read(reader *ClassReader) {
 	self.readAndCheckMagic(reader)               // 见3.2.3
@@ -909,19 +906,19 @@ func (self *ClassFile) read(reader *ClassReader) {
 	self.attributes = readAttributes(reader, self.constantPool) // 见3.4
 }
 ```
-MajorVersion()等6个方法是Getter方法，把结构体的字段暴露给其他包使用。MajorVersion()的代码如下：
+`MajorVersion()`等6个方法是`Getter`方法，把结构体的字段暴露给其他包使用。`MajorVersion()`的代码如下：
 ``` go
 func (self *ClassFile) MajorVersion() uint16 {
 	return self.majorVersion
 }
 ```
-和Java有所不同，Go的Getter方法不以“get”开头。由于Getter方法非常简单，只是返回字段而已，为了节约篇幅，后文中不再给出Getter方法的代码。ClassName()从常量池查找类名，代码如下：
+和Java有所不同，Go的Getter方法不以“get”开头。由于Getter方法非常简单，只是返回字段而已，为了节约篇幅，后文中不再给出Getter方法的代码。`ClassName()`从常量池查找类名，代码如下：
 ``` go
 func (self *ClassFile) ClassName() string {
 	return self.constantPool.getClassName(self.thisClass)
 }
 ```
-SuperClassName()从常量池查找超类名，代码如下：
+`SuperClassName()`从常量池查找超类名，代码如下：
 ``` go
 func (self *ClassFile) SuperClassName() string {
 	if self.superClass > 0 {
@@ -931,7 +928,7 @@ func (self *ClassFile) SuperClassName() string {
 	java.lang.Object 没有超类
 }
 ```
-InterfaceNames()从常量池查找接口名，代码如下：
+`InterfaceNames()`从常量池查找接口名，代码如下：
 ``` go
 func (self *ClassFile) InterfaceNames() []string {
 	interfaceNames := make([]string, len(self.interfaces))
@@ -944,7 +941,7 @@ func (self *ClassFile) InterfaceNames() []string {
 下面详细介绍class文件的各个部分(常量池和属性表比较复杂，放到3.3和3.4节单独讨论)。
 
 #### 3.2.3 魔数
-很多文件格式都会规定满足该格式的文件必须以某几个固定字节开头，这几个字节主要起标识作用，叫作魔数(magic number)。例如PDF文件以4字节“%PDF”(0x25、0x50、0x44、0x46)开头，ZIP文件以2字节“PK”(0x50、0x4B)开头。class文件的魔数是“0xCAFEBABE”。readAndCheckMagic()方法的代码如下：
+很多文件格式都会规定满足该格式的文件必须以某几个固定字节开头，这几个字节主要起标识作用，叫作魔数（magic number）。例如PDF文件以4字节“%PDF”（0x25、0x50、0x44、0x46）开头，ZIP文件以2字节“PK”（0x50、0x4B）开头。class文件的魔数是“0xCAFEBABE”。`readAndCheckMagic()`方法的代码如下：
 ``` go
 func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
 	magic := reader.readUint32()
@@ -953,13 +950,13 @@ func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
 	}
 }
 ```
-Java虚拟机规范规定，如果加载的class文件不符合要求的格式，Java虚拟机实现就抛出java.lang.ClassFormatError异常。但是因为我们才刚刚开始编写虚拟机，还无法抛出异常，所以暂时先调用panic()方法终止程序执行。用classpy打开ClassFileTest.class文件，可以看到，开头4字节确实是0xCAFEBABE，如图3-1所示。
+Java虚拟机规范规定，如果加载的class文件不符合要求的格式，Java虚拟机实现就抛出java.lang.ClassFormatError异常。但是因为我们才刚刚开始编写虚拟机，还无法抛出异常，所以暂时先调用`panic()`方法终止程序执行。用classpy打开ClassFileTest.class文件，可以看到，开头4字节确实是0xCAFEBABE，如图3-1所示。
 
 ![图3-1](https://i.loli.net/2019/07/10/5d25f0be71c6a61103.png)
 图3-1 用classpy观察魔数
 
 #### 3.2.4 版本号
-魔数之后是class文件的次版本号和主版本号，都是u2类型。假设某class文件的主版本号是M，次版本号是m，那么完整的版本号可以表示成“M.m”的形式。次版本号只在J2SE 1.2之前用过，从1.2开始基本上就没什么用了(都是0)。主版本号在J2SE 1.2之前是45，从1.2开始，每次有大的Java版本发布，都会加1。表3-2列出了到本书写作为止，使用过的class文件版本号。
+魔数之后是class文件的次版本号和主版本号，都是u2类型。假设某class文件的主版本号是M，次版本号是m，那么完整的版本号可以表示成“M.m”的形式。次版本号只在J2SE 1.2之前用过，从1.2开始基本上就没什么用了（都是0）。主版本号在J2SE 1.2之前是45，从1.2开始，每次有大的Java版本发布，都会加1。表3-2列出了到本书写作为止，使用过的class文件版本号。
 
 表3-2 class文件版本号
 
@@ -971,7 +968,7 @@ Java虚拟机规范规定，如果加载的class文件不符合要求的格式�
 | J2SE 1.3 | 47.0 | Java SE 8 | 52.0 |
 | J2SE 1.4 | 48.0 | | |
 
-特定的Java虚拟机实现只能支持版本号在某个范围内的class文件。Oracle的实现是完全向后兼容的，比如Java SE 8支持版本号为45.0～52.0的class文件。如果版本号不在支持的范围内，Java虚拟机实现就抛出java.lang.UnsupportedClassVersionError异常。我们参考Java 8，支持版本号为45.0～52.0的class文件。如果遇到其他版本号，暂时先调用panic()方法终止程序执行。下面是readAndCheckVersion()方法的代码。
+特定的Java虚拟机实现只能支持版本号在某个范围内的class文件。Oracle的实现是完全向后兼容的，比如Java SE 8支持版本号为45.0～52.0的class文件。如果版本号不在支持的范围内，Java虚拟机实现就抛出`java.lang.UnsupportedClassVersionError`异常。我们参考Java 8，支持版本号为45.0～52.0的class文件。如果遇到其他版本号，暂时先调用`panic()`方法终止程序执行。下面是`readAndCheckVersion()`方法的代码。
 ``` go 
 func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	self.minorVersion = reader.readUint16()
@@ -987,23 +984,23 @@ func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	panic("java.lang.UnsupportedClassVersionError!")
 }
 ```
-因为笔者使用JDK8编译ClassFileTest类，所以主版本号是52(0x34)，次版本号是0，如图3-2所示。
+因为笔者使用JDK8编译`ClassFileTest`类，所以主版本号是52(0x34)，次版本号是0，如图3-2所示。
 
 图3-2 用classpy观察版本号
 
 #### 3.2.5 类访问标志
-版本号之后是常量池，但是由于常量池比较复杂，所以放到3.3节介绍。常量池之后是类访问标志，这是一个16位的“bitmask”，指出class文件定义的是类还是接口，访问级别是public还是private，等等。本章只对class文件进行初步解析，并不做完整验证，所以只是读取类访问标志以备后用。第6章会详细讨论访问标志。ClassFileTest的类访问标志是0x21，如图3-3所示。
+版本号之后是常量池，但是由于常量池比较复杂，所以放到3.3节介绍。常量池之后是类访问标志，这是一个16位的“bitmask”，指出class文件定义的是类还是接口，访问级别是`public`还是`private`，等等。本章只对class文件进行初步解析，并不做完整验证，所以只是读取类访问标志以备后用。第6章会详细讨论访问标志。`ClassFileTest`的类访问标志是0x21，如图3-3所示。
 
 图3-3 用classpy观察类访问标志
 
 #### 3.2.6 类和超类索引
-类访问标志之后是两个u2类型的常量池索引，分别给出类名和超类名。class文件存储的类名类似完全限定名，但是把点换成了斜线，Java语言规范把这种名字叫作二进制名(binary names)。因为每个类都有名字，所以thisClass必须是有效的常量池索引。除java.lang.Object之外，其他类都有超类，所以superClass只在Object.class中是0，在其他class文件中必须是有效的常量池索引。如图3-4所示，ClassFileTest的类索引是5，超类索引是6。
+类访问标志之后是两个u2类型的常量池索引，分别给出类名和超类名。class文件存储的类名类似完全限定名，但是把点换成了斜线，Java语言规范把这种名字叫作二进制名（binary names）。因为每个类都有名字，所以`thisClass`必须是有效的常量池索引。除`java.lang.Object`之外，其他类都有超类，所以`superClass`只在`Object.class`中是`0`，在其他class文件中必须是有效的常量池索引。如图3-4所示，`ClassFileTest`的类索引是`5`，超类索引是`6`。
 
 ![图3-4](https://i.loli.net/2019/07/10/5d25f102bde0027926.png)
 图3-4 用classpy观察类和超类索引
 
 #### 3.2.7 接口索引表
-类和超类索引后面是接口索引表，表中存放的也是常量池索引，给出该类实现的所有接口的名字。ClassFileTest没有实现接口，所以接口表是空的，如图3-5所示。
+类和超类索引后面是接口索引表，表中存放的也是常量池索引，给出该类实现的所有接口的名字。`ClassFileTest`没有实现接口，所以接口表是空的，如图3-5所示。
 
 1[图3-5](https://i.loli.net/2019/07/10/5d25f13e84b7824819.png)
 图3-5 用classpy观察接口索引表
@@ -1019,7 +1016,7 @@ u2				attributes_count;
 attribute_info	attributes[attributes_count];
 }
 ```
-和类一样，字段和方法也有自己的访问标志。访问标志之后是一个常量池索引，给出字段名或方法名，然后又是一个常量池索引，给出字段或方法的描述符，最后是属性表。为了避免重复代码，用一个结构体统一表示字段和方法。在ch03\classfile目录中创建member_info.go文件，在其中定义MemberInfo结构体，代码如下：
+和类一样，字段和方法也有自己的访问标志。访问标志之后是一个常量池索引，给出字段名或方法名，然后又是一个常量池索引，给出字段或方法的描述符，最后是属性表。为了避免重复代码，用一个结构体统一表示字段和方法。在ch03\classfile目录中创建member_info.go文件，在其中定义`MemberInfo`结构体，代码如下：
 ``` go
 package classfile
 type MemberInfo struct {
@@ -1036,7 +1033,7 @@ func (self *MemberInfo) AccessFlags() uint16                         { ... } // 
 func (self *MemberInfo) Name() string                                { ... }
 func (self *MemberInfo) Descriptor() string                          { ... }
 ```
-cp字段保存常量池指针，后面会用到它。readMembers()读取字段表或方法表，代码如下：
+cp字段保存常量池指针，后面会用到它。`readMembers()`读取字段表或方法表，代码如下：
 ``` go
 func readMembers(reader *ClassReader, cp ConstantPool) []*MemberInfo {
 	memberCount := reader.readUint16()
@@ -1047,7 +1044,7 @@ func readMembers(reader *ClassReader, cp ConstantPool) []*MemberInfo {
 	return members
 }
 ```
-readMember()函数读取字段或方法数据，代码如下：
+`readMember()`函数读取字段或方法数据，代码如下：
 ``` go
 func readMember(reader *ClassReader, cp ConstantPool) *MemberInfo {
 	return &MemberInfo{
@@ -1059,7 +1056,7 @@ func readMember(reader *ClassReader, cp ConstantPool) *MemberInfo {
 	}
 }
 ```
-属性表和readAttributes()函数将在3.4节介绍。Name()从常量池查找字段或方法名，Descriptor()从常量池查找字段或方法描述符，代码如下：
+属性表和`readAttributes()`函数将在3.4节介绍。`Name()`从常量池查找字段或方法名，`Descriptor()`从常量池查找字段或方法描述符，代码如下：
 ``` go
 func (self *MemberInfo) Name() string {
 	return self.cp.getUtf8(self.nameIndex)
@@ -1068,7 +1065,7 @@ func (self *MemberInfo) Descriptor() string {
 	return self.cp.getUtf8(self.descriptorIndex)
 }
 ```
-第6章会进一步讨论字段和方法。ClassFileTest有8个字段和两个方法(其中<init>是编译器生成的默认构造函数)，如图3-6和图3-7所示。
+第6章会进一步讨论字段和方法。`ClassFileTest`有8个字段和两个方法（其中`<init>`是编译器生成的默认构造函数），如图3-6和图3-7所示。
 
 ![图3-6](https://i.loli.net/2019/07/10/5d25f192a37f219025.png)
 图3-6 用classpy观察字段表
@@ -1080,7 +1077,7 @@ func (self *MemberInfo) Descriptor() string {
 常量池占据了class文件很大一部分数据，里面存放着各式各样的常量信息，包括数字和字符串常量、类和接口名、字段和方法名，等等。本节将详细介绍常量池和各种常量。
 
 #### 3.3.1 ConstantPool结构体
-在ch03\classfile目录下创建constant_pool.go文件，在里面定义ConstantPool类型，代码如下所示：
+在ch03\classfile目录下创建constant_pool.go文件，在里面定义`ConstantPool`类型，代码如下所示：
 ``` go
 package classfile
 
@@ -1092,7 +1089,7 @@ func (self ConstantPool) getNameAndType(index uint16) (string, string) { ... }
 func (self ConstantPool) getClassName(index uint16) string             { ... }
 func (self ConstantPool) getUtf8(index uint16) string                  { ... }
 ```
-常量池实际上也是一个表，但是有三点需要特别注意。第一，表头给出的常量池大小比实际大1。假设表头给出的值是n，那么常量池的实际大小是n–1。第二，有效的常量池索引是1~n–1。0是无效索引，表示不指向任何常量。第三，CONSTANT_Long_info和CONSTANT_Double_info各占两个位置。也就是说，如果常量池中存在这两种常量，实际的常量数量比n–1还要少，而且1~n–1的某些数也会变成无效索引。常量池由readConstantPool()函数读取，代码如下：
+常量池实际上也是一个表，但是有三点需要特别注意。第一，表头给出的常量池大小比实际大1。假设表头给出的值是n，那么常量池的实际大小是n–1。第二，有效的常量池索引是1~n–1。0是无效索引，表示不指向任何常量。第三，`CONSTANT_Long_info`和`CONSTANT_Double_info`各占两个位置。也就是说，如果常量池中存在这两种常量，实际的常量数量比n–1还要少，而且1~n–1的某些数也会变成无效索引。常量池由`readConstantPool()`函数读取，代码如下：
 ``` go
 func readConstantPool(reader *ClassReader) ConstantPool {
 	cpCount := int(reader.readUint16())
@@ -1107,7 +1104,7 @@ func readConstantPool(reader *ClassReader) ConstantPool {
 	return cp
 }
 ```
-getConstantInfo()方法按索引查找常量，代码如下：
+`getConstantInfo()`方法按索引查找常量，代码如下：
 ``` go
 func (self ConstantPool) getConstantInfo(index uint16) ConstantInfo {
 	if cpInfo := self[index]; cpInfo != nil {
@@ -1116,7 +1113,7 @@ func (self ConstantPool) getConstantInfo(index uint16) ConstantInfo {
 	panic("Invalid constant pool index!")
 }
 ```
-getNameAndType()方法从常量池查找字段或方法的名字和描述符，代码如下：
+`getNameAndType()`方法从常量池查找字段或方法的名字和描述符，代码如下：
 ``` go
 func (self ConstantPool) getNameAndType(index uint16) (string, string) {
 	ntInfo := self.getConstantInfo(index).(*ConstantNameAndTypeInfo)
@@ -1125,21 +1122,21 @@ func (self ConstantPool) getNameAndType(index uint16) (string, string) {
 	return name, _type
 }
 ```
-getClassName()方法从常量池查找类名，代码如下：
+`getClassName()`方法从常量池查找类名，代码如下：
 ``` go
 func (self ConstantPool) getClassName(index uint16) string {
 	classInfo := self.getConstantInfo(index).(*ConstantClassInfo)
 	return self.getUtf8(classInfo.nameIndex)
 }
 ```
-getUtf8()方法从常量池查找UTF-8字符串，代码如下：
+`getUtf8()`方法从常量池查找UTF-8字符串，代码如下：
 ``` go
 func (self ConstantPool) getUtf8(index uint16) string {
 	utf8Info := self.getConstantInfo(index).(*ConstantUtf8Info)
 	return utf8Info.str
 }
 ```
-ClassFileTest的常量池大小是61如图3-8所示。
+`ClassFileTest`的常量池大小是61如图3-8所示。
 
 ![图3-8](https://i.loli.net/2019/07/10/5d25f20c4b21e72795.png)
 图3-8 用classpy观察常量池大小
@@ -1173,7 +1170,7 @@ const (
 	CONSTANT_InvokeDynamic      = 18
 )
 ```
-继续编辑constant_pool.go，定义ConstantInfo接口来表示常量信息，代码如下：
+继续编辑constant_pool.go，定义`ConstantInfo`接口来表示常量信息，代码如下：
 ``` go
 type ConstantInfo interface {
 	readInfo(reader *ClassReader)
@@ -1182,7 +1179,7 @@ type ConstantInfo interface {
 func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo { ... }
 func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo            { ... }
 ```
-readInfo()方法读取常量信息，需要由具体的常量结构体实现。readConstantInfo()函数先读出tag值，然后调用newConstantInfo()函数创建具体的常量，最后调用常量的readInfo()方法读取常量信息，代码如下：
+`readInfo()`方法读取常量信息，需要由具体的常量结构体实现。`readConstantInfo()`函数先读出tag值，然后调用`newConstantInfo()`函数创建具体的常量，最后调用常量的`readInfo()`方法读取常量信息，代码如下：
 ``` go
 func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo {
 	tag := reader.readUint8()
@@ -1191,7 +1188,7 @@ func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo {
 	return c
 }
 ```
-newConstantInfo()根据tag值创建具体的常量，代码如下：
+`newConstantInfo()`根据tag值创建具体的常量，代码如下：
 ``` go
 func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo {
 	switch tag {
@@ -1231,14 +1228,14 @@ func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo {
 下面的小节详细介绍各种常量。
 
 #### 3.3.3 CONSTANT_Integer_info
-CONSTANT_Integer_info使用4字节存储整数常量，其结构定义如下：
+`CONSTANT_Integer_info`使用4字节存储整数常量，其结构定义如下：
 ``` go
 CONSTANT_Integer_info {
 	u1 tag;
 	u4 bytes;
 }
 ```
-CONSTANT_Integer_info和后面将要介绍的其他三种数字常量无论是结构，还是实现，都非常相似，所以把它们定义在同一个文件中。在ch03\classfile目录下创建cp_numeric.go文件，在其中定义ConstantIntegerInfo结构体，代码如下：
+`CONSTANT_Integer_info`和后面将要介绍的其他三种数字常量无论是结构，还是实现，都非常相似，所以把它们定义在同一个文件中。在ch03\classfile目录下创建cp_numeric.go文件，在其中定义`ConstantIntegerInfo`结构体，代码如下：
 ``` go
 package classfile
 import "math"
@@ -1248,27 +1245,27 @@ type ConstantIntegerInfo struct {
 
 func (self *ConstantIntegerInfo) readInfo(reader *ClassReader) { ... }
 ```
-readInfo()先读取一个uint32数据，然后把它转型成int32类型，代码如下：
+`readInfo()`先读取一个`uint32`数据，然后把它转型成`int32`类型，代码如下：
 ``` go
 func (self *ConstantIntegerInfo) readInfo(reader *ClassReader) {
 	bytes := reader.readUint32()
 	self.val = int32(bytes)
 }
 ```
-CONSTANT_Integer_info正好可以容纳一个Java的int型常量，但实际上比int更小的boolean、byte、short和char类型的常量也放在CONSTANT_Integer_info中。编译器给ClassFileTest类的INT字段生成了一个CONSTANT_Integer_info常量，如图3-9所示。
+`CONSTANT_Integer_info`正好可以容纳一个Java的`int`型常量，但实际上比`int`更小的`boolean`、`byte`、`short`和`char`类型的常量也放在`CONSTANT_Integer_info`中。编译器给`ClassFileTest`类的INT字段生成了一个`CONSTANT_Integer_info`常量，如图3-9所示。
 
 ![图3-9](https://i.loli.net/2019/07/10/5d25f2497acd580519.png)
 图3-9 用classpy观察CONSTANT_Integer_info常量
 
 #### 3.3.4 CONSTANT_Float_info
-CONSTANT_Float_info使用4字节存储IEEE754单精度浮点数常量，结构如下：
+`CONSTANT_Float_info`使用4字节存储IEEE754单精度浮点数常量，结构如下：
 ``` go
 CONSTANT_Float_info {
 	u1 tag;
 	u4 bytes;
 }
 ```
-在cp_numeric.go文件中定义ConstantFloatInfo结构体，代码如下：
+在cp_numeric.go文件中定义`ConstantFloatInfo`结构体，代码如下：
 ``` go
 type ConstantFloatInfo struct {
 	val float32
@@ -1278,13 +1275,13 @@ func (self *ConstantFloatInfo) readInfo(reader *ClassReader) {
 	self.val = math.Float32frombits(bytes)
 }
 ```
-readInfo()先读取一个uint32数据，然后调用math包的Float32frombits()函数把它转换成float32类型。编译器给ClassFileTest类的PI字段生成了一个CONSTANT_Float_info常量，如图3-10所示。
+`readInfo()`先读取一个uint32数据，然后调用math包的`Float32frombits()`函数把它转换成float32类型。编译器给ClassFileTest类的PI字段生成了一个`CONSTANT_Float_info`常量，如图3-10所示。
 
 ![图3-10](https://i.loli.net/2019/07/10/5d25f2a7b1eb962651.png)
 图3-10 用classpy观察CONSTANT_Float_info常量
 
 #### 3.3.5 CONSTANT_Long_info
-CONSTANT_Long_info使用8字节存储整数常量，结构如下：
+`CONSTANT_Long_info`使用8字节存储整数常量，结构如下：
 ``` go
 CONSTANT_Long_info {
 	u1 tag;
@@ -1292,7 +1289,7 @@ CONSTANT_Long_info {
 	u4 low_bytes;
 }
 ```
-在cp_numeric.go文件中定义ConstantLongInfo结构体，代码如下：
+在cp_numeric.go文件中定义`ConstantLongInfo`结构体，代码如下：
 ``` go
 type ConstantLongInfo struct {
 	val int64
@@ -1302,13 +1299,13 @@ func (self *ConstantLongInfo) readInfo(reader *ClassReader) {
 	self.val = int64(bytes)
 }
 ```
-readInfo()先读取一个uint64数据，然后把它转型成int64类型。编译器给ClassFileTest类的LONG字段生成了一个CONSTANT_Long_info常量，如图3-11所示。
+`readInfo()`先读取一个`uint64`数据，然后把它转型成`int64`类型。编译器给`ClassFileTest`类的`LONG`字段生成了一个`CONSTANT_Long_info`常量，如图3-11所示。
 
 ![图3-11](https://i.loli.net/2019/07/10/5d25f2ee47eae69766.png)
 图3-11 用classpy观察CONSTANT_Long_info常量
 
 #### 3.3.6 CONSTANT_Double_info
-最后一个数字常量是CONSTANT_Double_info，使用8字节存储IEEE754双精度浮点数，结构如下：
+最后一个数字常量是`CONSTANT_Double_info`，使用8字节存储IEEE754双精度浮点数，结构如下：
 ``` go
 CONSTANT_Double_info {
 	u1 tag;
@@ -1316,7 +1313,7 @@ CONSTANT_Double_info {
 	u4 low_bytes;
 }
 ```
-在cp_numeric.go文件中定义ConstantDoubleInfo结构体，代码如下：
+在cp_numeric.go文件中定义`ConstantDoubleInfo`结构体，代码如下：
 ``` go
 type ConstantDoubleInfo struct {
 	val float64
@@ -1326,7 +1323,7 @@ func (self *ConstantDoubleInfo) readInfo(reader *ClassReader) {
 	self.val = math.Float64frombits(bytes)
 }
 ```
-readInfo()先读取一个uint64数据，然后调用math包的Float64frombits()函数把它转换成float64类型。编译器给ClassFileTest类的E字段生成了一个CONSTANT_Double_info常量，如图3-12所示。
+`readInfo()`先读取一个uint64数据，然后调用math包的`Float64frombits()`函数把它转换成`float64`类型。编译器给`ClassFileTest`类的E字段生成了一个`CONSTANT_Double_info`常量，如图3-12所示。
 
 ![图3-12](https://i.loli.net/2019/07/10/5d25f3308d2a422513.png)
 图3-12 用classpy观察CONSTANT_Double_info常量
@@ -1340,9 +1337,9 @@ CONSTANT_Utf8_info {
 	u1 bytes[length];
 }
 ```
-注意，字符串在class文件中是以MUTF-8(Modified UTF-8)方式编码的。但为什么没有用标准的UTF-8编码方式，笔者没有找到明确的原因 [1] 。MUTF-8编码方式和UTF-8大致相同，但并不兼容。差别有两点：一是null字符(代码点U+0000)会被编码成2字节：0xC0、0x80；二是补充字符(Supplementary Characters，代码点大于U+FFFF的Unicode字符)是按UTF-16拆分为代理对(Surrogate Pair)分别编码的。具体细节超出了本章的讨论范围，有兴趣的读者可以阅读Java虚拟机规范和Unicode规范的相关章节 [2] 。
+注意，字符串在class文件中是以MUTF-8（Modified UTF-8）方式编码的。但为什么没有用标准的UTF-8编码方式，笔者没有找到明确的原因 [1] 。MUTF-8编码方式和UTF-8大致相同，但并不兼容。差别有两点：一是`null`字符（代码点U+0000）会被编码成2字节：0xC0、0x80；二是补充字符（Supplementary Characters，代码点大于U+FFFF的Unicode字符）是按UTF-16拆分为代理对（Surrogate Pair）分别编码的。具体细节超出了本章的讨论范围，有兴趣的读者可以阅读Java虚拟机规范和Unicode规范的相关章节 [2] 。
 
-在ch03\classfile目录下创建cp_utf8.go文件，在其中定义ConstantUtf8Info结构体，代码如下：
+在ch03\classfile目录下创建cp_utf8.go文件，在其中定义`ConstantUtf8Info`结构体，代码如下：
 ``` go
 package classfile
 import "fmt"
@@ -1352,7 +1349,7 @@ type ConstantUtf8Info struct {
 }
 func (self *ConstantUtf8Info) readInfo(reader *ClassReader) {}
 ```
-readInfo()方法先读取出[]byte，然后调用decodeMUTF8()函数把它解码成Go字符串，代码如下：
+`readInfo()`方法先读取出`[]byte`，然后调用`decodeMUTF8()`函数把它解码成Go字符串，代码如下：
 ``` go
 func (self *ConstantUtf8Info) readInfo(reader *ClassReader) {
 	length := uint32(reader.readUint16())
@@ -1360,14 +1357,14 @@ func (self *ConstantUtf8Info) readInfo(reader *ClassReader) {
 	self.str = decodeMUTF8(bytes)
 }
 ```
-Java序列化机制也使用了MUTF-8编码。java.io.DataInput和java.io.DataOutput接口分别定义了readUTF()和writeUTF()方法，可以读写MUTF-8编码的字符串。decodeMUTF8()函数的代码就是笔者根据java.io.DataInputStream.readUTF()方法改写的。代码很长，解释起来也很乏味，所以这里就不详细解释了。因为Go语言字符串使用UTF-8编码，所以如果字符串中不包含null字符或补充字符，下面这个简化版的readMUTF8()也是可以工作的。
+Java序列化机制也使用了MUTF-8编码。`java.io.DataInput`和`java.io.DataOutput`接口分别定义了`readUTF()`和`writeUTF()`方法，可以读写MUTF-8编码的字符串。`decodeMUTF8()`函数的代码就是笔者根据`java.io.DataInputStream.readUTF()`方法改写的。代码很长，解释起来也很乏味，所以这里就不详细解释了。因为Go语言字符串使用UTF-8编码，所以如果字符串中不包含null字符或补充字符，下面这个简化版的`readMUTF8()`也是可以工作的。
 ``` go
 // 简化版，完整版请阅读本章源代码
 func decodeMUTF8(bytes []byte) string {
 	return string(bytes)
 }
 ```
-相信细心的读者在前面的截图中已经看到了，字段名、字段描述符等就是以字符串的形式存储在class文件中的，如字段PI对应的CONSTANT_Utf8_info常量，如图3-13所示。
+相信细心的读者在前面的截图中已经看到了，字段名、字段描述符等就是以字符串的形式存储在class文件中的，如字段PI对应的`CONSTANT_Utf8_info`常量，如图3-13所示。
 
 ![图3-13](https://i.loli.net/2019/07/10/5d25f376a7dc165065.png)
 图3-13 用classpy观察CONSTANT_Utf8_info常量[1]
@@ -1376,14 +1373,14 @@ func decodeMUTF8(bytes []byte) string {
 或者这篇文章：[http://www.oracle.com/technetwork/articles/javase/supplementary-142654.html](http://www.oracle.com/technetwork/articles/javase/supplementary-142654.html)。
 
 #### 3.3.8 CONSTANT_String_info
-CONSTANT_String_info常量表示java.lang.String字面量，结构如下：
+`CONSTANT_String_info`常量表示`java.lang.String`字面量，结构如下：
 ``` go
 CONSTANT_String_info {
 	u1 tag;
 	u2 string_index;
 }
 ```
-可以看到，CONSTANT_String_info本身并不存放字符串数据，只存了常量池索引，这个索引指向一个CONSTANT_Utf8_info常量。在ch03\classfile目录下创建cp_string.go文件，在其中定义ConstantStringInfo结构体，代码如下：
+可以看到，`CONSTANT_String_info`本身并不存放字符串数据，只存了常量池索引，这个索引指向一个`CONSTANT_Utf8_info`常量。在ch03\classfile目录下创建cp_string.go文件，在其中定义`ConstantStringInfo`结构体，代码如下：
 ``` go
 package classfile
 type ConstantStringInfo struct {
@@ -1395,37 +1392,37 @@ type ConstantStringInfo struct {
 func (self *ConstantStringInfo) readInfo(reader *ClassReader) { ... }
 func (self *ConstantStringInfo) String() string               { ... }
 ```
-readInfo()方法读取常量池索引，代码如下：
+`readInfo()`方法读取常量池索引，代码如下：
 ``` go
 func (self *ConstantStringInfo) readInfo(reader *ClassReader) {
 	self.stringIndex = reader.readUint16()
 }
 ```
-String()方法按索引从常量池中查找字符串，代码如下：
+`String()`方法按索引从常量池中查找字符串，代码如下：
 ``` go
 func (self *ConstantStringInfo) String() string {
 	return self.cp.getUtf8(self.stringIndex)
 }
 ```
-ClassFileTest的`main()`方法使用了字符串字面量“Hello, World!”，对应的CONSTANT_String_info常量如图3-14所示。
+`ClassFileTest`的`main()`方法使用了字符串字面量“Hello, World!”，对应的`CONSTANT_String_info`常量如图3-14所示。
 
 ![图3-14](https://i.loli.net/2019/07/10/5d25f3b5b8b3695936.png)
 图3-14 用classpy观察CONSTANT_String_info常量
 
-可以看到，string_index是52(0x34)。我们按图索骥，从常量池中找出第52个常量，确实是个CONSTANT_Utf8_info，如图3-15所示。
+可以看到，`string_index`是52(0x34)。我们按图索骥，从常量池中找出第52个常量，确实是个`CONSTANT_Utf8_info`，如图3-15所示。
 
 ![图3-15](https://i.loli.net/2019/07/10/5d25f407a6dee50024.png)
 图3-15 用classpy观察CONSTANT_String_info常量(2)
 
 #### 3.3.9 CONSTANT_Class_info
-CONSTANT_Class_info常量表示类或者接口的符号引用，结构如下：
+`CONSTANT_Class_info`常量表示类或者接口的符号引用，结构如下：
 ``` go
 CONSTANT_Class_info {
 	u1 tag;
 	u2 name_index;
 }
 ```
-和CONSTANT_String_info类似，name_index是常量池索引，指向CONSTANT_Utf8_info常量。在ch03\classfile目录下创建cp_class.go文件，在其中定义ConstantClassInfo结构体，代码如下：
+和`CONSTANT_String_info`类似，`name_index`是常量池索引，指向`CONSTANT_Utf8_info`常量。在ch03\classfile目录下创建cp_class.go文件，在其中定义`ConstantClassInfo`结构体，代码如下：
 ``` go
 package classfile
 type ConstantClassInfo struct {
@@ -1439,9 +1436,9 @@ func (self *ConstantClassInfo) Name() string {
 	return self.cp.getUtf8(self.nameIndex)
 }
 ```
-代码和前一节大同小异，就不多解释了。类和超类索引，以及接口表中的接口索引指向的都是CONSTANT_Class_info常量。由图3-3可知，ClassFileTest的this_class索引是5。我们找到第5个常量，可以看到，的确是CONSTANT_Class_info。它的name_index是55(0x37)，如图3-16所示。
+代码和前一节大同小异，就不多解释了。类和超类索引，以及接口表中的接口索引指向的都是`CONSTANT_Class_info`常量。由图3-3可知，`ClassFileTest的this_class`索引是5。我们找到第5个常量，可以看到，的确是`CONSTANT_Class_info`。它的`name_index`是55(0x37)，如图3-16所示。
 
-再看第55个常量，也的确是CONSTANT_Utf_info，如图3-17所示。
+再看第55个常量，也的确是`CONSTANT_Utf_info`，如图3-17所示。
 
 ![图3-16](https://i.loli.net/2019/07/10/5d25f43b45d5b56830.png)
 图3-16 用classpy观察CONSTANT_Class_info常量
@@ -1450,7 +1447,7 @@ func (self *ConstantClassInfo) Name() string {
 图3-17 用classpy观察CONSTANT_Class_info常量(2)
 
 #### 3.3.10 CONSTANT_NameAndType_info
-CONSTANT_NameAndType_info给出字段或方法的名称和描述符。CONSTANT_Class_info和CONSTANT_NameAndType_info加在一起可以唯一确定一个字段或者方法。其结构如下：
+`CONSTANT_NameAndType_info`给出字段或方法的名称和描述符。`CONSTANT_Class_info`和`CONSTANT_NameAndType_info`加在一起可以唯一确定一个字段或者方法。其结构如下：
 ``` go
 CONSTANT_NameAndType_info {
 	u1 tag;
@@ -1458,16 +1455,16 @@ CONSTANT_NameAndType_info {
 	u2 descriptor_index;
 }
 ```
-字段或方法名由name_index给出，字段或方法的描述符由descriptor_index给出。name_index和descriptor_index都是常量池索引，指向CONSTANT_Utf8_info常量。字段和方法名就是代码中出现的(或者编译器生成的)字段或方法的名字。Java虚拟机规范定义了一种简单的语法来描述字段和方法，可以根据下面的规则生成描述符。
+字段或方法名由`name_index`给出，字段或方法的描述符由`descriptor_index`给出。`name_index`和`descriptor_index`都是常量池索引，指向`CONSTANT_Utf8_info`常量。字段和方法名就是代码中出现的（或者编译器生成的）字段或方法的名字。Java虚拟机规范定义了一种简单的语法来描述字段和方法，可以根据下面的规则生成描述符。
 
 1)类型描述符。
-1基本类型byte、short、char、int、long、float和double的描述符是单个字母，分别对应B、S、C、I、J、F和D。注意，long的描述符是J而不是L。
-2引用类型的描述符是L+类的完全限定名+分号。
-3数组类型的描述符是[+数组元素类型描述符。
+- 1基本类型byte、short、char、int、long、float和double的描述符是单个字母，分别对应B、S、C、I、J、F和D。注意，long的描述符是J而不是L。
+- 2引用类型的描述符是L+类的完全限定名+分号。
+- 3数组类型的描述符是[+数组元素类型描述符。
 
 2)字段描述符就是字段类型的描述符。
 
-3)方法描述符是(分号分隔的参数类型描述符)+返回值类型描述符，其中void返回值由单个字母V表示。
+3)方法描述符是（分号分隔的参数类型描述符）+返回值类型描述符，其中void返回值由单个字母V表示。
 更详细的介绍可以参考Java虚拟机规范4.3节。表3-3给出了一些具体的例子。
 
 表3-3 字段和方法描述符示例
@@ -1480,9 +1477,9 @@ CONSTANT_NameAndType_info {
 | [[D | double[][] | (FF)F | int max(float X, float y) |
 | [Ljava.lang.String; | java.lang.Object[] | ([JJ)I | int binarySearch(long[] a, long key) |
 
-我们都知道，Java语言支持方法重载(override)，不同的方法可以有相同的名字，只要参数列表不同即可。这就是为什么CONSTANT_NameAndType_info结构要同时包含名称和描述符的原因。那么字段呢？Java是不能定义多个同名字段的，哪怕它们的类型各不相同。这只是Java语法的限制而已，从class文件的层面来看，是完全可以支持这点的。
+我们都知道，Java语言支持方法重载（override），不同的方法可以有相同的名字，只要参数列表不同即可。这就是为什么`CONSTANT_NameAndType_info`结构要同时包含名称和描述符的原因。那么字段呢？Java是不能定义多个同名字段的，哪怕它们的类型各不相同。这只是Java语法的限制而已，从class文件的层面来看，是完全可以支持这点的。
 
-在ch03\classfile目录下创建cp_name_and_type.go文件，在其中定义ConstantName-AndTypeInfo结构体，代码如下：
+在ch03\classfile目录下创建cp_name_and_type.go文件，在其中定义`ConstantName-AndTypeInfo`结构体，代码如下：
 ``` go
 package classfile
 type ConstantNameAndTypeInfo struct {
@@ -1500,7 +1497,7 @@ func (self *ConstantNameAndTypeInfo) readInfo(reader *ClassReader) {
 
 #### 3.3.11 CONSTANT_Fieldref_info、CONSTANT_Methodref_info和CONSTANT_InterfaceMethodref_info
 
-CONSTANT_Fieldref_info表示字段符号引用，CONSTANT_Methodref_info表示普通(非接口)方法符号引用，CONSTANT_InterfaceMethodref_info表示接口方法符号引用。这三种常量结构一模一样，为了节约篇幅，下面只给出CONSTANT_Fieldref_info的结构。
+`CONSTANT_Fieldref_info`表示字段符号引用，CONSTANT_Methodref_info表示普通（非接口）方法符号引用，`CONSTANT_InterfaceMethodref_info`表示接口方法符号引用。这三种常量结构一模一样，为了节约篇幅，下面只给出`CONSTANT_Fieldref_info`的结构。
 ``` go
 CONSTANT_Fieldref_info {
 	u1 tag;
@@ -1508,7 +1505,7 @@ CONSTANT_Fieldref_info {
 	u2 name_and_type_index;
 }
 ```
-class_index和name_and_type_index都是常量池索引，分别指向CONSTANT_Class_info和CONSTANT_NameAndType_info常量。先定义一个统一的结构体ConstantMemberrefInfo来表示这3种常量。在ch03\classfile目录下创建cp_member_ref.go文件，把下面的代码输入进去。
+`class_index`和`name_and_type_index`都是常量池索引，分别指向`CONSTANT_Class_info`和`CONSTANT_NameAndType_info`常量。先定义一个统一的结构体`ConstantMemberrefInfo`来表示这3种常量。在ch03\classfile目录下创建cp_member_ref.go文件，把下面的代码输入进去。
 ``` go
 package classfile
 type ConstantMemberrefInfo struct {
@@ -1527,16 +1524,16 @@ func (self *ConstantMemberrefInfo) NameAndDescriptor() (string, string) {
 	return self.cp.getNameAndType(self.nameAndTypeIndex)
 }
 ```
-然后定义三个结构体“继承”ConstantMemberrefInfo。Go语言并没有“继承”这个概念，但是可以通过结构体嵌套来模拟，代码如
+然后定义三个结构体“继承”`ConstantMemberrefInfo`。Go语言并没有“继承”这个概念，但是可以通过结构体嵌套来模拟，代码如
 下：
 ``` go
 type ConstantFieldrefInfo struct{ ConstantMemberrefInfo }
 type ConstantMethodrefInfo struct{ ConstantMemberrefInfo }
 type ConstantInterfaceMethodrefInfo struct{ ConstantMemberrefInfo }
 ```
-ClassFileTest类的`main()`方法使用了java.lang.System类的out字段，该字段由常量池第2项指出，如图3-18所示。
+`ClassFileTest`类的`main()`方法使用了`java.lang.System`类的`out`字段，该字段由常量池第2项指出，如图3-18所示。
 
-可以看到，class_index是50(0x32)，name_and_type_index是51(0x33)。我们找到第50和第51个常量，可以看到，确实是CONSTANT_Class_info和CONSTANT_Name-AndType_info，如图3-19所示。
+可以看到，`class_index`是50(0x32)，name_and_type_index是51(0x33)。我们找到第50和第51个常量，可以看到，确实是`CONSTANT_Class_info`和`CONSTANT_Name-AndType_info`，如图3-19所示。
 
 ![图3-18](https://i.loli.net/2019/07/10/5d25f4d544b0815876.png)
 图3-18 用classpy观察CONSTANT_Fieldref_info常量
@@ -1545,9 +1542,9 @@ ClassFileTest类的`main()`方法使用了java.lang.System类的out字段，该�
 图3-19 用classpy观察CONSTANT_Fieldref_info常量(2)
 
 #### 3.3.12 常量池小结
-还有三个常量没有介绍：CONSTANT_MethodType_info、CONSTANT_MethodHandle_info和CONSTANT_InvokeDynamic_info。它们是Java SE 7才添加到class文件中的，目的是支持新增的invokedynamic指令。本书不讨论invokedynamic指令，所以解析这三个常量的代码就不在这里介绍了。代码也非常简单，有兴趣的读者可以阅读随书源代码中的ch03\cp_invoke_dynamic.go文件。
+还有三个常量没有介绍：`CONSTANT_MethodType_info`、`CONSTANT_MethodHandle_info`和`CONSTANT_InvokeDynamic_info`。它们是Java SE 7才添加到class文件中的，目的是支持新增的`invokedynamic`指令。本书不讨论`invokedynamic`指令，所以解析这三个常量的代码就不在这里介绍了。代码也非常简单，有兴趣的读者可以阅读随书源代码中的ch03\cp_invoke_dynamic.go文件。
 
-可以把常量池中的常量分为两类：字面量(literal)和符号引用(symbolic reference)。字面量包括数字常量和字符串常量，符号引用包括类和接口名、字段和方法信息等。除了字面量，其他常量都是通过索引直接或间接指向CONSTANT_Utf8_info常量，以CONSTANT_Fieldref_info为例，如图3-20所示。
+可以把常量池中的常量分为两类：字面量（literal）和符号引用（symbolic reference）。字面量包括数字常量和字符串常量，符号引用包括类和接口名、字段和方法信息等。除了字面量，其他常量都是通过索引直接或间接指向`CONSTANT_Utf8_info`常量，以`CONSTANT_Fieldref_info`为例，如图3-20所示。
 
 ![图3-20](https://i.loli.net/2019/07/10/5d25f52aeb54419979.png)
 图3-20 常量引用关系
@@ -1566,13 +1563,13 @@ attribute_info {
 	u1 info[attribute_length];
 }
 ```
-注意，属性表中存放的属性名实际上并不是编码后的字符串，而是常量池索引，指向常量池中的CONSTANT_Utf8_info常量。在ch03\classfile目录下创建attribute_info.go文件，在其中定义AttributeInfo接口，代码如下：
+注意，属性表中存放的属性名实际上并不是编码后的字符串，而是常量池索引，指向常量池中的`CONSTANT_Utf8_info`常量。在ch03\classfile目录下创建attribute_info.go文件，在其中定义`AttributeInfo`接口，代码如下：
 ``` go
 func readAttributes(reader *ClassReader, cp ConstantPool) []AttributeInfo             { ... }
 func readAttribute(reader *ClassReader, cp ConstantPool) AttributeInfo                { ... }
 func newAttributeInfo(attrName string, attrLen uint32, cp ConstantPool) AttributeInfo { ... }
 ```
-和ConstantInfo接口一样，AttributeInfo接口也只定义了一个readInfo()方法，需要由具体的属性实现。readAttributes()函数读取属性表，代码如下：
+和`ConstantInfo`接口一样，AttributeInfo接口也只定义了一个`readInfo()`方法，需要由具体的属性实现。`readAttributes()`函数读取属性表，代码如下：
 ``` go
 func readAttributes(reader *ClassReader, cp ConstantPool) []AttributeInfo {
 	attributesCount := reader.readUint16()
@@ -1583,7 +1580,7 @@ func readAttributes(reader *ClassReader, cp ConstantPool) []AttributeInfo {
 	return attributes
 }
 ```
-函数readAttribute()读取单个属性，代码如下：
+函数`readAttribute()`读取单个属性，代码如下：
 ``` go
 func readAttribute(reader *ClassReader, cp ConstantPool) AttributeInfo {
 	attrNameIndex := reader.readUint16()
@@ -1594,7 +1591,7 @@ func readAttribute(reader *ClassReader, cp ConstantPool) AttributeInfo {
 	return attrInfo
 }
 ```
-readAttribute()先读取属性名索引，根据它从常量池中找到属性名，然后读取属性长度，接着调用newAttributeInfo()函数创建具体的属性实例。Java虚拟机规范预定义了23种属性，先解析其中的8种。newAttributeInfo()函数的代码如下：
+`readAttribute()`先读取属性名索引，根据它从常量池中找到属性名，然后读取属性长度，接着调用`newAttributeInfo()`函数创建具体的属性实例。Java虚拟机规范预定义了23种属性，先解析其中的8种。`newAttributeInfo()`函数的代码如下：
 ``` go
 func newAttributeInfo(attrName string, attrLen uint32,
 	cp ConstantPool) AttributeInfo {
@@ -1620,7 +1617,7 @@ func newAttributeInfo(attrName string, attrLen uint32,
 	}
 }
 ```
-UnparsedAttribute结构体在ch03\classfile\attr_unparsed.go文件中，代码如下：
+`UnparsedAttribute`结构体在ch03\classfile\attr_unparsed.go文件中，代码如下：
 ``` go
 package classfile
 type UnparsedAttribute struct {
@@ -1634,9 +1631,9 @@ func (self *UnparsedAttribute) readInfo(reader *ClassReader) {
 	self.info = reader.readBytes(self.length)
 }
 ```
-按照用途，23种预定义属性可以分为三组。第一组属性是实现Java虚拟机所必需的，共有5种；第二组属性是Java类库所必需的，共有12种；第三组属性主要提供给工具使用，共有6种。第三组属性是可选的，也就是说可以不出现在class文件中。如果class文件中存在第三组属性，Java虚拟机实现或者Java类库也是可以利用它们的，比如使用LineNumberTable属性在异常堆栈中显示行号。
+按照用途，23种预定义属性可以分为三组。第一组属性是实现Java虚拟机所必需的，共有5种；第二组属性是Java类库所必需的，共有12种；第三组属性主要提供给工具使用，共有6种。第三组属性是可选的，也就是说可以不出现在class文件中。如果class文件中存在第三组属性，Java虚拟机实现或者Java类库也是可以利用它们的，比如使用`LineNumberTable`属性在异常堆栈中显示行号。
 
-从class文件演进的角度来讲，JDK1.0时只有6种预定义属性，JDK1.1增加了3种。J2SE 5.0增加了9种属性，主要用于支持泛型和注解。Java SE 6增加了StackMapTable属性，用于优化字节码验证。Java SE 7增加了BootstrapMethods属性，用于支持新增的invokedynamic指令。Java SE 8又增加了三种属性。表3-5给出了这23种属性出现的Java版本、分组以及它们在class文件中的位置。
+从class文件演进的角度来讲，JDK1.0时只有6种预定义属性，JDK1.1增加了3种。J2SE 5.0增加了9种属性，主要用于支持泛型和注解。Java SE 6增加了`StackMapTable`属性，用于优化字节码验证。Java SE 7增加了`BootstrapMethods`属性，用于支持新增的`invokedynamic`指令。Java SE 8又增加了三种属性。表3-5给出了这23种属性出现的Java版本、分组以及它们在class文件中的位置。
 
 表3-4 预定义属性
 
@@ -1668,7 +1665,7 @@ func (self *UnparsedAttribute) readInfo(reader *ClassReader) {
 由于篇幅的限制，下面只介绍其中的8种属性。
 
 #### 3.4.2 Deprecated和Synthetic属性
-Deprecated和Synthetic是最简单的两种属性，仅起标记作用，不包含任何数据。这两种属性都是JDK1.1引入的，可以出现在ClassFile、field_info和method_info结构中，它们的结构定义如下：
+`Deprecated`和`Synthetic`是最简单的两种属性，仅起标记作用，不包含任何数据。这两种属性都是JDK1.1引入的，可以出现在`ClassFile`、`field_info`和`method_info`结构中，它们的结构定义如下：
 ``` java
 Deprecated_attribute {
 	u2 attribute_name_index;
@@ -1679,17 +1676,17 @@ Synthetic_attribute {
 	u4 attribute_length;
 }
 ```
-由于不包含任何数据，所以attribute_length的值必须是0。Deprecated属性用于指出类、接口、字段或方法已经不建议使用，编译器等工具可以根据Deprecated属性输出警告信息。J2SE 5.0之前可以使用Javadoc提供的@deprecated标签指示编译器给类、接口、字段或方法添加Deprecated属性，语法格式如下：
+由于不包含任何数据，所以`attribute_length`的值必须是`0`。`Deprecated`属性用于指出类、接口、字段或方法已经不建议使用，编译器等工具可以根据`Deprecated`属性输出警告信息。J2SE 5.0之前可以使用Javadoc提供的`@deprecated`标签指示编译器给类、接口、字段或方法添加`Deprecated`属性，语法格式如下：
 ``` java
 /** @deprecated */
 public void oldMethod() {...}
 ```
-从J2SE 5.0开始，也可以使用@Deprecated注解，语法格式如下：
+从J2SE 5.0开始，也可以使用`@Deprecated`注解，语法格式如下：
 ``` java
 @Deprecated
 public void oldMethod() {}
 ```
-Synthetic属性用来标记源文件中不存在、由编译器生成的类成员，引入Synthetic属性主要是为了支持嵌套类和嵌套接口。具体细节就不介绍了，感兴趣的读者可以参考Java虚拟机规范相关章节。在ch03\classfile目录下创建attr_markers.go文件，在其中定义DeprecatedAttribute和SyntheticAttribute结构体，代码如下：
+Synthetic属性用来标记源文件中不存在、由编译器生成的类成员，引入`Synthetic`属性主要是为了支持嵌套类和嵌套接口。具体细节就不介绍了，感兴趣的读者可以参考Java虚拟机规范相关章节。在ch03\classfile目录下创建attr_markers.go文件，在其中定义`DeprecatedAttribute`和`SyntheticAttribute`结构体，代码如下：
 ``` go
 package classfile
 type DeprecatedAttribute struct { MarkerAttribute }
@@ -1699,10 +1696,10 @@ func (self *MarkerAttribute) readInfo(reader *ClassReader) {
 // read nothing
 }
 ```
-由于这两个属性都没有数据，所以readInfo()方法是空的。
+由于这两个属性都没有数据，所以`readInfo()`方法是空的。
 
 #### 3.4.3 SourceFile属性
-SourceFile是可选定长属性，只会出现在ClassFile结构中，用于指出源文件名。其结构定义如下：
+`SourceFile`是可选定长属性，只会出现在`ClassFile`结构中，用于指出源文件名。其结构定义如下：
 ``` go 
 SourceFile_attribute {
 	u2 attribute_name_index;
@@ -1710,7 +1707,7 @@ SourceFile_attribute {
 	u2 sourcefile_index;
 }
 ```
-attribute_length的值必须是2。sourcefile_index是常量池索引，指向CONSTANT_Utf8_info常量。在ch03\classfile目录下创建attr_source_file.go文件，在其中定义SourceFileAttribute结构体，代码如下：
+`attribute_length`的值必须是`2`。`sourcefile_index`是常量池索引，指向`CONSTANT_Utf8_info`常量。在ch03\classfile目录下创建attr_source_file.go文件，在其中定义`SourceFileAttribute`结构体，代码如下：
 ``` go
 package classfile
 type SourceFileAttribute struct {
@@ -1724,18 +1721,18 @@ func (self *SourceFileAttribute) FileName() string {
 	return self.cp.getUtf8(self.sourceFileIndex)
 }
 ```
-笔者的编译器给ClassFileTest生成了SourceFile属性，如图3-21所示。
+笔者的编译器给`ClassFileTest`生成了`SourceFile`属性，如图3-21所示。
 
 ![图3-21](https://i.loli.net/2019/07/10/5d25f5b0a5b9f72119.png)
 图3-21 用classpy观察SourceFile属性
 
-第47和第48个常量，确实都是CONSTANT_Utf8_info常量，如图3-22所示。
+第47和第48个常量，确实都是`CONSTANT_Utf8_info`常量，如图3-22所示。
 
 ![图3-22](https://i.loli.net/2019/07/10/5d25f5ed68e6364775.png)
 图3-22 用classpy观察SourceFile属性(2)
 
 #### 3.4.4 ConstantValue属性
-ConstantValue是定长属性，只会出现在field_info结构中，用于表示常量表达式的值(详见Java语言规范的15.28节)。其结构定义如下：
+`ConstantValue`是定长属性，只会出现在`field_info`结构中，用于表示常量表达式的值（详见Java语言规范的15.28节）。其结构定义如下：
 ``` java
 ConstantValue_attribute {
 	u2 attribute_name_index;
@@ -1743,7 +1740,7 @@ ConstantValue_attribute {
 	u2 constantvalue_index;
 }
 ```
-attribute_length的值必须是2。constantvalue_index是常量池索引，但具体指向哪种常量因字段类型而异。表3-6给出了字段类型和常量类型的对应关系。
+`attribute_length`的值必须是`2`。`constantvalue_index`是常量池索引，但具体指向哪种常量因字段类型而异。表3-6给出了字段类型和常量类型的对应关系。
 
 表3-5 字段类型和常量类型对应关系
 
@@ -1755,7 +1752,7 @@ attribute_length的值必须是2。constantvalue_index是常量池索引，但�
 | int, short, char, byte, boolean | CONSTANT_Integer_info |
 | String | CONSTANT_String_info |
 
-在ch03\classfile目录下创建attr_constant_value.go文件，在其中定义ConstantValueAttribute结构体，代码如下：
+在ch03\classfile目录下创建attr_constant_value.go文件，在其中定义`ConstantValueAttribute`结构体，代码如下：
 ``` go
 package classfile
 type ConstantValueAttribute struct {
@@ -1768,18 +1765,18 @@ func (self *ConstantValueAttribute) ConstantValueIndex() uint16 {
 	return self.constantValueIndex
 }
 ```
-在第6章讨论类和对象时，会介绍如何使用ConstantValue属性。下面用classpy观察ClassFileTest类的FLAG字段，如图3-23所示。
+在第6章讨论类和对象时，会介绍如何使用`ConstantValue`属性。下面用`classpy`观察`ClassFileTest`类的`FLAG`字段，如图3-23所示。
 
 ![图3-23](https://i.loli.net/2019/07/10/5d25f64597ab760315.png)
 图3-23 用classpy观察ConstantValue属性
 
-可以看到，属性表里确实有一个ConstantValue属性，constantvalue_index是10(0x0A)，指向CONSTANT_Integer_info，如图3-24所示。
+可以看到，属性表里确实有一个`ConstantValue`属性，`constantvalue_index`是`10(0x0A)`，指向`CONSTANT_Integer_info`，如图3-24所示。
 
 ![图3-24](https://i.loli.net/2019/07/10/5d25f6c19e40d61608.png)
 图3-24 用classpy观察ConstantValue属性(2)
 
 #### 3.4.5 Code属性
-Code是变长属性，只存在于method_info结构中。Code属性中存放字节码等方法相关信息。相比前面介绍的几种属性，Code属性比较复杂，其结构定义如下：
+`Code`是变长属性，只存在于`method_info`结构中。`Code`属性中存放字节码等方法相关信息。相比前面介绍的几种属性，`Code`属性比较复杂，其结构定义如下：
 ``` java
 Code_attribute {
 	u2 attribute_name_index;
@@ -1799,9 +1796,9 @@ Code_attribute {
 	attribute_info attributes[attributes_count];
 }
 ```
-max_stack给出操作数栈的最大深度，max_locals给出局部变量表大小。接着是字节码，存在u1表中。最后是异常处理表和属性表。在第4章讨论运行时数据区，并且实现操作数栈和局部变量表时，max_stack和max_locals就会派上用场。在第5章讨论指令集和解释器时，会用到字节码。在第10章讨论异常处理时，会使用异常处理表。
+`max_stack`给出操作数栈的最大深度，`max_locals`给出局部变量表大小。接着是字节码，存在u1表中。最后是异常处理表和属性表。在第4章讨论运行时数据区，并且实现操作数栈和局部变量表时，`max_stack`和`max_locals`就会派上用场。在第5章讨论指令集和解释器时，会用到字节码。在第10章讨论异常处理时，会使用异常处理表。
 
-把Code属性结构翻译成Go结构体，定义在ch03\classfile\attr_code.go文件中，代码如下：
+把`Code`属性结构翻译成Go结构体，定义在ch03\classfile\attr_code.go文件中，代码如下：
 ``` go
 package classfile
 type CodeAttribute struct {
@@ -1820,7 +1817,7 @@ type ExceptionTableEntry struct {
 }
 func (self *CodeAttribute) readInfo(reader *ClassReader) { ... }
 ```
-readInfo()方法的代码如下：
+`readInfo()`方法的代码如下：
 ``` go
 func (self *CodeAttribute) readInfo(reader *ClassReader) {
 	self.maxStack = reader.readUint16()
@@ -1847,13 +1844,13 @@ func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
 	return exceptionTable
 }
 ```
-`ClassFileTest.main()`方法的Code属性如图3-25所示。
+`ClassFileTest.main()`方法的`Code`属性如图3-25所示。
 
 ![图3-25](https://i.loli.net/2019/07/10/5d25f6ff8276f40903.png)
 图3-25 用classpy观察Code属性
 
 #### 3.4.6 Exceptions属性
-Exceptions是变长属性，记录方法抛出的异常表，其结构定义如下：
+`Exceptions`是变长属性，记录方法抛出的异常表，其结构定义如下：
 ``` go
 Exceptions_attribute {
 	u2 attribute_name_index;
@@ -1862,7 +1859,7 @@ Exceptions_attribute {
 	u2 exception_index_table[number_of_exceptions];
 }
 ```
-在ch03\classfile目录下创建attr_exceptions.go文件，在其中定义ExceptionsAttribute结构体，代码如下：
+在ch03\classfile目录下创建attr_exceptions.go文件，在其中定义`ExceptionsAttribute`结构体，代码如下：
 ``` go
 package classfile
 type ExceptionsAttribute struct {
@@ -1875,15 +1872,15 @@ func (self *ExceptionsAttribute) ExceptionIndexTable() []uint16 {
 	return self.exceptionIndexTable
 }
 ```
-代码比较简单，就不多解释了。`ClassFileTest.main()`方法的Exceptions属性如图3-26所示。
+代码比较简单，就不多解释了。`ClassFileTest.main()`方法的`Exceptions`属性如图3-26所示。
 
 ![图3-26](https://i.loli.net/2019/07/10/5d25f74b55bf197471.png)
 图3-26 用classpy观察Code属性
 
 #### 3.4.7 LineNumberTable和LocalVariableTable属性
-LineNumberTable属性表存放方法的行号信息，LocalVariableTable属性表中存放方法的局部变量信息。这两种属性和前面介绍的SourceFile属性都属于调试信息，都不是运行时必需的。在使用javac编译器编译Java程序时，默认会在class文件中生成这些信息。可以使用javac提供的-g:none选项来关闭这些信息的生成，这里就不多介绍了，具体请参考javac用法。
+`LineNumberTable`属性表存放方法的行号信息，`LocalVariableTable`属性表中存放方法的局部变量信息。这两种属性和前面介绍的`SourceFile`属性都属于调试信息，都不是运行时必需的。在使用`javac`编译器编译Java程序时，默认会在class文件中生成这些信息。可以使用`javac`提供的`-g:none`选项来关闭这些信息的生成，这里就不多介绍了，具体请参考`javac`用法。
 
-LineNumberTable和LocalVariableTable属性表在结构上很像，下面以LineNumberTable为例进行讨论，它的结构定义如下：
+`LineNumberTable`和`LocalVariableTable`属性表在结构上很像，下面以`LineNumberTable`为例进行讨论，它的结构定义如下：
 ``` go
 LineNumberTable_attribute {
 	u2 attribute_name_index;
@@ -1907,7 +1904,7 @@ type LineNumberTableEntry struct {
 }
 func (self *LineNumberTableAttribute) readInfo(reader *ClassReader) { ... }
 ```
-readInfo()方法读取属性表数据，代码如下：
+`readInfo()`方法读取属性表数据，代码如下：
 ``` go
 func (self *LineNumberTableAttribute) readInfo(reader *ClassReader) {
 	lineNumberTableLength := reader.readUint16()
@@ -1920,12 +1917,12 @@ func (self *LineNumberTableAttribute) readInfo(reader *ClassReader) {
 	}
 }
 ```
-在第10章讨论异常处理时会详细讨论LineNumberTable属性。
+在第10章讨论异常处理时会详细讨论`LineNumberTable`属性。
 
 ### 3.5 测试本章代码
 在第2章的测试中，把class文件加载到了内存中，并且把一堆看似杂乱无章的数字打印到了控制台。相信读者一定不会满足于此。本节就来修改测试代码，把命令行工具临时打造成一个简化版的javap。
 
-打开ch03\main.go文件，修改import语句和startJVM()函数，代码如下：
+打开ch03\main.go文件，修改`import`语句和`startJVM()`函数，代码如下：
 ``` go
 package main
 import "fmt"
@@ -1935,7 +1932,7 @@ import "jvmgo/ch03/classpath"
 func main() {...}
 func startJVM(options *cmdline.Options, class string, args []string) {...}
 ```
-`main()`函数不用变，修改startJVM()函数，代码如下：
+`main()`函数不用变，修改`startJVM()`函数，代码如下：
 ``` go
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
@@ -1945,7 +1942,7 @@ func startJVM(cmd *Cmd) {
 	printClassInfo(cf)
 }
 ```
-loadClass()函数读取并解析class文件，代码如下：
+`loadClass()`函数读取并解析class文件，代码如下：
 ``` go
 func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
 	classData, _, err := cp.ReadClass(className)
@@ -1959,7 +1956,7 @@ func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
 	return cf
 }
 ```
-printClassInfo()函数把class文件的一些重要信息打印出来，代码如下：
+`printClassInfo()`函数把class文件的一些重要信息打印出来，代码如下：
 ``` go
 func printClassInfo(cf *classfile.ClassFile) {
 	fmt.Printf("version: %v.%v\n", cf.MajorVersion(), cf.MinorVersion())
@@ -1982,18 +1979,18 @@ func printClassInfo(cf *classfile.ClassFile) {
 ```
 go install jvmgo\ch03
 ```
-编译成功后，在D:\go\workspace\bin目录下会出现ch03.exe文件。执行ch03.exe，指定-Xjre选项和类名，就可以打印出class文件的信息。笔者把java.lang.String.class文件(位于rt.jar中)的信息打印了出来，如图3-27所示。如果读者想测试自己编写的类，记得要指定-classpath选项。与第2章相比，我们显然取得了很大的进步。
+编译成功后，在D:\go\workspace\bin目录下会出现ch03.exe文件。执行ch03.exe，指定-Xjre选项和类名，就可以打印出class文件的信息。笔者把java.lang.String.class文件（位于rt.jar中）的信息打印了出来，如图3-27所示。如果读者想测试自己编写的类，记得要指定`-classpath`选项。与第2章相比，我们显然取得了很大的进步。
 
 ![3-27](https://i.loli.net/2019/07/10/5d25f77b4ed4272027.png)
 图3-27 ch03.exe的测试结果
 
 ### 3.6 本章小结
-计算机科学家David Wheeler有一句名言：“计算机科学中的任何难题都可以通过增加一个中间层来解决” [1] 。ClassFile结构体就是为了实现类加载功能而增加的中间层。在第6章，我们会进一步处理ClassFile结构体，把它转变Class结构体，并放入方法区。不过在此之前，要先在第4章实现运行时数据区，在第5章实现字节码解释器。
+计算机科学家David Wheeler有一句名言：“计算机科学中的任何难题都可以通过增加一个中间层来解决” [1] 。`ClassFile`结构体就是为了实现类加载功能而增加的中间层。在第6章，我们会进一步处理`ClassFile`结构体，把它转变`Class`结构体，并放入方法区。不过在此之前，要先在第4章实现运行时数据区，在第5章实现字节码解释器。
 
 - [1] 原文为All problems in computer science can be solved by anotherlevel of indirection。
 
 ## 第4章 运行时数据区
-第1章编写了命令行工具，第2章和第3章讨论了如何搜索和解析class文件。读者也许有些着急了，为什么读到第4章后连Java虚拟机的影子都还没有看到？别着急，本章就来讨论并初步实现运行时数据区(run-time data area)，为下一章编写字节码解释器做准备。
+第1章编写了命令行工具，第2章和第3章讨论了如何搜索和解析class文件。读者也许有些着急了，为什么读到第4章后连Java虚拟机的影子都还没有看到？别着急，本章就来讨论并初步实现运行时数据区（run-time data area），为下一章编写字节码解释器做准备。
 
 在开始阅读本章之前，还是先准备好目录结构。复制ch03目录，改名为ch04。修改main.go等源文件，把import语句中的ch03全都改成ch04，然后在ch04目录下创建rtda [1] 子目录。现在我们的目录结构应该如下所示：
 ```
@@ -2012,9 +2009,9 @@ D:\go\workspace\src
 ### 4.1 运行时数据区概述
 在运行Java程序时，Java虚拟机需要使用内存来存放各式各样的数据。Java虚拟机规范把这些内存区域叫作运行时数据区。运行时数据区可以分为两类：一类是多线程共享的，另一类则是线程私有的。多线程共享的运行时数据区需要在Java虚拟机启动时创建好，在Java虚拟机退出时销毁。线程私有的运行时数据区则在创建线程时才创建，线程退出时销毁。
 
-多线程共享的内存区域主要存放两类数据：类数据和类实例(也就是对象)。对象数据存放在堆(Heap)中，类数据存放在方法区(Method Area)中。堆由垃圾收集器定期清理，所以程序员不需要关心对象空间的释放。类数据包括字段和方法信息、方法的字节码、运行时常量池，等等。从逻辑上来讲，方法区其实也是堆的一部分。
+多线程共享的内存区域主要存放两类数据：类数据和类实例（也就是对象）。对象数据存放在堆（Heap）中，类数据存放在方法区（Method Area）中。堆由垃圾收集器定期清理，所以程序员不需要关心对象空间的释放。类数据包括字段和方法信息、方法的字节码、运行时常量池，等等。从逻辑上来讲，方法区其实也是堆的一部分。
 
-线程私有的运行时数据区用于辅助执行Java字节码。每个线程都有自己的pc寄存器(Program Counter)和Java虚拟机栈(JVM Stack)。Java虚拟机栈又由栈帧(Stack Frame，后面简称帧)构成，帧中保存方法执行的状态，包括局部变量表(Local Variable)和操作数栈(Operand Stack)等。在任一时刻，某一线程肯定是在执行某个方法。这个方法叫作该线程的当前方法；执行该方法的帧叫作线程的当前帧；声明该方法的类叫作当前类。如果当前方法是Java方法，则pc寄存器中存放当前正在执行的Java虚拟机指令的地址，否则，当前方法是本地方法，pc寄存器中的值没有明确定义。
+线程私有的运行时数据区用于辅助执行Java字节码。每个线程都有自己的pc寄存器（Program Counter）和Java虚拟机栈（JVM Stack）。Java虚拟机栈又由栈帧（Stack Frame，后面简称帧）构成，帧中保存方法执行的状态，包括局部变量表（Local Variable）和操作数栈（Operand Stack）等。在任一时刻，某一线程肯定是在执行某个方法。这个方法叫作该线程的当前方法；执行该方法的帧叫作线程的当前帧；声明该方法的类叫作当前类。如果当前方法是Java方法，则pc寄存器中存放当前正在执行的Java虚拟机指令的地址，否则，当前方法是本地方法，pc寄存器中的值没有明确定义。
 
 根据以上描述，可以大致勾勒出运行时数据区的逻辑结构，如图4-1所示。
 
@@ -2025,12 +2022,12 @@ Java虚拟机规范对于运行时数据区的规定是相当宽松的。以堆�
 
 本章将初步实现线程私有的运行时数据区，为第5章介绍指令集打下基础。方法区和运行时常量池将在第6章详细介绍。
 
-- [1] java命令提供了-Xms和-Xmx两个非标准选项，用来调整堆的初始大小和最大大小。java命令的详细介绍请参考第1章内容。
+- [1] java命令提供了`-Xms`和`-Xmx`两个非标准选项，用来调整堆的初始大小和最大大小。java命令的详细介绍请参考第1章内容。
 
 ### 4.2 数据类型
-Java虚拟机可以操作两类数据：基本类型(primitive type)和引用类型(reference type)。基本类型的变量存放的就是数据本身，引用类型的变量存放的是对象引用，真正的对象数据是在堆里分配的。这里所说的变量包括类变量(静态字段)、实例变量(非静态字段)、数组元素、方法的参数和局部变量，等等。
+Java虚拟机可以操作两类数据：基本类型（primitive type）和引用类型（reference type）。基本类型的变量存放的就是数据本身，引用类型的变量存放的是对象引用，真正的对象数据是在堆里分配的。这里所说的变量包括类变量（静态字段）、实例变量（非静态字段）、数组元素、方法的参数和局部变量，等等。
 
-基本类型可以进一步分为布尔类型(boolean type)和数字类型(numeric type) [1] ，数字类型又可以分为整数类型(integral type)和浮点数类型(floating-point type)。引用类型可以进一步分为3种：类类型、接口类型和数组类型。类类型引用指向类实例，数组类型引用指向数组实例，接口类型引用指向实现了该接口的类或数组实例。引用类型有一个特殊的值——null，表示该引用不指向任何对象。
+基本类型可以进一步分为布尔类型（boolean type）和数字类型（numeric type） [1] ，数字类型又可以分为整数类型（integral type）和浮点数类型（floating-point type）。引用类型可以进一步分为3种：类类型、接口类型和数组类型。类类型引用指向类实例，数组类型引用指向数组实例，接口类型引用指向实现了该接口的类或数组实例。引用类型有一个特殊的值——null，表示该引用不指向任何对象。
 
 Go语言提供了非常丰富的数据类型，包括各种整数和两种精度的浮点数。Java和Go的浮点数都采用IEEE 754规范 [2] 。对于基本类型，可以直接在Go和Java之间建立映射关系。对于引用类型，自然的选择是使用指针。Go提供了nil，表示空指针，正好可以用来表示null。由于要到第6章才开始实现类和对象，所以本章先定义一个临时的结构体，用它来表示对象。在ch04\rtda目录下创建object.go，在其中定义Object结构体，代码如下：
 ``` go
@@ -2065,7 +2062,7 @@ func (self *Thread) PushFrame(frame *Frame) { ... }
 func (self *Thread) PopFrame() *Frame       { ... }
 func (self *Thread) CurrentFrame() *Frame   { ... }
 ```
-目前只定义了pc和stack两个字段。pc字段无需解释，stack字段是Stack结构体(Java虚拟机栈)指针。Stack结构体在4.3.2节介绍。
+目前只定义了pc和stack两个字段。pc字段无需解释，stack字段是Stack结构体（Java虚拟机栈）指针。Stack结构体在4.3.2节介绍。
 
 和堆一样，Java虚拟机规范对Java虚拟机栈的约束也相当宽松。Java虚拟机栈可以是连续的空间，也可以不连续；可以是固定大小，也可以在运行时动态扩展 [1] 。如果Java虚拟机栈有大小限制，且执行线程所需的栈空间超出了这个限制，会导致StackOverflowError异常抛出。如果Java虚拟机栈可以动态扩展，但是内存已经耗尽，会导致OutOfMemoryError异常抛出。
 
@@ -2097,7 +2094,7 @@ func (self *Thread) CurrentFrame() *Frame {
 [1] java命令提供了-Xss选项来设置Java虚拟机栈大小。
 
 #### 4.3.2 Java虚拟机栈
-如前所述，Java虚拟机规范对Java虚拟机栈的约束非常宽松。我们用经典的链表(linked list)数据结构来实现Java虚拟机栈，这样栈就可以按需使用内存空间，而且弹出的帧也可以及时被Go的垃圾收集器回收。在ch04\jvm\rtda目录下创建jvm_stack.go文件，在其中定义Stack结构体，代码如下：
+如前所述，Java虚拟机规范对Java虚拟机栈的约束非常宽松。我们用经典的链表（linked list）数据结构来实现Java虚拟机栈，这样栈就可以按需使用内存空间，而且弹出的帧也可以及时被Go的垃圾收集器回收。在ch04\jvm\rtda目录下创建jvm_stack.go文件，在其中定义Stack结构体，代码如下：
 ``` go
 package rtda
 type Stack struct {
@@ -2111,7 +2108,7 @@ func (self *Stack) pop() *Frame       { ... }
 func (self *Stack) top() *Frame       { ... }
 
 ```
-maxSize字段保存栈的容量(最多可以容纳多少帧)，size字段保存栈的当前大小，_top字段保存栈顶指针。newStack()函数的代码如下：
+maxSize字段保存栈的容量（最多可以容纳多少帧)，size字段保存栈的当前大小，_top字段保存栈顶指针。newStack()函数的代码如下：
 ``` go
 func newStack(maxSize uint) *Stack {
 	return &Stack{
@@ -2525,14 +2522,14 @@ D:\go\workspace\src
 ```
 
 ### 5.1 字节码和指令集
-Java虚拟机顾名思义，就是一台虚拟的机器，而字节码(bytecode)就是运行在这台虚拟机器上的机器码。我们已经知道，每一个类或者接口都会被Java编译器编译成一个class文件，类或接口的方法信息就放在class文件的method_info结构中 [1] 。如果方法不是抽象的，也不是本地方法，方法的Java代码就会被编译器编译成字节码(即使方法是空的，编译器也会生成一条return语句)，存放在method_info结构的Code属性中。仍以第3章的ClassFileTest类为例，其`main()`方法如图5-1所示。
+Java虚拟机顾名思义，就是一台虚拟的机器，而字节码（bytecode）就是运行在这台虚拟机器上的机器码。我们已经知道，每一个类或者接口都会被Java编译器编译成一个class文件，类或接口的方法信息就放在class文件的method_info结构中 [1] 。如果方法不是抽象的，也不是本地方法，方法的Java代码就会被编译器编译成字节码（即使方法是空的，编译器也会生成一条return语句），存放在method_info结构的Code属性中。仍以第3章的ClassFileTest类为例，其`main()`方法如图5-1所示。
 
 ![图5-1](https://i.loli.net/2019/07/11/5d26dbac5192063516.png)
 图5-1 用classpy观察方法字节码
 
-字节码中存放编码后的Java虚拟机指令。每条指令都以一个单字节的操作码(opcode)开头，这就是字节码名称的由来。由于只使用一字节表示操作码，显而易见，Java虚拟机最多只能支持256(2^8)条指令。到第八版为止，Java虚拟机规范已经定义了205条指令，操作码分别是0(0x00)到202(0xCA)、254(0xFE)和255(0xFF)。这205条指令构成了Java虚拟机的指令集(instruction set)。和汇编语言类似，为了便于记忆，Java虚拟机规范给每个操作码都指定了一个助记符(mnemonic)。比如操作码是0x00这条指令，因为它什么也不做，所以它的助记符是nop(no operation)。
+字节码中存放编码后的Java虚拟机指令。每条指令都以一个单字节的操作码（opcode）开头，这就是字节码名称的由来。由于只使用一字节表示操作码，显而易见，Java虚拟机最多只能支持256(2^8)条指令。到第八版为止，Java虚拟机规范已经定义了205条指令，操作码分别是0(0x00)到202(0xCA)、254(0xFE)和255(0xFF)。这205条指令构成了Java虚拟机的指令集（instruction set）。和汇编语言类似，为了便于记忆，Java虚拟机规范给每个操作码都指定了一个助记符（mnemonic）。比如操作码是0x00这条指令，因为它什么也不做，所以它的助记符是nop(no operation)。
 
-Java虚拟机使用的是变长指令，操作码后面可以跟零字节或多字节的操作数(operand)。如果把指令想象成函数的话，操作数就是它的参数。为了让编码后的字节码更加紧凑，很多操作码本身就隐含了操作数，比如把常数0推入操作数栈的指令是iconst_0。下面通过具体的例子来观察Java虚拟机指令。图5-2为`ClassFileTest.main()`方法的第一条指令。
+Java虚拟机使用的是变长指令，操作码后面可以跟零字节或多字节的操作数（operand）。如果把指令想象成函数的话，操作数就是它的参数。为了让编码后的字节码更加紧凑，很多操作码本身就隐含了操作数，比如把常数0推入操作数栈的指令是iconst_0。下面通过具体的例子来观察Java虚拟机指令。图5-2为`ClassFileTest.main()`方法的第一条指令。
 
 ![图5-2](https://i.loli.net/2019/07/11/5d26dbf6a48c610489.png)
 图5-2 用classpy观察getstatic指令
@@ -2554,7 +2551,7 @@ Java虚拟机使用的是变长指令，操作码后面可以跟零字节或多�
 | l | long | load、lstore、ladd |
 | s | short | sipush、sastore |
 
-Java虚拟机规范把已经定义的205条指令按用途分成了11类，分别是：常量(constants)指令、加载(loads)指令、存储(stores)指令、操作数栈(stack)指令、数学(math)指令、转换(conversions)指令、比较(comparisons)指令、控制(control)指令、引用(references)指令、扩展(extended)指令和保留(reserved)指令。
+Java虚拟机规范把已经定义的205条指令按用途分成了11类，分别是：常量（constants）指令、加载（loads）指令、存储（stores）指令、操作数栈（stack）指令、数学（math）指令、转换（conversions）指令、比较（comparisons）指令、控制（control）指令、引用（references）指令、扩展（extended）指令和保留（reserved）指令。
 
 保留指令一共有3条。其中一条是留给调试器的，用于实现断点，操作码是202(0xCA)，助记符是breakpoint。另外两条留给Java虚拟机实现内部使用，操作码分别是254(0xFE)和266(0xFF)，助记符是impdep1和impdep2。这三条指令不允许出现在class文件中。
 
@@ -2719,7 +2716,7 @@ func (self *BytecodeReader) ReadInt32() int32 {
 ```
 还需要定义两个方法：ReadInt32s()和SkipPadding()。这两个方法只有tableswitch和lookupswitch指令使用，介绍这两条指令时再给出代码。
 
-在接下来的9个小节中，将按照分类依次实现约150条指令，占整个指令集的3/4。读者千万不要被150这个数字吓倒，因为很多指令其实是非常相似的。比如iload、lload、fload、dload和aload这5条指令，除了操作的数据类型不同以外，代码几乎一样。再比如iload_0、iload_1、iload_2和iload_3这四条指令，只是iload指令的特例(局部变量表索引隐含在操作码中)，操作逻辑完全一样。
+在接下来的9个小节中，将按照分类依次实现约150条指令，占整个指令集的3/4。读者千万不要被150这个数字吓倒，因为很多指令其实是非常相似的。比如iload、lload、fload、dload和aload这5条指令，除了操作的数据类型不同以外，代码几乎一样。再比如iload_0、iload_1、iload_2和iload_3这四条指令，只是iload指令的特例（局部变量表索引隐含在操作码中），操作逻辑完全一样。
 
 如果逐一列出这150余条指令的代码，既枯燥乏味，也相当浪费纸张。为了节约篇幅，只讨论一些具有代表意义的指令的实现代码，从这些指令可以很容易想象到其他指令的实现。附录A给出了完整的指令集列表，里面有每个指令的操作码、助记符和本书中实现它们的章节，以方便读者参考。
 
@@ -2955,7 +2952,7 @@ func (self *SWAP) Execute(frame *rtda.Frame) {
 数学指令大致对应Java语言中的加、减、乘、除等数学运算符。数学指令包括算术指令、位移指令和布尔运算指令等，共37条，将全部在本节实现。
 
 #### 5.7.1 算术指令
-算术指令又可以进一步分为加法(add)指令、减法(sub)指令、乘法(mul)指令、除法(div)指令、求余(rem)指令和取反(neg)指令6种。加、减、乘、除和取反指令都比较简单，本节以稍微复杂一些的求余指令为例进行讨论。
+算术指令又可以进一步分为加法（add）指令、减法（sub）指令、乘法（mul）指令、除法（div）指令、求余（rem）指令和取反（neg）指令6种。加、减、乘、除和取反指令都比较简单，本节以稍微复杂一些的求余指令为例进行讨论。
 
 在ch05\instructions\math目录下创建rem.go文件，在其中定义4条求余指令，代码如下：
 ``` go
@@ -2991,10 +2988,10 @@ func (self *DREM) Execute(frame *rtda.Frame) {
 	stack.PushDouble(result)
 }
 ```
-Go语言没有给浮点数类型定义求余操作符，所以需要使用math包的Mod()函数。另外，浮点数类型因为有Infinity(无穷大)值，所以即使是除零，也不会导致ArithmeticException异常抛出。
+Go语言没有给浮点数类型定义求余操作符，所以需要使用math包的Mod()函数。另外，浮点数类型因为有Infinity（无穷大）值，所以即使是除零，也不会导致ArithmeticException异常抛出。
 
 #### 5.7.2 位移指令
-位移指令可以分为左移和右移两种，右移指令又可以分为算术右移(有符号右移)和逻辑右移(无符号右移)两种。算术右移和逻辑位移的区别仅在于符号位的扩展，如下面的Java代码所示。
+位移指令可以分为左移和右移两种，右移指令又可以分为算术右移（有符号右移）和逻辑右移（无符号右移）两种。算术右移和逻辑位移的区别仅在于符号位的扩展，如下面的Java代码所示。
 ``` go
 int x = -1;
 println(Integer.toBinaryString(x));       // 11111111111111111111111111111111
@@ -3051,7 +3048,7 @@ func (self *IUSHR) Execute(frame *rtda.Frame) {
 Go语言并没有Java语言中的>>>运算符，为了达到无符号位移的目的，需要先把v1转成无符号整数，位移操作之后，再转回有符号整数。
 
 #### 5.7.3 布尔运算指令
-布尔运算指令只能操作int和long变量，分为按位与(and)、按位或(or)、按位异或(xor)3种。以按位与为例介绍布尔运算指令。在ch05\instructions\math目录下创建and.go文件，在其中定义iand和land指令，代码如下：
+布尔运算指令只能操作int和long变量，分为按位与（and）、按位或（or）、按位异或（xor）3种。以按位与为例介绍布尔运算指令。在ch05\instructions\math目录下创建and.go文件，在其中定义iand和land指令，代码如下：
 ``` go
 package math
 import "jvmgo/ch05/instructions/base"
@@ -3163,7 +3160,7 @@ import "jvmgo/ch05/rtda"
 type FCMPG struct{ base.NoOperandsInstruction }
 type FCMPL struct{ base.NoOperandsInstruction }
 ```
-这两条指令和lcmp指令很像，但是除了比较的变量类型不同以外，还有一个重要的区别。由于浮点数计算有可能产生NaN(Not a Number)值，所以比较两个浮点数时，除了大于、等于、小于之外，还有第4种结果：无法比较。fcmpg和fcmpl指令的区别就在于对第4种结果的定义。编写一个函数来统一比较float变量，代码如下：
+这两条指令和lcmp指令很像，但是除了比较的变量类型不同以外，还有一个重要的区别。由于浮点数计算有可能产生NaN（Not a Number）值，所以比较两个浮点数时，除了大于、等于、小于之外，还有第4种结果：无法比较。fcmpg和fcmpl指令的区别就在于对第4种结果的定义。编写一个函数来统一比较float变量，代码如下：
 ``` go
 func _fcmp(frame *rtda.Frame, gFlag bool) {
 	stack := frame.OperandStack()
@@ -3195,7 +3192,7 @@ func (self *FCMPL) Execute(frame *rtda.Frame) {
 dcmpg和dcmpl指令用来比较double变量，在dcmp.go文件中，这两条指令和fcmpg、fcmpl指令除了比较的变量类型不同之外，代码基本上完全一样，这里就不详细介绍了。
 
 #### 5.9.3 if<cond>指令
-在ch05\instructions\comparisons目录下创建ifcond.go文件，在其中定义6条if<cond>指令，代码如下：
+在ch05\instructions\comparisons目录下创建ifcond.go文件，在其中定义6条`if<cond>`指令，代码如下：
 ``` go
 package comparisons
 import "jvmgo/ch05/instructions/base"
@@ -3208,7 +3205,7 @@ type IFLE struct{ base.BranchInstruction }
 type IFGT struct{ base.BranchInstruction }
 type IFGE struct{ base.BranchInstruction }
 ```
-if<cond>指令把操作数栈顶的int变量弹出，然后跟0进行比较，满足条件则跳转。假设从栈顶弹出的变量是x，则指令执行跳转操作的条件如下：
+`if<cond>`指令把操作数栈顶的int变量弹出，然后跟0进行比较，满足条件则跳转。假设从栈顶弹出的变量是x，则指令执行跳转操作的条件如下：
 
 - ifeq:x==0
 - ifne:x!=0
@@ -3251,7 +3248,7 @@ type IF_ICMPLE struct{ base.BranchInstruction }
 type IF_ICMPGT struct{ base.BranchInstruction }
 type IF_ICMPGE struct{ base.BranchInstruction }
 ```
-if_icmp<cond>指令把栈顶的两个int变量弹出，然后进行比较，满足条件则跳转。跳转条件和if<cond>指令类似。以if_icmpne指令为例，其Execute()方法如下：
+`if_icmp<cond>`指令把栈顶的两个int变量弹出，然后进行比较，满足条件则跳转。跳转条件和`if<cond>`指令类似。以if_icmpne指令为例，其Execute()方法如下：
 ``` go
 func (self *IF_ICMPNE) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
@@ -3264,7 +3261,7 @@ func (self *IF_ICMPNE) Execute(frame *rtda.Frame) {
 ```
 
 #### 5.9.5 if_acmp<cond>指令
-在ch05\instructions\comparisons目录下创建if_acmp.go文件，在其中定义两条if_acmp<cond>指令，代码如下：
+在ch05\instructions\comparisons目录下创建if_acmp.go文件，在其中定义两条`if_acmp<cond>`指令，代码如下：
 ``` go
 package comparisons
 import "jvmgo/ch05/instructions/base"
@@ -3586,7 +3583,7 @@ func (self *Thread) NewFrame(maxLocals, maxStack uint) *Frame {
 	return newFrame(self, maxLocals, maxStack)
 }
 ```
-Frame结构体也有变化，增加了两个字段，改动如下(在ch05\rtda\frame.go文件中)：
+Frame结构体也有变化，增加了两个字段，改动如下（在ch05\rtda\frame.go文件中）：
 ``` go
 type Frame struct {
 	lower        *Frame
@@ -3869,7 +3866,7 @@ func (self *Class) IsPublic() bool {
 后面将要介绍的Field和Method结构体也有类似的方法，届时也将不再赘述，请读者注意。
 
 #### 6.1.2 字段信息
-字段和方法都属于类的成员，它们有一些相同的信息(访问标志、名字、描述符)。为了避免重复代码，创建一个结构体存放这些信息。在ch06\rtda\heap目录下创建class_member.go文件，在其中定义ClassMember结构体，代码如下：
+字段和方法都属于类的成员，它们有一些相同的信息（访问标志、名字、描述符）。为了避免重复代码，创建一个结构体存放这些信息。在ch06\rtda\heap目录下创建class_member.go文件，在其中定义ClassMember结构体，代码如下：
 ``` go
 package heap
 import "jvmgo/ch06/classfile"
@@ -3960,7 +3957,7 @@ func (self *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 Class结构体还有几个字段没有说明。loader字段存放类加载器指针，superClass和interfaces字段存放类的超类和接口指针，这三个字段将在6.3节介绍。staticSlotCount和instanceSlotCount字段分别存放类变量和实例变量占据的空间大小，staticVars字段存放静态变量，这三个字段将在6.4节介绍。
 
 ### 6.2 运行时常量池
-运行时常量池主要存放两类信息：字面量(literal)和符号引用(symbolic reference)。字面量包括整数、浮点数和字符串字面量；符号引用包括类符号引用、字段符号引用、方法符号引用和接口方法符号引用。在ch06\rtda\heap目录下创建constant_pool.go文件，在其中定义Constant接口和ConstantPool结构体，代码如下：
+运行时常量池主要存放两类信息：字面量（literal）和符号引用（symbolic reference）。字面量包括整数、浮点数和字符串字面量；符号引用包括类符号引用、字段符号引用、方法符号引用和接口方法符号引用。在ch06\rtda\heap目录下创建constant_pool.go文件，在其中定义Constant接口和ConstantPool结构体，代码如下：
 ``` go
 package heap
 import "fmt"
@@ -4399,7 +4396,7 @@ func allocAndInitStaticVars(class *Class) {
 	}
 }
 ```
-因为Go语言会保证新创建的Slot结构体有默认值(num字段是0，ref字段是nil)，而浮点数0编码之后和整数0相同，所以不用做任何操作就可以保证静态变量有默认初始值(数字类型是0，引用类型是null)。如果静态变量属于基本类型或String类型，有final修饰符，且它的值在编译期已知，则该值存储在class文件常量池中。
+因为Go语言会保证新创建的Slot结构体有默认值（num字段是0，ref字段是nil），而浮点数0编码之后和整数0相同，所以不用做任何操作就可以保证静态变量有默认初始值（数字类型是0，引用类型是null）。如果静态变量属于基本类型或String类型，有final修饰符，且它的值在编译期已知，则该值存储在class文件常量池中。
 
 initStaticFinalVar()函数从常量池中加载常量值，然后给静态变量赋值，代码如下：
 ``` go
@@ -4484,7 +4481,7 @@ func (self *SymRef) ResolvedClass() *Class {
 	return self.class
 }
 ```
-如果类符号引用已经解析，ResolvedClass()方法直接返回类指针，否则调用resolveClassRef()方法进行解析。Java虚拟机规范5.4.3.1节给出了类符号引用的解析步骤，resolveClassRef()方法就是按照这个步骤编写的(有一些简化)，代码如下：
+如果类符号引用已经解析，ResolvedClass()方法直接返回类指针，否则调用resolveClassRef()方法进行解析。Java虚拟机规范5.4.3.1节给出了类符号引用的解析步骤，resolveClassRef()方法就是按照这个步骤编写的（有一些简化)，代码如下：
 ``` go
 func (self *SymRef) resolveClassRef() {
 	d := self.cp.class
@@ -4495,13 +4492,13 @@ func (self *SymRef) resolveClassRef() {
 	self.class = c
 }
 ```
-通俗地讲，如果类D通过符号引用N引用类C的话，要解析N，先用D的类加载器加载C，然后检查D是否有权限访问C，如果没有，则抛出IllegalAccessError异常。Java虚拟机规范5.4.4节给出了类的访问控制规则，把这个规则翻译成Class结构体的isAccessibleTo()方法，代码如下(在class.go文件中)：
+通俗地讲，如果类D通过符号引用N引用类C的话，要解析N，先用D的类加载器加载C，然后检查D是否有权限访问C，如果没有，则抛出IllegalAccessError异常。Java虚拟机规范5.4.4节给出了类的访问控制规则，把这个规则翻译成Class结构体的isAccessibleTo()方法，代码如下（在class.go文件中）：
 ``` go
 func (self *Class) isAccessibleTo(other *Class) bool {
 	return self.IsPublic() || self.getPackageName() == other.getPackageName()
 }
 ```
-也就是说，如果类D想访问类C，需要满足两个条件之一：C是public，或者C和D在同一个运行时包内。第11章再讨论运行时包，这里先简单按照包名来检查。getPackageName()方法的代码如下(也在class.go文件中)：
+也就是说，如果类D想访问类C，需要满足两个条件之一：C是public，或者C和D在同一个运行时包内。第11章再讨论运行时包，这里先简单按照包名来检查。getPackageName()方法的代码如下（也在class.go文件中）：
 ``` go
 func (self *Class) getPackageName() string {
 	if i := strings.LastIndex(self.name, "/"); i >= 0 {
@@ -4556,7 +4553,7 @@ func lookupField(c *Class, name, descriptor string) *Field {
 	return nil
 }
 ```
-首先在C的字段中查找。如果找不到，在C的直接接口递归应用这个查找过程。如果还找不到的话，在C的超类中递归应用这个查找过程。如果仍然找不到，则查找失败。Java虚拟机规范5.4.4节也给出了字段的访问控制规则。这个规则同样也适用于方法，所以把它(略做简化)实现成ClassMember结构体的isAccessibleTo()方法，代码如下(在class_member.go文件中)：
+首先在C的字段中查找。如果找不到，在C的直接接口递归应用这个查找过程。如果还找不到的话，在C的超类中递归应用这个查找过程。如果仍然找不到，则查找失败。Java虚拟机规范5.4.4节也给出了字段的访问控制规则。这个规则同样也适用于方法，所以把它（略做简化）实现成ClassMember结构体的isAccessibleTo()方法，代码如下（在class_member.go文件中）：
 ``` go
 func (self *ClassMember) isAccessibleTo(d *Class) bool {
 	if self.IsPublic() {
@@ -4573,7 +4570,7 @@ func (self *ClassMember) isAccessibleTo(d *Class) bool {
 	return d == c
 }
 ```
-用通俗的语言描述字段访问规则。如果字段是public，则任何类都可以访问。如果字段是protected，则只有子类和同一个包下的类可以访问。如果字段有默认访问权限(非public，非protected，也非privated)，则只有同一个包下的类可以访问。否则，字段是private，只有声明这个字段的类才能访问。
+用通俗的语言描述字段访问规则。如果字段是public，则任何类都可以访问。如果字段是protected，则只有子类和同一个包下的类可以访问。如果字段有默认访问权限（非public，非protected，也非privated），则只有同一个包下的类可以访问。否则，字段是private，只有声明这个字段的类才能访问。
 
 ### 6.6 类和对象相关指令
 本节将实现10条类和对象相关的指令。new指令用来创建类实例；putstatic和getstatic指令用于存取静态变量；putfield和getfield用于存取实例变量；instanceof和checkcast指令用于判断对象是否属于某种类型；ldc系列指令把运行时常量池中的常量推到操作数栈顶。下面的Java代码演示了这些指令的用处。
@@ -4621,7 +4618,7 @@ func (self *NEW) Execute(frame *rtda.Frame) {
 	frame.OperandStack().PushRef(ref)
 }
 ```
-因为接口和抽象类都不能实例化，所以如果解析后的类是接口或抽象类，按照Java虚拟机规范规定，需要抛出InstantiationError异常。另外，如果解析后的类还没有初始化，则需要先初始化类。在第7章实现方法调用之后会详细讨论类的初始化，这里暂时先忽略。Class结构体的NewObject()方法如下(在class.go文件中)：
+因为接口和抽象类都不能实例化，所以如果解析后的类是接口或抽象类，按照Java虚拟机规范规定，需要抛出InstantiationError异常。另外，如果解析后的类还没有初始化，则需要先初始化类。在第7章实现方法调用之后会详细讨论类的初始化，这里暂时先忽略。Class结构体的NewObject()方法如下（在class.go文件中）：
 ``` go
 func (self *Class) NewObject() *Object {
 	return newObject(self)
@@ -4670,7 +4667,7 @@ if field.IsFinal() {
 	}
 }
 ```
-如果解析后的字段是实例字段而非静态字段，则抛出IncompatibleClassChangeError异常。如果是final字段，则实际操作的是静态常量，只能在类初始化方法中给它赋值。否则，会抛出IllegalAccessError异常。类初始化方法由编译器生成，名字是<clinit>，具体请看第7章。继续看代码：
+如果解析后的字段是实例字段而非静态字段，则抛出IncompatibleClassChangeError异常。如果是final字段，则实际操作的是静态常量，只能在类初始化方法中给它赋值。否则，会抛出IllegalAccessError异常。类初始化方法由编译器生成，名字是`<clinit>`，具体请看第7章。继续看代码：
 ``` go
 descriptor := field.Descriptor()
 slotId := field.SlotId()
@@ -4749,7 +4746,7 @@ func (self *PUT_FIELD) Execute(frame *rtda.Frame) {
 	}
 }
 ```
-看起来也和putstatic差不多，但有两点不同(在代码中已经加粗)。第一，解析后的字段必须是实例字段，否则抛出IncompatibleClassChangeError。第二，如果是final字段，则只能在构造函数中初始化，否则抛出IllegalAccessError。在第7章会介绍构造函数。下面看剩下的代码：
+看起来也和putstatic差不多，但有两点不同（在代码中已经加粗）。第一，解析后的字段必须是实例字段，否则抛出IncompatibleClassChangeError。第二，如果是final字段，则只能在构造函数中初始化，否则抛出IllegalAccessError。在第7章会介绍构造函数。下面看剩下的代码：
 ``` go
 descriptor := field.Descriptor()
 slotId := field.SlotId()
@@ -4768,7 +4765,7 @@ case 'D': ...
 case 'L', '[': ...
 }
 ```
-先根据字段类型从操作数栈中弹出相应的变量值，然后弹出对象引用。如果引用是null，需要抛出著名的空指针异常(NullPointerException)，否则通过引用给实例变量赋值。其他的case语句和第一个大同小异，为了节约篇幅，省略了详细代码。
+先根据字段类型从操作数栈中弹出相应的变量值，然后弹出对象引用。如果引用是null，需要抛出著名的空指针异常（NullPointerException），否则通过引用给实例变量赋值。其他的case语句和第一个大同小异，为了节约篇幅，省略了详细代码。
 
 putfield指令解释完毕，下面来看getfield指令。在references目录下创建getfield.go文件，在其中实现getfield指令，代码如下：
 ``` go
@@ -4813,7 +4810,7 @@ if ref == nil {
 根据字段类型，获取相应的实例变量值，然后推入操作数栈。至此，getfield指令也解释完毕了。下面讨论instanceof和checkcast指令。
 
 #### 6.6.4 instanceof和checkcast指令
-instanceof指令判断对象是否是某个类的实例(或者对象的类是否实现了某个接口)，并把结果推入操作数栈。在references目录下创建instanceof.go文件，在其中实现instanceof指令，代码如下：
+instanceof指令判断对象是否是某个类的实例（或者对象的类是否实现了某个接口），并把结果推入操作数栈。在references目录下创建instanceof.go文件，在其中实现instanceof指令，代码如下：
 ``` go
 package references
 import "jvmgo/ch06/instructions/base"
@@ -4854,7 +4851,7 @@ import "jvmgo/ch06/rtda/heap"
 // Check whether object is of given type
 type CHECK_CAST struct{ base.Index16Instruction }
 ```
-checkcast指令和instanceof指令很像，区别在于:instanceof指令会改变操作数栈(弹出对象引用，推入判断结果)；checkcast则不改变操作数栈(如果判断失败，直接抛出ClassCastException异常)。checkcast指令的Execute()方法如下：
+checkcast指令和instanceof指令很像，区别在于:instanceof指令会改变操作数栈（弹出对象引用，推入判断结果）；checkcast则不改变操作数栈（如果判断失败，直接抛出ClassCastException异常）。checkcast指令的Execute()方法如下：
 ``` go
 func (self *CHECK_CAST) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
@@ -4878,7 +4875,7 @@ if (xxx instanceof ClassYYY) {
 	// use yyy
 }
 ```
-Object结构体的IsInstanceOf()方法的代码如下(在object.go文件中)：
+Object结构体的IsInstanceOf()方法的代码如下（在object.go文件中)：
 ``` go
 func (self *Object) IsInstanceOf(class *Class) bool {
 return class.isAssignableFrom(self.class)
@@ -4908,7 +4905,7 @@ if c == other {return true
 return false
 }
 ```
-判断S是否是T的子类，实际上也就是判断T是否是S的(直接或间接)超类。继续编辑class_hierarchy.go文件，在其中实现isImplements()方法，代码如下：
+判断S是否是T的子类，实际上也就是判断T是否是S的（直接或间接)超类。继续编辑class_hierarchy.go文件，在其中实现isImplements()方法，代码如下：
 ``` go
 func (self *Class) isImplements(iface *Class) bool {
 	for c := self; c != nil; c = c.superClass {
@@ -4921,7 +4918,7 @@ func (self *Class) isImplements(iface *Class) bool {
 	return false
 }
 ```
-判断S是否实现了T接口，就看S或S的(直接或间接)超类是否实现了某个接口T'，T'要么是T，要么是T的子接口。isSubInterfaceOf()方法也在class_hierarchy.go文件中，代码如下：
+判断S是否实现了T接口，就看S或S的（直接或间接)超类是否实现了某个接口T'，T'要么是T，要么是T的子接口。isSubInterfaceOf()方法也在class_hierarchy.go文件中，代码如下：
 ``` go
 func (self *Class) isSubInterfaceOf(iface *Class) bool {
 	for _, superInterface := range self.interfaces {
@@ -5032,7 +5029,7 @@ func startJVM(cmd *Cmd) {
 	}
 }
 ```
-先创建ClassLoader实例，然后用它来加载主类，最后执行主类的`main()`方法。Class结构体的GetMainMethod()方法如下(在ch06\rtda\heap\class.go文件中)：
+先创建ClassLoader实例，然后用它来加载主类，最后执行主类的`main()`方法。Class结构体的GetMainMethod()方法如下（在ch06\rtda\heap\class.go文件中)：
 ``` go
 func (self *Class) GetMainMethod() *Method {
 	return self.getStaticMethod("main", "([Ljava/lang/String;)V")
@@ -5157,9 +5154,9 @@ go install jvmgo\ch06
 开始本章之前，还是先把目录结构准备好。复制ch06目录，改名为ch07。修改main.go等文件，把import语句中的ch06全都替换成ch07。本章对目录结构没有太大的调整。
 
 ### 7.1 方法调用概述
-从调用的角度来看，方法可以分为两类：静态方法(或者类方法)和实例方法。静态方法通过类来调用，实例方法则通过对象引用来调用。静态方法是静态绑定的，也就是说，最终调用的是哪个方法在编译期就已经确定。实例方法则支持动态绑定，最终要调用哪个方法可能要推迟到运行期才能知道，本章将详细讨论这一点。
+从调用的角度来看，方法可以分为两类：静态方法（或者类方法）和实例方法。静态方法通过类来调用，实例方法则通过对象引用来调用。静态方法是静态绑定的，也就是说，最终调用的是哪个方法在编译期就已经确定。实例方法则支持动态绑定，最终要调用哪个方法可能要推迟到运行期才能知道，本章将详细讨论这一点。
 
-从实现的角度来看，方法可以分为三类：没有实现(也就是抽象方法)、用Java语言(或者JVM上的其他语言，如Groovy和Scala等)实现和用本地语言(如C或者C++)实现。静态方法和抽象方法是互斥的。在Java 8之前，接口只能包含抽象方法。为了实现Lambda表达式，Java 8放宽了这一限制，在接口中也可以定义静态方法和默认方法。本章不考虑接口的静态方法和默认方法，感兴趣的读者请阅读Java虚拟机规范相关章节。在本书中，我们把Java等语言实现的方法叫作Java方法。本章只讨论Java方法的调用，本地方法调用将在第9章中介绍。
+从实现的角度来看，方法可以分为三类：没有实现（也就是抽象方法）、用Java语言（或者JVM上的其他语言，如Groovy和Scala等）实现和用本地语言（如C或者C++）实现。静态方法和抽象方法是互斥的。在Java 8之前，接口只能包含抽象方法。为了实现Lambda表达式，Java 8放宽了这一限制，在接口中也可以定义静态方法和默认方法。本章不考虑接口的静态方法和默认方法，感兴趣的读者请阅读Java虚拟机规范相关章节。在本书中，我们把Java等语言实现的方法叫作Java方法。本章只讨论Java方法的调用，本地方法调用将在第9章中介绍。
 
 在Java 7之前，Java虚拟机规范一共提供了4条方法调用指令。其中invokestatic指令用来调用静态方法。invokespecial指令用来调用无须动态绑定的实例方法，包括构造函数、私有方法和通过super关键字调用的超类方法。剩下的情况则属于动态绑定。如果是针对接口类型的引用调用方法，就使用invokeinterface指令，否则使用invokevirtual指令。本章将实现这4条指令。
 
@@ -5167,7 +5164,7 @@ go install jvmgo\ch06
 
 首先，方法调用指令需要n+1个操作数，其中第1个操作数是uint16索引，在字节码中紧跟在指令操作码的后面。通过这个索引，可以从当前类的运行时常量池中找到一个方法符号引用，解析这个符号引用就可以得到一个方法。注意，这个方法并不一定就是最终要调用的那个方法，所以可能还需要一个查找过程才能找到最终要调用的方法。剩下的n个操作数是要传递给被调用方法的参数，从操作数栈中弹出。将在7.2小节讨论方法符号引用的解析。
 
-如果要执行的是Java方法(而非本地方法)，下一步是给这个方法创建一个新的帧，并把它推到Java虚拟机栈顶。传递参数之后，新的方法就可以开始执行了。将在7.3小节讨论参数传递，本地方法调用则推迟到第9章再讨论。下面是一段伪代码，用于说明Java方法的调用过程。
+如果要执行的是Java方法（而非本地方法），下一步是给这个方法创建一个新的帧，并把它推到Java虚拟机栈顶。传递参数之后，新的方法就可以开始执行了。将在7.3小节讨论参数传递，本地方法调用则推迟到第9章再讨论。下面是一段伪代码，用于说明Java方法的调用过程。
 ``` go
 func (self *INVOKE_XXX) Execute(frame *rtda.Frame) {
 	cp := frame.Method().Class().ConstantPool()
@@ -5406,7 +5403,7 @@ func (self *RETURN) Execute(frame *rtda.Frame) {
 	frame.Thread().PopFrame()
 }
 ```
-其他5条返回指令的Execute()方法都非常相似，为了节约篇幅，下面只给出ireturn指令的代码(有差异的部分已经加粗)：
+其他5条返回指令的Execute()方法都非常相似，为了节约篇幅，下面只给出ireturn指令的代码（有差异的部分已经加粗）：
 ``` go
 func (self *IRETURN) Execute(frame *rtda.Frame) {
 	thread := frame.Thread()
@@ -5508,7 +5505,7 @@ if currentClass.IsSuper() &&
 	base.InvokeMethod(frame, methodtoBeInvoked)
 }
 ```
-如果查找过程失败，或者找到的方法是抽象的，抛出AbstractMethodError异常。最后，如果一切正常，就调用方法。这里之所以这么复杂，是因为调用超类的(非构造函数)方法需要特别处理。限于篇幅，这里就不深入讨论了，读者可以阅读Java虚拟机规范，了解类的ACC_SUPER访问标志的用法。
+如果查找过程失败，或者找到的方法是抽象的，抛出AbstractMethodError异常。最后，如果一切正常，就调用方法。这里之所以这么复杂，是因为调用超类的（非构造函数)方法需要特别处理。限于篇幅，这里就不深入讨论了，读者可以阅读Java虚拟机规范，了解类的ACC_SUPER访问标志的用法。
 
 OperandStack结构体GetRefFromTop()方法的代码如下：
 ``` go
@@ -5652,7 +5649,7 @@ base.InvokeMethod(frame, methodToBeInvoked)
 ```
 至此，4条方法调用指令都实现完毕了。再总结一下这4条指令的用途。invokestatic指令调用静态方法，很好理解。invokespecial指令也比较好理解。首先，因为私有方法和构造函数不需要动态绑定，所以invokespecial指令可以加快方法调用速度。其次，使用super关键字调用超类中的方法不能使用invokevirtual指令，否则会陷入无限循环。
 
-那么为什么要单独定义invokeinterface指令呢？统一使用invokevirtual指令不行吗？答案是，可以，但是可能会影响效率。这两条指令的区别在于:当Java虚拟机通过invokevirtual调用方法时，this引用指向某个类(或其子类)的实例。因为类的继承层次是固定的，所以虚拟机可以使用一种叫作vtable(Virtual Method Table)的技术加速方法查找。但是当通过invokeinterface指令调用接口方法时，因为this引用可以指向任何实现了该接口的类的实例，所以无法使用vtable技术。
+那么为什么要单独定义invokeinterface指令呢？统一使用invokevirtual指令不行吗？答案是，可以，但是可能会影响效率。这两条指令的区别在于:当Java虚拟机通过invokevirtual调用方法时，this引用指向某个类（或其子类）的实例。因为类的继承层次是固定的，所以虚拟机可以使用一种叫作vtable（Virtual Method Table）的技术加速方法查找。但是当通过invokeinterface指令调用接口方法时，因为this引用可以指向任何实现了该接口的类的实例，所以无法使用vtable技术。
 
 由于篇幅限制，这里就不深入讨论vtable技术了。感兴趣的读者可以阅读相关资料，或者改进我们的代码，给invokevirtual指令增加vtable优化。
 
@@ -5740,7 +5737,7 @@ func logInstruction(frame *rtda.Frame, inst base.Instruction) {
 解释器改造完毕，下面测试方法调用。
 
 ### 7.7 测试方法调用
-先改造命令行工具，给它增加两个选项。java命令提供了-verbose:class(简写为-verbose)选项，可以控制是否把类加载信息输出到控制台。也增加这样一个选项，另外参照这个选项增加一个-verbose:inst选项，用来控制是否把指令执行信息输出到控制台。
+先改造命令行工具，给它增加两个选项。java命令提供了-verbose:class（简写为-verbose）选项，可以控制是否把类加载信息输出到控制台。也增加这样一个选项，另外参照这个选项增加一个-verbose:inst选项，用来控制是否把指令执行信息输出到控制台。
 
 打开ch07\cmd.go文件，修改Cmd结构体如下：
 ``` go
@@ -5830,7 +5827,7 @@ public class InvokeDemo implements Runnable {
     }
 }
 ```
-用javac编译InvokeDemo类，然后用ch07.exe执行InvokeDemo程序，可以看到程序正常执行(没有任何输出)，如图7-3所示。
+用javac编译InvokeDemo类，然后用ch07.exe执行InvokeDemo程序，可以看到程序正常执行（没有任何输出），如图7-3所示。
 
 ![图7-3](https://i.loli.net/2019/07/11/5d26df65a179497407.png)
 图7-3 InvokeDemo执行结果
@@ -5857,7 +5854,7 @@ FibonacciTest类演示了斐波那契数列的计算，用javac编译它，然�
 几秒钟停顿之后，控制台上打印出了832040。我们的Java虚拟机终于可以执行复杂计算了。方法调用指令就测试到这里，下面在本章的最后，讨论类的初始化。
 
 ### 7.8 类初始化
-第6章实现了一个简化版的类加载器，可以把类加载到方法区中。但是因为当时还没有实现方法调用，所以没有办法初始化类。现在可以把这个逻辑补上了。我们已经知道，类初始化就是执行类的初始化方法(<clinit>)。类的初始化在下列情况下触发:
+第6章实现了一个简化版的类加载器，可以把类加载到方法区中。但是因为当时还没有实现方法调用，所以没有办法初始化类。现在可以把这个逻辑补上了。我们已经知道，类初始化就是执行类的初始化方法（<clinit>）。类的初始化在下列情况下触发:
 
 - 执行new指令创建类实例，但类还没有被初始化。
 - 执行putstatic、getstatic指令存取类的静态变量，但声明该字段的类还没有被初始化。
@@ -5975,7 +5972,7 @@ public class Object {
     ... // 其他代码
 }
 ```
-由于Object类是其他所有类的超类，所以这会导致Java虚拟机崩溃。解决办法是修改InvokeMethod()函数(代码在ch07\instructions\base\method_invoke_logic.go文件中)，让它跳过所有registerNatives()方法，改动如下：
+由于Object类是其他所有类的超类，所以这会导致Java虚拟机崩溃。解决办法是修改InvokeMethod()函数（代码在ch07\instructions\base\method_invoke_logic.go文件中），让它跳过所有registerNatives()方法，改动如下：
 ``` go
 package base
 import "fmt"
@@ -6008,7 +6005,7 @@ func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
 ### 8.1 数组概述
 数组在Java虚拟机中是个比较特殊的概念。为什么这么说呢？有下面几个原因：
 
-首先，数组类和普通的类是不同的。普通的类从class文件中加载，但是数组类由Java虚拟机在运行时生成。数组的类名是左方括号([)+数组元素的类型描述符；数组的类型描述符就是类名本身。例如，int[]的类名是[I, int[][]的类名是[[I, Object[]的类名是[Ljava/lang/Object;, String[][]的类名是[[java/lang/String;，等等。
+首先，数组类和普通的类是不同的。普通的类从class文件中加载，但是数组类由Java虚拟机在运行时生成。数组的类名是左方括号（[）+数组元素的类型描述符；数组的类型描述符就是类名本身。例如，int[]的类名是[I, int[][]的类名是[[I, Object[]的类名是[Ljava/lang/Object;, String[][]的类名是[[java/lang/String;，等等。
 
 其次，创建数组的方式和创建普通对象的方式不同。普通对象由new指令创建，然后由构造函数初始化。基本类型数组由newarray指令创建；引用类型数组由anewarray指令创建；另外还有一个专门的multianewarray指令用于创建多维数组。
 
@@ -6175,7 +6172,7 @@ public class ArrayDemo {
 下面从newarray指令开始。
 
 #### 8.3.1 newarray指令
-newarray指令用来创建基本类型数组，包括boolean[]、byte[]、char[]、short[]、int[]、long[]、float[]和double[]8种。在ch08\instructions\references目录下创建newarray.go，在其中定义newarray指令，代码如下：
+newarray指令用来创建基本类型数组，包括`boolean[]`、`byte[]`、`char[]`、`short[]`、`int[]`、`long[]`、`float[]`和`double[]`8种。在ch08\instructions\references目录下创建newarray.go，在其中定义newarray指令，代码如下：
 ``` go
 package references
 import "jvmgo/ch08/instructions/base"
@@ -6338,10 +6335,10 @@ func (self *ARRAY_LENGTH) Execute(frame *rtda.Frame) {
 	stack.PushInt(arrLen)
 }
 ```
-如果数组引用是null，则需要抛出NullPointerException异常，否则取数组长度，推入操作数栈顶即可。下面实现<t>aload和<t>astore系列指令。
+如果数组引用是null，则需要抛出NullPointerException异常，否则取数组长度，推入操作数栈顶即可。下面实现`<t>aload`和`<t>astore`系列指令。
 
 #### 8.3.4 <t>aload指令
-<t>aload系列指令按索引取数组元素值，然后推入操作数栈。在ch08\instructions\loads目录下创建xaload.go文件，在其中定义8条指令，代码如下：
+`<t>aload`系列指令按索引取数组元素值，然后推入操作数栈。在ch08\instructions\loads目录下创建xaload.go文件，在其中定义8条指令，代码如下：
 ``` go
 package loads
 import "jvmgo/ch08/instructions/base"
@@ -6356,7 +6353,7 @@ type IALOAD struct{ base.NoOperandsInstruction }
 type LALOAD struct{ base.NoOperandsInstruction }
 type SALOAD struct{ base.NoOperandsInstruction }
 ```
-这8条指令的实现大同小异，为了节约篇幅，以aaload指令为例进行说明。其Execute()方法如下：
+这8条指令的实现大同小异，为了节约篇幅，以aaload指令为例进行说明。其`Execute()`方法如下：
 ``` go
 func (self *AALOAD) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
@@ -6387,7 +6384,7 @@ func checkIndex(arrLen int, index int32) {
 如果一切正常，则按索引取出数组元素，推入操作数栈顶。
 
 #### 8.3.5 <t>astore指令
-<t>astore系列指令按索引给数组元素赋值。在ch08\instructions\stores目录下创建xastore.go文件，在其中定义8条指令，代码如下：
+`<t>astore`系列指令按索引给数组元素赋值。在ch08\instructions\stores目录下创建xastore.go文件，在其中定义8条指令，代码如下：
 ``` go
 package stores
 import "jvmgo/ch08/instructions/base"
@@ -6415,7 +6412,7 @@ func (self *IASTORE) Execute(frame *rtda.Frame) {
 	ints[index] = int32(val)
 }
 ```
-iastore指令的三个操作数分别是：要赋给数组元素的值、数组索引、数组引用，依次从操作数栈中弹出。如果数组引用是null，则抛出NullPointerException。如果数组索引小于0或者大于等于数组长度，则抛出ArrayIndexOutOfBoundsException异常。这两个检查和<t>aload系列指令一样。如果一切正常，则按索引给数组元素赋值。
+iastore指令的三个操作数分别是：要赋给数组元素的值、数组索引、数组引用，依次从操作数栈中弹出。如果数组引用是null，则抛出NullPointerException。如果数组索引小于0或者大于等于数组长度，则抛出ArrayIndexOutOfBoundsException异常。这两个检查和`<t>aload`系列指令一样。如果一切正常，则按索引给数组元素赋值。
 
 <t>aload和<t>astore指令实现好了，下面来看multianewarray指令。
 
@@ -6535,7 +6532,7 @@ public void test() {
 ```
 编译器先生成了三条iconst_n指令，然后又生成了一条multianewarray指令，剩下的两条指令和数组创建无关。multianewarray指令的第一个操作数是5，是个类引用，类名是[[[I说明要创建的是int[][][]数组。第二个操作数是3，说明要创建三维数组。
 
-当方法执行时，三条iconst_n指令先后把整数3、4、5推入操作数栈顶。multianewarray指令在解码时就已经拿到常量池索引(5)和数组维度(3)。在执行时，它先查找运行时常量池索引，知道要创建的是int[][][]数组，接着从操作数栈中弹出三个int值，依次是5、4、3。现在multianewarray指令拿到了全部信息，从最外维开始创建数组实例即可。
+当方法执行时，三条iconst_n指令先后把整数3、4、5推入操作数栈顶。multianewarray指令在解码时就已经拿到常量池索引(5）和数组维度(3）。在执行时，它先查找运行时常量池索引，知道要创建的是int[][][]数组，接着从操作数栈中弹出三个int值，依次是5、4、3。现在multianewarray指令拿到了全部信息，从最外维开始创建数组实例即可。
 
 专门用于数组的指令实现好了，但别忘了还需要修改ch08\instructions\factory.go文件，在其中添加这些指令的case语句。改动比较简单，这里就不给出代码了。下面修改instanceof和checkcast，让这两条指令可以正确用于数组对象。
 
@@ -6578,8 +6575,8 @@ func (self *Class) isAssignableFrom(other *Class) bool {
 }
 ```
 注意，粗体部分是原来的代码，其余都是新增代码。由于篇幅限制，就不详细解释这个函数了，请读者阅读Java虚拟机规范的8.6.5节对instanceof和checkcast指令的描述。需要注意的是：
-- 数组可以强制转换成Object类型(因为数组的超类是Object)。
-- 数组可以强制转换成Cloneable和Serializable类型(因为数组实现了这两个接口)。
+- 数组可以强制转换成Object类型（因为数组的超类是Object）。
+- 数组可以强制转换成Cloneable和Serializable类型（因为数组实现了这两个接口）。
 - 如果下面两个条件之一成立，类型为[]SC的数组可以强制转换成类型为[]TC的数组:
 - TC和SC是同一个基本类型。
 - TC和SC都是引用类型，且SC可以强制转换成TC。
@@ -6628,7 +6625,7 @@ go install jvmgo\ch08
 图8-1 BubbleSortTest程序执行结果
 
 ### 8.5 字符串
-在class文件中，字符串是以MUTF8格式保存的，这一点在3.3.7节讨论过。在Java虚拟机运行期间，字符串以java.lang.String(后面简称String)对象的形式存在，而在String对象内部，字符串又是以UTF16格式保存的。字符串相关功能大部分都是由String(和StringBuilder等)类提供的，本节只实现一些辅助功能即可。
+在class文件中，字符串是以MUTF8格式保存的，这一点在3.3.7节讨论过。在Java虚拟机运行期间，字符串以java.lang.String（后面简称String）对象的形式存在，而在String对象内部，字符串又是以UTF16格式保存的。字符串相关功能大部分都是由String（和StringBuilder等）类提供的，本节只实现一些辅助功能即可。
 
 String类有两个实例变量。其中一个是value，类型是字符数组，用于存放UTF16编码后的字符序列。另一个是hash，缓存计字符串的哈希码，代码如下：
 ``` go
@@ -6642,7 +6639,7 @@ public final class String
     ... // 其他代码
 }
 ```
-字符串对象是不可变(immutable)的，一旦构造好之后，就无法再改变其状态(这里指value字段)。String类有很多构造函数，其中一个是根据字符数组来创建String实例，代码如下：
+字符串对象是不可变（immutable）的，一旦构造好之后，就无法再改变其状态（这里指value字段）。String类有很多构造函数，其中一个是根据字符数组来创建String实例，代码如下：
 ``` java
 public String(char value[]){
     this.value=Arrays.copyOf(value,value.length);
@@ -6675,7 +6672,7 @@ func JString(loader *ClassLoader, goStr string) *Object {
 	return jStr
 }
 ```
-JString()函数根据Go字符串返回相应的Java字符串实例。如果Java字符串已经在池中，直接返回即可，否则先把Go字符串(UTF8格式)转换成Java字符数组(UTF16格式)，然后创建一个Java字符串实例，把它的value变量设置成刚刚转换而来的字符数组，最后把Java字符串放入池中。注意，这里其实是跳过了String的构造函数，直接用hack的方式创建实例。在前面分析过String类的代码，这样做虽然有点投机取巧，但确实是没有问题的。
+JString()函数根据Go字符串返回相应的Java字符串实例。如果Java字符串已经在池中，直接返回即可，否则先把Go字符串（UTF8格式）转换成Java字符数组（UTF16格式），然后创建一个Java字符串实例，把它的value变量设置成刚刚转换而来的字符数组，最后把Java字符串放入池中。注意，这里其实是跳过了String的构造函数，直接用hack的方式创建实例。在前面分析过String类的代码，这样做虽然有点投机取巧，但确实是没有问题的。
 
 继续编辑string_pool.go文件文件，实现stringToUtf16()函数，代码如下：
 ``` go
@@ -6684,7 +6681,7 @@ func stringToUtf16(s string) []uint16 {
 	return utf16.Encode(runes)
 }
 ```
-Go语言字符串在内存中是UTF8编码的，先把它强制转成UTF32，然后调用utf16包的Encode()函数编码成UTF16。Object结构体的SetRefVar()方法直接给对象的引用类型实例变量赋值，代码如下(在object.go文件中)：
+Go语言字符串在内存中是UTF8编码的，先把它强制转成UTF32，然后调用utf16包的Encode()函数编码成UTF16。Object结构体的SetRefVar()方法直接给对象的引用类型实例变量赋值，代码如下（在object.go文件中）：
 ``` go
 func (self *Object) SetRefVar(name, descriptor string, ref *Object) {
 	field := self.class.getField(name, descriptor, false)
@@ -6692,7 +6689,7 @@ func (self *Object) SetRefVar(name, descriptor string, ref *Object) {
 	slots.SetRef(field.slotId, ref)
 }
 ```
-Class结构体的getField()函数根据字段名和描述符查找字段，代码如下(代码在class.go文件中)：
+Class结构体的getField()函数根据字段名和描述符查找字段，代码如下（代码在class.go文件中）：
 ``` go
 func (self *Class) getField(name, descriptor string, isStatic) *Field {
 	for c := self; c != nil; c = c.superClass {
@@ -6866,12 +6863,12 @@ public class PrintArgs {
 ## 第9章 本地方法调用
 在前面的8章里，我们一直在实现Java虚拟机的基本功能。我们已经知道，要想运行Java程序，除了Java虚拟机之外，还需要Java类库的配合。Java虚拟机和Java类库一起构成了Java运行时环境。Java类库主要用Java语言编写，一些无法用Java语言实现的方法则使用本地语言编写，这些方法叫作本地方法。从本章开始，将陆续实现一些Java类库中的本地方法。
 
-OpenJDK类库中的本地方法是用JNI(Java Native Interface) [1]编写的，但是要让虚拟机支持JNI规范还需要做大量的工作。由于本书的主要目的是介绍Java虚拟机的工作原理，为了不陷入JNI规范的细节之中，将使用Go语言来实现这些方法。
+OpenJDK类库中的本地方法是用JNI（Java Native Interface） [1]编写的，但是要让虚拟机支持JNI规范还需要做大量的工作。由于本书的主要目的是介绍Java虚拟机的工作原理，为了不陷入JNI规范的细节之中，将使用Go语言来实现这些方法。
 
 开始编写代码之前，还是先把目录结构准备好。复制ch08目
 录，改名为ch09。修改main.go等文件，把import语句中的ch08全都替
 换成ch09。在ch09目录下创建native子目录，本章新增的go文件主要
-都在这个目录(和它的子目录)中。现在，目录结构看起来是下面这
+都在这个目录（和它的子目录）中。现在，目录结构看起来是下面这
 个样子:
 ```
 D:\go\workspace\src
@@ -6977,7 +6974,7 @@ func (self *Method) injectCodeAttribute(returnType string) {
 ```
 本地方法在class文件中没有Code属性，所以需要给maxStack和maxLocals字段赋值。本地方法帧的操作数栈至少要能容纳返回值，为了简化代码，暂时给maxStack字段赋值为4。因为本地方法帧的局部变量表只用来存放参数值，所以把argSlotCount赋给maxLocals字段刚好。至于code字段，也就是本地方法的字节码，第一条指令都是0xFE，第二条指令则根据函数的返回值选择相应的返回指令。
 
-另外，由于把方法描述符的解析挪到了newMethod()函数中，所以calcArgSlotCount()方法也稍微有些变化(增加了一个参数)，变动如下：
+另外，由于把方法描述符的解析挪到了newMethod()函数中，所以calcArgSlotCount()方法也稍微有些变化(增加了一个参数），变动如下：
 ``` go
 func (self *Method) calcArgSlotCount(paramTypes []string) {
 	for _, paramType := range paramTypes {
@@ -6985,7 +6982,7 @@ func (self *Method) calcArgSlotCount(paramTypes []string) {
 	}
 }
 ```
-下面我们来实现0xFE指令。在ch09\instructions目录下创建reserved子目录，然后在该目录下创建invokenative.go文件，在其中定义0xFE(后面称之为invokenative)指令，代码如下：
+下面我们来实现0xFE指令。在ch09\instructions目录下创建reserved子目录，然后在该目录下创建invokenative.go文件，在其中定义0xFE（后面称之为invokenative）指令，代码如下：
 ``` go
 package reserved
 import "jvmgo/ch09/instructions/base"
@@ -7497,7 +7494,7 @@ func init() {
 		"floatToRawIntBits", "(F)I", floatToRawIntBits)
 }
 ```
-Go语言的math包提供了一个类似函数:Float32bits()，正好可以用来实现floatToRaw-IntBits()方法，代码如下：
+Go语言的math包提供了一个类似函数：Float32bits()，正好可以用来实现floatToRaw-IntBits()方法，代码如下：
 ``` go
 // public static native int floatToRawIntBits(float value);
 func floatToRawIntBits(frame *rtda.Frame) {
@@ -7527,7 +7524,7 @@ func intern(frame *rtda.Frame) {
 	frame.OperandStack().PushRef(interned)
 }
 ```
-如果字符串还没有入池，把它放入并返回该字符串，否则找到已入池字符串并返回。这个逻辑在InternString()函数中(ch09\rtda\heap\string_pool.go)，代码如下：
+如果字符串还没有入池，把它放入并返回该字符串，否则找到已入池字符串并返回。这个逻辑在InternString()函数中（ch09\rtda\heap\string_pool.go），代码如下：
 ``` go
 func InternString(jStr *Object) *Object {
 	goStr := GoString(jStr)
@@ -7597,7 +7594,7 @@ func hashCode(frame *rtda.Frame) {
 	frame.OperandStack().PushInt(hash)
 }
 ```
-把对象引用(Object结构体指针)转换成uintptr类型，然后强制转换成int32推入操作数栈顶。
+把对象引用（Object结构体指针）转换成uintptr类型，然后强制转换成int32推入操作数栈顶。
 本节只实现这一个本地方法。重新编译本章代码，然后测试下面的Java程序:
 ``` java
 package jvmgo.book.ch09;
@@ -7705,7 +7702,7 @@ CloneTest程序执行结果如图9-5所示。
 图9-5 CloneTest程序执行结果
 
 ### 9.7 自动装箱和拆箱
-前面讨论过，为了更好地融入Java的对象系统，每种基本类型都有一个包装类与之对应。从Java 5开始，Java语法增加了自动装箱和拆箱(autoboxing/unboxing)能力，可以在必要时把基本类型转换成包装类型或者反之。这个增强完全是由编译器完成的，Java虚拟机没有做任何调整。
+前面讨论过，为了更好地融入Java的对象系统，每种基本类型都有一个包装类与之对应。从Java 5开始，Java语法增加了自动装箱和拆箱（autoboxing/unboxing）能力，可以在必要时把基本类型转换成包装类型或者反之。这个增强完全是由编译器完成的，Java虚拟机没有做任何调整。
 
 以int类型为例，它的包装类是java.lang.Integer。它提供了2个方法来帮助编译器在int变量和Integer对象之间转换:静态方法value()把int变量包装成Integer对象；实例方法intValue()返回被包装的int变量。这两个方法的代码如下：
 ``` java
@@ -7723,7 +7720,7 @@ public final class Integer extends Number implements Comparable<Integer> {
     }
 }
 ```
-由上面的代码可知，Integer.valueOf()方法并不是每次都创建Integer()对象，而是维护了一个缓存池IntegerCache。对于比较小(默认是–128~127)的int变量，在IntegerCache初始化时就预先加载到了池中，需要用时直接从池里取即可。IntegerCache是Integer类的内部类，为了便于参考，下面给出它的完整代码。
+由上面的代码可知，Integer.valueOf()方法并不是每次都创建Integer()对象，而是维护了一个缓存池IntegerCache。对于比较小（默认是–128~127）的int变量，在IntegerCache初始化时就预先加载到了池中，需要用时直接从池里取即可。IntegerCache是Integer类的内部类，为了便于参考，下面给出它的完整代码。
 ``` java
 private static class IntegerCache {
     static final int low = -128;
@@ -7846,11 +7843,11 @@ void cantBeZero(int i) {
 ```
 上面的方法编译之后，产生下面的字节码：
 ```
-0 iload_1 // 把参数1 (i )推入操作数栈顶
+0 iload_1 // 把参数1 (i）推入操作数栈顶
 1 ifne 12 // 如果i 不等于0，直接执行return 指令
 4 new #2 // 创建TestExc 实例，把引用推入操作数栈顶
 7 dup // 复制TestExc 实例引用
-8 invokespecial #3// 调用TestExc 构造函数(栈顶引用已经作为参数弹出)
+8 invokespecial #3// 调用TestExc 构造函数（栈顶引用已经作为参数弹出）
 11 athrow // 抛出异常
 12 return // 方法返回
 ```
@@ -7899,20 +7896,16 @@ void catchOne() {
 ```
 上面的方法编译之后，产生下面的字节码：
 ```
-1 aload_0          // 把局部变量0 (this) 推入操作数栈顶
+1 aload_0          // 把局部变量0 （this） 推入操作数栈顶
 2 invokevirtual #4 // 调用tryItOut() 方法
 4 goto 13  // 如果try{} 没有抛出异常，直接执行return 指令
 7 astore_1 // 否则，异常对象引用在操作数栈顶，把它弹出，并放入局部变量 1
-8 aload_0  // 把this 推入栈顶(将作为handleExc() 方法的参数0 )
-9 aload_1  // 把异常对象引用推入栈顶(将作为handleExc() 方法的参数1 )
+8 aload_0  // 把this 推入栈顶（将作为handleExc() 方法的参数0 ）
+9 aload_1  // 把异常对象引用推入栈顶（将作为handleExc() 方法的参数1 ）
 10 invokevirtual #5 // 调用handleExc() 方法
 13 return           // 方法返回
 ```
-从字节码来看，如果没有异常抛出，则会直接goto到return指
-令，方法正常返回。那么如果有异常抛出，goto和return之间的指令
-是如何执行的呢？答案是查找方法的异常处理表。异常处理表是
-Code属性的一部分，它记录了方法是否有能力处理某种异常。回顾
-一下方法的Code属性，它的结构如下：
+从字节码来看，如果没有异常抛出，则会直接goto到return指令，方法正常返回。那么如果有异常抛出，goto和return之间的指令是如何执行的呢？答案是查找方法的异常处理表。异常处理表是Code属性的一部分，它记录了方法是否有能力处理某种异常。回顾一下方法的Code属性，它的结构如下：
 ``` java
 Code_attribute {
     u2 attribute_name_index;
@@ -7932,7 +7925,7 @@ Code_attribute {
     attribute_info attributes[attributes_count];
 }
 ```
-异常处理表的每一项都包含3个信息:处理哪部分代码抛出的异常、哪类异常，以及异常处理代码在哪里。具体来说，start_pc和end_pc可以锁定一部分字节码，这部分字节码对应某个可能抛出异常的try{}代码块。catch_type是个索引，通过它可以从运行时常量池中查到一个类符号引用，解析后的类是个异常类，假定这个类是X。如果位于start_pc和end_pc之间的指令抛出异常x，且x是X(或者X的子类)的实例，handler_pc就指出负责异常处理的catch{}块在哪里。
+异常处理表的每一项都包含3个信息:处理哪部分代码抛出的异常、哪类异常，以及异常处理代码在哪里。具体来说，start_pc和end_pc可以锁定一部分字节码，这部分字节码对应某个可能抛出异常的try{}代码块。catch_type是个索引，通过它可以从运行时常量池中查到一个类符号引用，解析后的类是个异常类，假定这个类是X。如果位于start_pc和end_pc之间的指令抛出异常x，且x是X（或者X的子类）的实例，handler_pc就指出负责异常处理的catch{}块在哪里。
 
 回到catchOne()方法，它的异常处理表只有如下一项:
 
@@ -8033,7 +8026,7 @@ func (self ExceptionTable) findExceptionHandler(exClass *Class,
 	return nil
 }
 ```
-异常处理表查找逻辑前面已经描述过，此处不再赘述。这里注意两点。第一，startPc给出的是try{}语句块的第一条指令，endPc给出的则是try{}语句块的下一条指令。第二，如果catchType是nil(在class文件中是0)，表示可以处理所有异常，这是用来实现finally子句的。
+异常处理表查找逻辑前面已经描述过，此处不再赘述。这里注意两点。第一，startPc给出的是try{}语句块的第一条指令，endPc给出的则是try{}语句块的下一条指令。第二，如果catchType是nil（在class文件中是0），表示可以处理所有异常，这是用来实现finally子句的。
 
 为了节约篇幅，本章就不再讨论多个catch块、嵌套try-catch，以及finally子句等对应的字节码实现了，读者可以阅读Java虚拟机规范的3.12节。下一节将实现athrow指令。
 
@@ -8332,7 +8325,7 @@ public final class System {
     ... // 其他代码
 }
 ```
-从注释可知，System类的初始化过程分为两个阶段。第一个阶段由类初始化方法完成，在这个方法中registerNatives()方法会注册其他本地方法。第二个阶段由VM完成，在这个阶段VM会调用System.initializeSystemClass()方法。那么initializeSystemClass()方法究竟干了些什么呢？这个方法很长，而且有很详细的注释。去掉与本节讨论无关的代码和注释之后，它的代码如下：
+从注释可知，System类的初始化过程分为两个阶段。第一个阶段由类初始化方法完成，在这个方法中registerNatives()方法会注册其他本地方法。第二个阶段由VM完成，在这个阶段VM会调用`System.initializeSystemClass()`方法。那么`initializeSystemClass()`方法究竟干了些什么呢？这个方法很长，而且有很详细的注释。去掉与本节讨论无关的代码和注释之后，它的代码如下：
 ``` java
 /**
  * Initialize the system class. Called after thread initialization.
@@ -8348,24 +8341,24 @@ private static void initializeSystemClass() {
     ... // 其他代码
 }
 ```
-可见in、out和err正是在这里设置的。再来看sun.misc.VM类的源代码(VM类属于Oracle私有代码，并没有开源，下面是反编译后的Java代码)：
+可见in、out和err正是在这里设置的。再来看sun.misc.VM类的源代码（VM类属于Oracle私有代码，并没有开源，下面是反编译后的Java代码）：
 ``` java
 // sun.misc.VM
 public class VM {
 	... // 其他代码
 	static {
 		... // 其他代码
-		initialize();
+		initialize（);
 	}
 	private static native void initialize();
 }
 ```
-VM类在初始化时调用了initialize()方法。虽然initialize()是本地方法，但是可以推测正是这个方法调用了System.initializeSystemClass()方法。是否真的是这样笔者就不做考证了，下面修改解释器，让System类可以正确初始化。
+VM类在初始化时调用了`initialize()`方法。虽然initialize()是本地方法，但是可以推测正是这个方法调用了`System.initializeSystemClass()`方法。是否真的是这样笔者就不做考证了，下面修改解释器，让System类可以正确初始化。
 
 ### 11.2 初始化System类
-先打开ch11\instructions\references\invokevirtual.go文件，修改invokevirtual指令的Execute()方法，把其中的hack代码删掉。由于只是删除代码，这里就不做详细说明了。
+先打开ch11\instructions\references\invokevirtual.go文件，修改invokevirtual指令的`Execute()`方法，把其中的hack代码删掉。由于只是删除代码，这里就不做详细说明了。
 
-接下来打开ch11\native\sun\misc\VM.go文件，删除heap包的导入语句。原来的initialize()方法也是用hack方式实现的，需要重写，代码如下：
+接下来打开ch11\native\sun\misc\VM.go文件，删除heap包的导入语句。原来的`initialize()`方法也是用hack方式实现的，需要重写，代码如下：
 ```go
 // private static native void initialize();
 func initialize(frame *rtda.Frame) {
@@ -8375,7 +8368,7 @@ func initialize(frame *rtda.Frame) {
 	base.InvokeMethod(frame, initSysClass)
 }
 ```
-新的实现只是调用了System.initializeSystemClass()方法而已。下面修改解释器，让它在执行主类的`main()`方法之前先调用VM.initialize()方法。为了让代码的可读性更好，将对main.go文件进行比较大的调整。打开ch11\main.go，把下面的代码复制进去：
+新的实现只是调用了System.initializeSystemClass()方法而已。下面修改解释器，让它在执行主类的`main()`方法之前先调用`VM.initialize()`方法。为了让代码的可读性更好，将对main.go文件进行比较大的调整。打开ch11\main.go，把下面的代码复制进去：
 ``` go
 package main
 func main() {
@@ -8388,7 +8381,7 @@ func main() {
 	}
 }
 ```
-主要逻辑都被挪到了(新增加的)ch11\jvm.go文件中，代码如下：
+主要逻辑都被挪到了（新增加的)ch11\jvm.go文件中，代码如下：
 ``` go
 package main
 import "fmt"
@@ -8464,13 +8457,13 @@ func (self *JVM) createArgsArray() *heap.Object {
 	return argsArr
 }
 ```
-jvm.go文件改好了，下面修改interpret()函数。打开ch11\interpreter.go，删除heap包的导入语句和createArgsArray()函数，然后修改interpret()函数，代码如下：
+jvm.go文件改好了，下面修改`interpret()`函数。打开ch11\interpreter.go，删除heap包的导入语句和`createArgsArray()`函数，然后修改`interpret()`函数，代码如下：
 ``` go
 func interpret(thread *rtda.Thread, logInst bool) {
 defer catchErr(thread)
 loop(thread, logInst)}
 ```
-修改之后interpret()函数简单了许多，直接调用loop()函数进入循环即可。至此，解释器修改完毕。这就是本章要写的全部代码吗？并不是。为了正常执行System.initializeSystemClass()以及System.out.println()等方法，还需要实现很多Java类库中的本地方法。为了节约篇幅，这里就不一一列举了，请读者阅读随书源代码。下面以System.out.println(String)为例解释字符串是如何被打印到控制台的，其他类型变量的打印原理同字符串类似。
+修改之后interpret()函数简单了许多，直接调用loop()函数进入循环即可。至此，解释器修改完毕。这就是本章要写的全部代码吗？并不是。为了正常执行`System.initializeSystemClass()`以及`System.out.println()`等方法，还需要实现很多Java类库中的本地方法。为了节约篇幅，这里就不一一列举了，请读者阅读随书源代码。下面以System.out.println(String)为例解释字符串是如何被打印到控制台的，其他类型变量的打印原理同字符串类似。
 
 ### 11.3 System.out.println()是如何工作的
 回到System.initializeSystemClass()方法，进一步省略之后，其代码如下：
@@ -8499,7 +8492,7 @@ private static PrintStream newPrintStream(FileOutputStream fos, String enc) {
 	return new PrintStream(new BufferedOutputStream(fos, 128), true);
 }
 ```
-由代码可知，System.out常量是PrintStream类型，它内部包装了一个BufferedOutputStream实例。BufferedOutputStream内部又包装了一个FileOutputStream实例。Java的io类库使用了装饰器模式，调用System.out.println(String)方法之后，经过层层包装，最后到达FileOutputStream类的writeBytes()方法。这个方法无法用Java代码实现，所以是个本地方法，其代码如下：
+由代码可知，System.out常量是PrintStream类型，它内部包装了一个BufferedOutputStream实例。BufferedOutputStream内部又包装了一个FileOutputStream实例。Java的io类库使用了装饰器模式，调用System.out.println(String)方法之后，经过层层包装，最后到达FileOutputStream类的`writeBytes()`方法。这个方法无法用Java代码实现，所以是个本地方法，其代码如下：
 ``` java
 // java.io.FileOutputStream
 public class FileOutputStream extends OutputStream {
@@ -8534,7 +8527,7 @@ func writeBytes(frame *rtda.Frame) {
 	os.Stdout.Write(goBytes)
 }
 ```
-虽然同是字节类型，但是在Java语言中byte是有符号类型，在Go语言中byte则是无符号类型。所以这里需要先把Java的字节数组转换成Go的[]byte变量，然后再调用os.Stdout.Write()方法把它写到控制台。castInt8sToUint8s()函数代码如下：
+虽然同是字节类型，但是在Java语言中byte是有符号类型，在Go语言中byte则是无符号类型。所以这里需要先把Java的字节数组转换成Go的[]byte变量，然后再调用`os.Stdout.Write()`方法把它写到控制台。`castInt8sToUint8s()`函数代码如下：
 ``` go
 func castInt8sToUint8s(jBytes []int8) (goBytes []byte) {
 ptr := unsafe.Pointer(&jBytes)
@@ -8728,7 +8721,6 @@ go install jvmgo\ch11
 | 0xc5 | multianewarry | 8.3.6 | 0xc9 | jsr_w |  |
 | 0xc6 | ifnull | 5.11.2 |  |  |  |
 | 0xc7 | ifnonnull | 5.11.2 |  |  |  |
-|  |  |  |  |  |  |
 
 ### Reserved
 
