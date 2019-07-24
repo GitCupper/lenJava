@@ -1992,7 +1992,7 @@ go install jvmgo\ch03
 ## 第4章 运行时数据区
 第1章编写了命令行工具，第2章和第3章讨论了如何搜索和解析class文件。读者也许有些着急了，为什么读到第4章后连Java虚拟机的影子都还没有看到？别着急，本章就来讨论并初步实现运行时数据区（run-time data area），为下一章编写字节码解释器做准备。
 
-在开始阅读本章之前，还是先准备好目录结构。复制ch03目录，改名为ch04。修改main.go等源文件，把import语句中的ch03全都改成ch04，然后在ch04目录下创建rtda [1] 子目录。现在我们的目录结构应该如下所示：
+在开始阅读本章之前，还是先准备好目录结构。复制ch03目录，改名为ch04。修改main.go等源文件，把`import`语句中的ch03全都改成ch04，然后在ch04目录下创建rtda [1] 子目录。现在我们的目录结构应该如下所示：
 ```
 D:\go\workspace\src
   |-jvmgo
@@ -2025,11 +2025,11 @@ Java虚拟机规范对于运行时数据区的规定是相当宽松的。以堆�
 - [1] java命令提供了`-Xms`和`-Xmx`两个非标准选项，用来调整堆的初始大小和最大大小。java命令的详细介绍请参考第1章内容。
 
 ### 4.2 数据类型
-Java虚拟机可以操作两类数据：基本类型（primitive type）和引用类型（reference type）。基本类型的变量存放的就是数据本身，引用类型的变量存放的是对象引用，真正的对象数据是在堆里分配的。这里所说的变量包括类变量（静态字段）、实例变量（非静态字段）、数组元素、方法的参数和局部变量，等等。
+Java虚拟机可以操作两类数据：基本类型（`primitive type`）和引用类型（`reference type`）。基本类型的变量存放的就是数据本身，引用类型的变量存放的是对象引用，真正的对象数据是在堆里分配的。这里所说的变量包括类变量（静态字段）、实例变量（非静态字段）、数组元素、方法的参数和局部变量，等等。
 
-基本类型可以进一步分为布尔类型（boolean type）和数字类型（numeric type） [1] ，数字类型又可以分为整数类型（integral type）和浮点数类型（floating-point type）。引用类型可以进一步分为3种：类类型、接口类型和数组类型。类类型引用指向类实例，数组类型引用指向数组实例，接口类型引用指向实现了该接口的类或数组实例。引用类型有一个特殊的值——null，表示该引用不指向任何对象。
+基本类型可以进一步分为布尔类型（`boolean type`）和数字类型（`numeric type`） [1] ，数字类型又可以分为整数类型（`integral type`）和浮点数类型（`floating-point type`）。引用类型可以进一步分为3种：类类型、接口类型和数组类型。类类型引用指向类实例，数组类型引用指向数组实例，接口类型引用指向实现了该接口的类或数组实例。引用类型有一个特殊的值——null，表示该引用不指向任何对象。
 
-Go语言提供了非常丰富的数据类型，包括各种整数和两种精度的浮点数。Java和Go的浮点数都采用IEEE 754规范 [2] 。对于基本类型，可以直接在Go和Java之间建立映射关系。对于引用类型，自然的选择是使用指针。Go提供了nil，表示空指针，正好可以用来表示null。由于要到第6章才开始实现类和对象，所以本章先定义一个临时的结构体，用它来表示对象。在ch04\rtda目录下创建object.go，在其中定义Object结构体，代码如下：
+Go语言提供了非常丰富的数据类型，包括各种整数和两种精度的浮点数。Java和Go的浮点数都采用IEEE 754规范 [2] 。对于基本类型，可以直接在Go和Java之间建立映射关系。对于引用类型，自然的选择是使用指针。Go提供了`nil`，表示空指针，正好可以用来表示`null`。由于要到第6章才开始实现类和对象，所以本章先定义一个临时的结构体，用它来表示对象。在ch04\rtda目录下创建object.go，在其中定义Object结构体，代码如下：
 ``` go
 package rtda
 type Object struct {
@@ -2040,14 +2040,14 @@ type Object struct {
 
 表4-1 Java虚拟机数据类型
 
-[1]还有一种基本类型是returnAddress，它和jsr、ret、ret_w指令一起，用来实现finally子句。不过从Java 6开始，Oracle的Java编译器已经不再使用这三条指令了。详细情况请参考第10章内容。
+[1]还有一种基本类型是`returnAddress`，它和jsr、ret、ret_w指令一起，用来实现`finally`子句。不过从Java 6开始，Oracle的Java编译器已经不再使用这三条指令了。详细情况请参考第10章内容。
 [2]本书不讨论浮点数细节，如在内存中的编码形式等。如果读者需要了解这方面的知识，可以阅读Java虚拟机规范或IEEE 754规范的相关章节。
 
 ### 4.3 实现运行时数据区
-前面两节介绍了一些必要的理论，并且定义了Object结构体。本节将实现线程私有的运行时数据区。下面先从线程开始。
+前面两节介绍了一些必要的理论，并且定义了`Object`结构体。本节将实现线程私有的运行时数据区。下面先从线程开始。
 
 #### 4.3.1 线程
-在ch04\jvm\rtda目录下创建thread.go文件，在其中定义Thread结构体，代码如下：
+在ch04\jvm\rtda目录下创建thread.go文件，在其中定义`Thread`结构体，代码如下：
 ``` go
 package rtda
 type Thread struct {
@@ -2062,11 +2062,11 @@ func (self *Thread) PushFrame(frame *Frame) { ... }
 func (self *Thread) PopFrame() *Frame       { ... }
 func (self *Thread) CurrentFrame() *Frame   { ... }
 ```
-目前只定义了pc和stack两个字段。pc字段无需解释，stack字段是Stack结构体（Java虚拟机栈）指针。Stack结构体在4.3.2节介绍。
+目前只定义了`pc`和`stack`两个字段。`pc`字段无需解释，`stack`字段是`Stack`结构体（Java虚拟机栈）指针。`Stack`结构体在4.3.2节介绍。
 
-和堆一样，Java虚拟机规范对Java虚拟机栈的约束也相当宽松。Java虚拟机栈可以是连续的空间，也可以不连续；可以是固定大小，也可以在运行时动态扩展 [1] 。如果Java虚拟机栈有大小限制，且执行线程所需的栈空间超出了这个限制，会导致StackOverflowError异常抛出。如果Java虚拟机栈可以动态扩展，但是内存已经耗尽，会导致OutOfMemoryError异常抛出。
+和堆一样，Java虚拟机规范对Java虚拟机栈的约束也相当宽松。Java虚拟机栈可以是连续的空间，也可以不连续；可以是固定大小，也可以在运行时动态扩展 [1] 。如果Java虚拟机栈有大小限制，且执行线程所需的栈空间超出了这个限制，会导致`StackOverflowError`异常抛出。如果Java虚拟机栈可以动态扩展，但是内存已经耗尽，会导致`OutOfMemoryError`异常抛出。
 
-NewThread()函数创建Thread实例的代码如下：
+`NewThread()`函数创建Thread实例的代码如下：
 ``` go
 func NewThread() *Thread {
 	return &Thread{
@@ -2074,9 +2074,9 @@ func NewThread() *Thread {
 	}
 }
 ```
-newStack()函数创建Stack结构体实例，它的参数表示要创建的Stack最多可以容纳多少帧，4.3.2节将给出这个函数的代码。这里暂时将它赋值为1024，感兴趣的读者可以修改我们的命令行工具，添加选项来指定这个参数。
+`newStack()`函数创建Stack结构体实例，它的参数表示要创建的Stack最多可以容纳多少帧，4.3.2节将给出这个函数的代码。这里暂时将它赋值为1024，感兴趣的读者可以修改我们的命令行工具，添加选项来指定这个参数。
 
-PushFrame()和PopFrame()方法只是调用Stack结构体的相应方法而已，代码如下：
+`PushFrame()`和`PopFrame()`方法只是调用Stack结构体的相应方法而已，代码如下：
 ``` go
 func (self *Thread) PushFrame(frame *Frame) {
 	self.stack.push(frame)
@@ -2085,7 +2085,7 @@ func (self *Thread) PopFrame() *Frame {
 	return self.stack.pop()
 }
 ```
-CurrentFrame()方法返回当前帧，代码如下：
+`CurrentFrame()`方法返回当前帧，代码如下：
 ``` go
 func (self *Thread) CurrentFrame() *Frame {
 	return self.stack.top()
@@ -2094,7 +2094,7 @@ func (self *Thread) CurrentFrame() *Frame {
 [1] java命令提供了-Xss选项来设置Java虚拟机栈大小。
 
 #### 4.3.2 Java虚拟机栈
-如前所述，Java虚拟机规范对Java虚拟机栈的约束非常宽松。我们用经典的链表（linked list）数据结构来实现Java虚拟机栈，这样栈就可以按需使用内存空间，而且弹出的帧也可以及时被Go的垃圾收集器回收。在ch04\jvm\rtda目录下创建jvm_stack.go文件，在其中定义Stack结构体，代码如下：
+如前所述，Java虚拟机规范对Java虚拟机栈的约束非常宽松。我们用经典的链表（linked list）数据结构来实现Java虚拟机栈，这样栈就可以按需使用内存空间，而且弹出的帧也可以及时被Go的垃圾收集器回收。在ch04\jvm\rtda目录下创建jvm_stack.go文件，在其中定义`Stack`结构体，代码如下：
 ``` go
 package rtda
 type Stack struct {
@@ -2108,7 +2108,7 @@ func (self *Stack) pop() *Frame       { ... }
 func (self *Stack) top() *Frame       { ... }
 
 ```
-maxSize字段保存栈的容量（最多可以容纳多少帧)，size字段保存栈的当前大小，_top字段保存栈顶指针。newStack()函数的代码如下：
+`maxSize`字段保存栈的容量（最多可以容纳多少帧)，`size`字段保存栈的当前大小，`_top`字段保存栈顶指针。`newStack()`函数的代码如下：
 ``` go
 func newStack(maxSize uint) *Stack {
 	return &Stack{
@@ -2116,7 +2116,7 @@ func newStack(maxSize uint) *Stack {
 	}
 }
 ```
-push()方法把帧推入栈顶，代码如下：
+`push()`方法把帧推入栈顶，代码如下：
 ``` go
 func (self *Stack) push(frame *Frame) {
 	if self.size >= self.maxSize {
@@ -2129,7 +2129,7 @@ func (self *Stack) push(frame *Frame) {
 	self.size++
 }
 ```
-如果栈已经满了，按照Java虚拟机规范，应该抛出StackOverflowError异常。在第10章才会讨论异常，这里先调用panic()函数终止程序执行。pop()方法把栈顶帧弹出，代码如下：
+如果栈已经满了，按照Java虚拟机规范，应该抛出StackOverflowError异常。在第10章才会讨论异常，这里先调用`panic()`函数终止程序执行。`pop()`方法把栈顶帧弹出，代码如下：
 ``` go
 func (self *Stack) pop() *Frame {
 	if self._top == nil {
@@ -2142,7 +2142,7 @@ func (self *Stack) pop() *Frame {
 	return top
 }
 ```
-如果此时栈是空的，肯定是我们的虚拟机有bug，调用panic()函数终止程序执行即可。top()方法只是返回栈顶帧，但并不弹出，代码如下：
+如果此时栈是空的，肯定是我们的虚拟机有bug，调用`panic()`函数终止程序执行即可。`top()`方法只是返回栈顶帧，但并不弹出，代码如下：
 ``` go
 func (self *Stack) top() *Frame {if self._top == nil {
 	panic("jvm stack is empty!")
@@ -2153,7 +2153,7 @@ func (self *Stack) top() *Frame {if self._top == nil {
 
 #### 4.3.3 帧
 
-在ch04\jvm\rtda目录下创建frame.go文件，在其中定义Frame结构体，代码如下：
+在ch04\jvm\rtda目录下创建frame.go文件，在其中定义`Frame`结构体，代码如下：
 ``` go
 package rtda
 type Frame struct {
@@ -2167,7 +2167,7 @@ type Frame struct {
 func newFrame(maxLocals, maxStack uint) *Frame {...}
 
 ```
-Frame结构体暂时也比较简单，只有三个字段，后续章节还会继续完善它。lower字段用来实现链表数据结构，localVars字段保存局部变量表指针，operandStack字段保存操作数栈指针。NewFrame()函数创建Frame实例，代码如下：
+`Frame`结构体暂时也比较简单，只有三个字段，后续章节还会继续完善它。`lower`字段用来实现链表数据结构，`localVars`字段保存局部变量表指针，`operandStack`字段保存操作数栈指针。`NewFrame()`函数创建`Frame`实例，代码如下：
 ``` go
 func NewFrame(maxLocals, maxStack uint) *Frame {
 	return &Frame{
@@ -2177,25 +2177,25 @@ func NewFrame(maxLocals, maxStack uint) *Frame {
 }
 
 ```
-执行方法所需的局部变量表大小和操作数栈深度是由编译器预先计算好的，存储在class文件method_info结构的Code属性中，具体可以参考3.4.5节。
+执行方法所需的局部变量表大小和操作数栈深度是由编译器预先计算好的，存储在class文件`method_info`结构的`Code`属性中，具体可以参考3.4.5节。
 
-Thread、Stack和Frame结构体的代码都已经给出了，根据代码，可以画出Java虚拟机栈的链表结构，如图4-2所示。
+`Thread`、`Stack`和`Frame`结构体的代码都已经给出了，根据代码，可以画出Java虚拟机栈的链表结构，如图4-2所示。
 
 ![图4-2](https://i.loli.net/2019/07/10/5d25f8300ba6a24426.png)
 图4-2 使用链表实现Java虚拟机栈
 
 #### 4.3.4 局部变量表
-局部变量表是按索引访问的，所以很自然，可以把它想象成一个数组。根据Java虚拟机规范，这个数组的每个元素至少可以容纳一个int或引用值，两个连续的元素可以容纳一个long或double值。
+局部变量表是按索引访问的，所以很自然，可以把它想象成一个数组。根据Java虚拟机规范，这个数组的每个元素至少可以容纳一个int或引用值，两个连续的元素可以容纳一个`long`或`double`值。
 
-那么使用哪种Go语言数据类型来表示这个数组呢？最容易想到的是[]int。Go的int类型因平台而异，在64位系统上是int64，在32位系统上是int32，总之足够容纳Java的int类型。另外它和内置的uintptr类型宽度一样，所以也足够放下一个内存地址。通过unsafe包可以拿到结构体实例的地址，如下所示：
+那么使用哪种Go语言数据类型来表示这个数组呢？最容易想到的是`[]int`。Go的`int`类型因平台而异，在64位系统上是`int64`，在32位系统上是`int32`，总之足够容纳Java的`int`类型。另外它和内置的`uintptr`类型宽度一样，所以也足够放下一个内存地址。通过`unsafe`包可以拿到结构体实例的地址，如下所示：
 ``` go
 obj := &Object{}
 ptr := uintptr(unsafe.Pointer(obj))
 ref := int(ptr)
 ```
-但遗憾的是，Go的垃圾回收机制并不能有效处理uintptr指针。也就是说，如果一个结构体实例，除了uintptr类型指针保存它的地址之外，其他地方都没有引用这个实例，它就会被当作垃圾回收。
+但遗憾的是，Go的垃圾回收机制并不能有效处理`uintptr`指针。也就是说，如果一个结构体实例，除了`uintptr`类型指针保存它的地址之外，其他地方都没有引用这个实例，它就会被当作垃圾回收。
 
-另外一个方案是用[]interface{}类型，这个方案在实现上没有问题，只是写出来的代码可读性太差。第三种方案是定义一个结构体，让它可以同时容纳一个int值和一个引用值。这里将使用第三种方案。在ch04\rtda目录下创建slot.go文件，在其中定义Slot结构体，代码如下：
+另外一个方案是用`[]interface{}`类型，这个方案在实现上没有问题，只是写出来的代码可读性太差。第三种方案是定义一个结构体，让它可以同时容纳一个`int`值和一个引用值。这里将使用第三种方案。在ch04\rtda目录下创建slot.go文件，在其中定义`Slot`结构体，代码如下：
 ``` go
 package rtda
 type Slot struct {
@@ -2588,7 +2588,7 @@ do {
 	execute the action for the opcode;
 } while (there is more to do);
 ```
-每次循环都包含三个部分：计算pc、指令解码、指令执行。可以把这个逻辑用Go语言写成一个for循环，里面是个大大的switch-case语句。但这样的话，代码的可读性将非常差。所以采用另外一种方式：把指令抽象成接口，解码和执行逻辑写在具体的指令实现中。这样编写出的解释器就和Java虚拟机规范里的伪代码一样简单，代码如下：
+每次循环都包含三个部分：计算pc、指令解码、指令执行。可以把这个逻辑用Go语言写成一个for循环，里面是个大大的switch-case语句。但这样的话，代码的可读性将非常差。所以采用另外一种方式：把指令抽象成接口，解码和执行逻���写在具体的指令实现中。这样编写出的解释器就和Java虚拟机规范里的伪代码一样简单，代码如下：
 ``` go
 for {
 	pc := calculatePC()
@@ -4165,7 +4165,7 @@ func newInterfaceMethodRef(cp *ConstantPool,
 图6-2 符号引用结构体继承关系图
 
 ### 6.3 类加载器
-Java虚拟机的类加载系统十分复杂，本节将初步实现一个简化版的类加载器，后面的章节中还会对它进行扩展。在ch06/rtda/heap目录下创建class_loader.go文件，在其中定义ClassLoader结构体，代码如下：
+Java虚拟机的类加载系统十分复杂，本节将初步实现一个��化版的类加载器，后面的章节中还会对它进行扩展。在ch06/rtda/heap目录下创建class_loader.go文件，在其中定义ClassLoader结构体，代码如下：
 ``` go
 package heap
 import "fmt"
@@ -7012,7 +7012,7 @@ func (self *INVOKE_NATIVE) Execute(frame *rtda.Frame) {
 Java的反射机制十分强大，本节讨论的内容只是冰山一角。
 
 #### 9.3.1 类和对象之间的关系
-在Java中，类也表现为普通的对象，它的类是java.lang.Class。听起来有点像鸡生蛋还是蛋生鸡的问题:类也是对象，而对象又是类的实例。那么在Java虚拟机内部，究竟是先有类还是先有对象呢？下面就来一探究竟。
+在Java中，类也表现���普通的对象，它的类是java.lang.Class。听起来有点像鸡生蛋还是蛋生鸡的问题:类也是对象，而对象又是类的实例。那么在Java虚拟机内部，究竟是先有类还是先有对象呢？下面就来一探究竟。
 
 如前所述，Java有强大的反射能力。可以在运行期间获取类的各种信息、存取静态和实例变量、调用方法，等等。要想运用这种能力，获取类对象 [1] 是第一步。在Java语言中，有两种方式可以获得类对象引用:使用类字面值和调用对象的getClass()方法。下面的Java代码演示了这两种方式。
 ``` java
