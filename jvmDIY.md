@@ -1089,7 +1089,7 @@ func (self ConstantPool) getNameAndType(index uint16) (string, string) { ... }
 func (self ConstantPool) getClassName(index uint16) string             { ... }
 func (self ConstantPool) getUtf8(index uint16) string                  { ... }
 ```
-常量池实际上也是一个表，但是有三点需要特别注意。第一，表头给出的常量池大小比实际大1。假设表头给出的值是n，那么常量池的实际大小是n–1。第二，有效的常量池索引是1~n–1。0是无效索引，表示不指向任何常量。第三，`CONSTANT_Long_info`和`CONSTANT_Double_info`各占两个位置。也就是说，如果常量池中存在这两种常量，实际的常量数量比n–1还要少，而且1~n–1的某些数也会变成无效索引。常量池由`readConstantPool()`函数读取，代码如下：
+常量池实际上也是一个表，但是有三点需要特别注意。第一，表头给出的常量池大小比实际大`1`。假设表头给出的值是`n`，那么常量池的实际大小是`n–1`。第二，有效的常量池索引是`1~n–1`。`0`是无效索引，表示不指向任何常量。第三，`CONSTANT_Long_info`和`CONSTANT_Double_info`各占两个位置。也就是说，如果常量池中存在这两种常量，实际的常量数量比`n–1`还要少，而且`1~n–1`的某些数也会变成无效索引。常量池由`readConstantPool()`函数读取，代码如下：
 ``` go
 func readConstantPool(reader *ClassReader) ConstantPool {
 	cpCount := int(reader.readUint16())
