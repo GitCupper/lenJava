@@ -2203,13 +2203,13 @@ type Slot struct {
 	ref *Object
 }
 ```
-num字段存放整数，ref字段存放引用，刚好满足我们的需求。下面用它来实现局部变量表。在ch04\rtda目录下创建local_vars.go文件，在其中定义LocalVars类型，代码如下：
+`num`字段存放整数，`ref`字段存放引用，刚好满足我们的需求。下面用它来实现局部变量表。在ch04\rtda目录下创建local_vars.go文件，在其中定义`LocalVars`类型，代码如下：
 ``` go
 package rtda
 import "math"
 type LocalVars []Slot
 ```
-继续编辑local_vars.go文件，在其中定义newLocalVars()函数，代码如下：
+继续编辑local_vars.go文件，在其中定义`newLocalVars()`函数，代码如下：
 ``` go
 func newLocalVars(maxLocals uint) LocalVars {
 	if maxLocals > 0 {
@@ -2218,9 +2218,9 @@ func newLocalVars(maxLocals uint) LocalVars {
 	return nil
 }
 ```
-newLocalVars()函数创建LocalVars实例，代码比较简单，这里就不多解释了。
+`newLocalVars()`函数创建LocalVars实例，代码比较简单，这里就不多解释了。
 
-在第5章大家会看到，操作局部变量表和操作数栈的指令都是隐含类型信息的。下面给LocalVars类型定义一些方法，用来存取不同类型的变量。int变量最简单，直接存取即可。
+在第5章大家会看到，操作局部变量表和操作数栈的指令都是隐含类型信息的。下面给`LocalVars`类型定义一些方法，用来存取不同类型的变量。`int`变量最简单，直接存取即可。
 ``` go
 func (self LocalVars) SetInt(index uint, val int32) {
 	self[index].num = val
@@ -2229,7 +2229,7 @@ func (self LocalVars) GetInt(index uint) int32 {
 	return self[index].num
 }
 ```
-float变量可以先转成int类型，然后按int变量来处理。
+`float`变量可以先转成`int`类型，然后按`int`变量来处理。
 ``` go
 func (self LocalVars) SetFloat(index uint, val float32) {
 	bits := math.Float32bits(val)
@@ -2240,7 +2240,7 @@ func (self LocalVars) GetFloat(index uint) float32 {
 	return math.Float32frombits(bits)
 }
 ```
-long变量则需要拆成两个int变量。
+`long`变量则需要拆成两个`int`变量。
 ``` go
 func (self LocalVars) SetLong(index uint, val int64) {
 	self[index].num = int32(val)
@@ -2251,7 +2251,7 @@ func (self LocalVars) GetLong(index uint) int64 {
 	return int64(high)<<32 | int64(low)
 }
 ```
-double变量可以先转成long类型，然后按照long变量来处理。
+`double`变量可以先转成`long`类型，然后按照`long`变量来处理。
 ``` go
 func (self LocalVars) SetDouble(index uint, val float64) {
 	bits := math.Float64bits(val)
@@ -2271,10 +2271,10 @@ func (self LocalVars) GetRef(index uint) *Object {
 	return self[index].ref
 }
 ```
-请读者注意，我们并没有真的对boolean、byte、short和char类型定义存取方法，这些类型的值都可以转换成int值类来处理。下面我们来实现操作数栈。
+请读者注意，我们并没有真的对`boolean`、`byte`、`short`和`char`类型定义存取方法，这些类型的值都可以转换成`int`值类来处理。下面我们来实现操作数栈。
 
 #### 4.3.5 操作数栈
-操作数栈的实现方式和局部变量表类似。在ch04\rtda目录下创建operand_stack.go文件，在其中定义OperandStack结构体，代码如下：
+操作数栈的实现方式和局部变量表类似。在ch04\rtda目录下创建operand_stack.go文件，在其中定义`OperandStack`结构体，代码如下：
 ``` go
 package rtda
 import "math"
@@ -2283,7 +2283,7 @@ type OperandStack struct {
 	slots []Slot
 }
 ```
-操作数栈的大小是编译器已经确定的，所以可以用[]Slot实现。size字段用于记录栈顶位置。继续编辑operand_stack.go，在其中实现newOperandStack()函数，代码如下：
+操作数栈的大小是编译器已经确定的，所以可以用`[]Slot`实现。`size`字段用于记录栈顶位置。继续编辑operand_stack.go，在其中实现`newOperandStack()`函数，代码如下：
 ``` go
 func newOperandStack(maxStack uint) *OperandStack {
 	if maxStack > 0 {
@@ -2294,7 +2294,7 @@ func newOperandStack(maxStack uint) *OperandStack {
 	return nil
 }
 ```
-代码也比较简单，在此就不多解释了。和局部变量表类似，需要定义一些方法从操作数栈中弹出，或者往其中推入各种类型的变量。先看最简单的int变量。
+代码也比较简单，在此就不多解释了。和局部变量表类似，需要定义一些方法从操作数栈中弹出，或者往其中推入各种类型的变量。先看最简单的`int`变量。
 ``` go
 func (self *OperandStack) PushInt(val int32) {
 	self.slots[self.size].num = val
@@ -2305,7 +2305,7 @@ func (self *OperandStack) PopInt() int32 {
 	return self.slots[self.size].num
 }
 ```
-PushInt()方法往栈顶放一个int变量，然后把size加1。PopInt()方法则恰好相反，先把size减1，然后返回变量值。float变量还是先转成int类型，然后按int变量处理。
+`PushInt()`方法往栈顶放一个int变量，然后把`size`加1。`PopInt()`方法则恰好相反，先把`size`减`1`，然后返回变量值。`float`变量还是先转成`int`类型，然后按`int`变量处理。
 ``` go
 func (self *OperandStack) PushFloat(val float32) {
 	bits := math.Float32bits(val)
@@ -2318,7 +2318,7 @@ func (self *OperandStack) PopFloat() float32 {
 	return math.Float32frombits(bits)
 }
 ```
-把long变量推入栈顶时，要拆成两个int变量。弹出时，先弹出两个int变量，然后组装成一个long变量。
+把`long`变量推入栈顶时，要拆成两个`int`变量。弹出时，先弹出两个`int`变量，然后组装成一个`long`变量。
 ``` go
 func (self *OperandStack) PushLong(val int64) {
 	self.slots[self.size].num = int32(val)
@@ -2331,7 +2331,7 @@ func (self *OperandStack) PopLong() int64 {self.size -= 2
 	return int64(high)<<32 | int64(low)
 }
 ```
-double变量先转成long类型，然后按long变量处理。
+`double`变量先转成`long`类型，然后按`long`变量处理。
 ``` go
 func (self *OperandStack) PushDouble(val float64) {
 	bits := math.Float64bits(val)
@@ -2355,7 +2355,7 @@ func (self *OperandStack) PopRef() *Object {
 	return ref
 }
 ```
-PushRef()方法比较简单，此处不做太多解释。PopRef()方法需要说明一点：弹出引用后，把Slot结构体的ref字段设置成nil，这样做是为了帮助Go的垃圾收集器回收Object结构体实例。
+`PushRef()`方法比较简单，此处不做太多解释。`PopRef()`方法需要说明一点：弹出引用后，把`Slot`结构体的`ref`字段设置成`nil`，这样做是为了帮助Go的垃圾收集器回收`Object`结构体实例。
 
 至此，局部变量表和操作数栈都准备好了。仅通过代码来理解它们可能不是很直观，下面我们将通过一个具体的例子来分析局部变量表和操作数的使用。
 
