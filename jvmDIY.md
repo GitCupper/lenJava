@@ -2588,7 +2588,7 @@ do {
 	execute the action for the opcode;
 } while (there is more to do);
 ```
-每次循环都包含三个部分：计算pc、指令解码、指令执行。可以把这个逻辑用Go语言写成一个for循环，里面是个大大的switch-case语句。但这样的话，代码的可读性将非常差。所以采用另外一种方式：把指令抽象成接口，解码和执行逻���写在具体的指令实现中。这样编写出的解释器就和Java虚拟机规范里的伪代码一样简单，代码如下：
+每次循环都包含三个部分：计算pc、指令解码、指令执�����。可以把这个逻辑用Go语言写成一个for循环，里面是个大大的switch-case语句。但这样的话，代码的可读性将非常差。所以采用另外一种方式：把指令抽象成接口，解码和执行逻���写在具体的指令实现中。这样编写出的解释器就和Java虚拟机规范里的伪代码一样简单，代码如下：
 ``` go
 for {
 	pc := calculatePC()
@@ -4159,7 +4159,7 @@ func newInterfaceMethodRef(cp *ConstantPool,
 	return ref
 }
 ```
-代码和前面差不多，也不多解释了。接口方法符号引用的解析同样会在第7章详细介绍。到此为止，所有的符号引用都已经定义好了，它们的继承结构如图6-2所示。
+代码和前面差不多，也不多解释了。接口方法符号引用的解析同样会在第7章详细介绍。到此为止，所有的符号引用都已经定义好了，它们��继��结构如图6-2所示。
 
 ![图6-2](https://i.loli.net/2019/07/11/5d26dd97e105c16200.png)
 图6-2 符号引用结构体继承关系图
@@ -5137,7 +5137,7 @@ public class MyObject {public static int staticVar;
 ```
 go install jvmgo\ch06
 ```
-命令执行完毕后，D:\go\workspace\bin目录会出现ch06.exe文件。用javac编译MyObject类，然后用ch06.exe执行MyObject程序，结果如图6-3和图6-4所示。
+命令执行完毕后，D:\go\workspace\bin目录会出现ch06.exe文件。用javac编译`MyObject`类，然后用ch06.exe执行MyObject程序，结果如图6-3和图6-4所示。
 
 ![图6-3](https://i.loli.net/2019/07/11/5d26de3bc0c5537663.png)
 图6-3 MyObject程序执行结果(1)
@@ -5151,7 +5151,7 @@ go install jvmgo\ch06
 ## 第7章 方法调用和返回
 第4章实现了Java虚拟机栈、帧等运行时数据区，为方法的执行打好了基础。第5章实现了一个简单的解释器和150多条指令，已经可以执行单个方法。第6章实现了方法区，为方法调用扫清了障碍。本章将实现方法调用和返回，在此基础上，还会讨论类和对象的初始化。
 
-开始本章之前，还是先把目录结构准备好。复制ch06目录，改名为ch07。修改main.go等文件，把import语句中的ch06全都替换成ch07。本章对目录结构没有太大的调整。
+开始本章之前，还是先把目录结构准备好。复制ch06目录，改名为ch07。修改main.go等文件，把`import`语句中的ch06全都替换成ch07。本章对目录结构没有太大的调整。
 
 ### 7.1 方法调用概述
 从调用的角度来看，方法可以分为两类：静态方法（或者类方法）和实例方法。静态方法通过类来调用，实例方法则通过对象引用来调用。静态方法是静态绑定的，也就是说，最终调用的是哪个方法在编译期就已经确定。实例方法则支持动态绑定，最终要调用哪个方法可能要推迟到运行期才能知道，本章将详细讨论这一点。
@@ -5253,7 +5253,7 @@ func lookupMethodInInterfaces(ifaces []*Class, name, descriptor string) *Method 
 至此，非接口方法符号引用的解析就介绍完了，下面介绍接口方法符号引用如何解析。
 
 #### 7.2.2 接口方法符号引用
-打开ch07\rtda\heap\cp_interface_methodref.go文件，在其中实现ResolvedInterfaceMethod()方法，代码如下：
+打开ch07\rtda\heap\cp_interface_methodref.go文件，在其中实现`ResolvedInterfaceMethod()`方法，代码如下：
 ``` go
 func (self *InterfaceMethodRef) ResolvedInterfaceMethod() *Method {
 	if self.method == nil {
@@ -5262,7 +5262,7 @@ func (self *InterfaceMethodRef) ResolvedInterfaceMethod() *Method {
 	return self.method
 }
 ```
-上面的代码和ResolvedMethod()方法大同小异，不多解释。下面来看resolveInterface-MethodRef()方法，代码如下：
+上面的代码和`ResolvedMethod()`方法大同小异，不多解释。下面来看`resolveInterface-MethodRef()`方法，代码如下：
 ``` go
 func (self *InterfaceMethodRef) resolveInterfaceMethodRef() {
 	d := self.cp.class
